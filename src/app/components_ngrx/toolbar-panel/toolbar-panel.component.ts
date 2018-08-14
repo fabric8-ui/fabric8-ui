@@ -33,7 +33,7 @@ import {
 import { AreaQuery, AreaUI } from '../../models/area.model';
 import { FilterModel } from '../../models/filter.model';
 import { WorkItem, WorkItemQuery } from '../../models/work-item';
-import { WorkItemTypeUI } from '../../models/work-item-type';
+import { WorkItemTypeQuery, WorkItemTypeUI } from '../../models/work-item-type';
 import { FilterService } from '../../services/filter.service';
 import { GroupTypeUI } from './../../models/group-types.model';
 import { IterationQuery, IterationUI } from './../../models/iteration.model';
@@ -146,7 +146,8 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
     private labelQuery: LabelQuery,
     private iterationQuery: IterationQuery,
     private areaQuery: AreaQuery,
-    private workItemQuery: WorkItemQuery) {
+    private workItemQuery: WorkItemQuery,
+    private workItemTypeQuery: WorkItemTypeQuery) {
   }
 
   ngOnInit() {
@@ -352,8 +353,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
   initiateDataSources() {
-    this.workItemTypeData = this.store
-      .select('planner').select('workItemTypes')
+    this.workItemTypeData = this.workItemTypeQuery.getWorkItemTypes()
       .filter(a => !!a.length);
     this.stateData = this.store
       .select('planner').select('workItemStates')

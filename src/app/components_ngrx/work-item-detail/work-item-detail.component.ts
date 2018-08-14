@@ -13,9 +13,8 @@ import { Observable } from 'rxjs/Observable';
 import { AreaUI } from './../../models/area.model';
 import { LabelQuery, LabelUI } from './../../models/label.model';
 import { UserQuery, UserUI } from './../../models/user';
-import { WorkItemTypeUI } from './../../models/work-item-type';
+import { WorkItemTypeQuery, WorkItemTypeUI } from './../../models/work-item-type';
 import { UrlService } from './../../services/url.service';
-import { WorkItemTypeControlService } from './../../services/work-item-type-control.service';
 import { InlineInputComponent } from './../../widgets/inlineinput/inlineinput.component';
 
 // ngrx stuff
@@ -56,9 +55,7 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
     .select('planner')
     .select('workItemStates')
     .filter(wis => !!wis.length);
-  private workItemTypeSource = this.store
-    .select('planner')
-    .select('workItemTypes')
+  private workItemTypeSource = this.workItemTypeQuery.getWorkItemTypes()
     .filter(w => !!w.length);
 
   private combinedSources = Observable.combineLatest(
@@ -119,11 +116,11 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
     private auth: AuthenticationService,
     private renderer: Renderer2,
     private workItemService: WorkItemService,
-    private workItemTypeControlService: WorkItemTypeControlService,
     private sanitizer: DomSanitizer,
     private userQuery: UserQuery,
     private labelQuery: LabelQuery,
-    private workItemQuery: WorkItemQuery
+    private workItemQuery: WorkItemQuery,
+    private workItemTypeQuery: WorkItemTypeQuery
   ) {
 
   }
@@ -190,7 +187,7 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
         }
 
         this.workItem = workItem;
-        const wiType = this.wiTypes.find(t => t.id === this.workItem.type.id);
+        const wiType = this.wiTypes.find(t => t.id === this.workItem.type);
         this.workItemStates = wiType.fields['system.state'].type.values;
         this.loadingAssignees = false;
         this.loadingArea = false;
@@ -199,15 +196,15 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
 
         // init dynamic form
         if (this.workItem.type) {
-          this.dynamicFormGroup = this.workItemTypeControlService.toFormGroup(this.workItem);
-          this.dynamicFormDataArray = this.workItemTypeControlService.toAttributeArray(this.workItem.type.fields);
-          this.dynamicKeyValueFields = this.workItem.type.dynamicfields.map(item => {
-            return {
-              key: item,
-              value: this.workItem.dynamicfields[item],
-              field: this.workItem.type.fields[item]
-            };
-          });
+          this.eventListeners.push(this.workItem.typeObs.subscribe((type) => {
+            this.dynamicKeyValueFields = type.dynamicfields.map(item => {
+              return {
+                key: item,
+                value: this.workItem.dynamicfields[item],
+                field: type.fields[item]
+              };
+            });
+          }));
         }
 
         // set title on update
@@ -271,7 +268,6 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
       workItem['link'] = this.workItem.link;
       workItem['id'] = this.workItem.id;
       workItem['title'] = value;
-      workItem['type'] = this.workItem.type;
       this.store.dispatch(new WorkItemActions.Update(workItem));
     }
   }
@@ -282,8 +278,6 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
       workItem['version'] = this.workItem.version;
       workItem['link'] = this.workItem.link;
       workItem['id'] = this.workItem.id;
-      workItem['type'] = this.workItem.type;
-
       workItem['state'] = state;
       this.store.dispatch(new WorkItemActions.Update(workItem));
     }
@@ -295,7 +289,6 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
     workItem['version'] = this.workItem.version;
     workItem['link'] = this.workItem.link;
     workItem['id'] = this.workItem.id;
-    workItem['type'] = this.workItem.type;
     workItem['assignees'] = users.map(u => u.id);
     this.store.dispatch(new WorkItemActions.Update(workItem));
   }
@@ -307,7 +300,6 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
     workItem['version'] = this.workItem.version;
     workItem['link'] = this.workItem.link;
     workItem['id'] = this.workItem.id;
-    workItem['type'] = this.workItem.type;
     workItem['areaId'] = areaID;
     this.store.dispatch(new WorkItemActions.Update(workItem));
   }
@@ -319,7 +311,6 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
     workItem['version'] = this.workItem.version;
     workItem['link'] = this.workItem.link;
     workItem['id'] = this.workItem.id;
-    workItem['type'] = this.workItem.type;
 
     workItem['iterationId'] =  iterationID;
     this.store.dispatch(new WorkItemActions.Update(workItem));
@@ -331,7 +322,6 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
     workItem['version'] = this.workItem.version;
     workItem['link'] = this.workItem.link;
     workItem['id'] = this.workItem.id;
-    workItem['type'] = this.workItem.type;
 
     workItem['labels'] = labels.map(l => l.id);
     this.store.dispatch(new WorkItemActions.Update(workItem));
@@ -343,7 +333,6 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
     workItem['version'] = this.workItem.version;
     workItem['link'] = this.workItem.link;
     workItem['id'] = this.workItem.id;
-    workItem['type'] = this.workItem.type;
 
     workItem['labels'] = this.workItem.labels.filter(l => l != label.id);
     this.store.dispatch(new WorkItemActions.Update(workItem));
@@ -368,7 +357,6 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
     workItem['version'] = this.workItem.version;
     workItem['link'] = this.workItem.link;
     workItem['id'] = this.workItem.id;
-    workItem['type'] = this.workItem.type;
     workItem['description'] = {
       content: rawText,
       markup: 'Markdown'

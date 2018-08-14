@@ -6,13 +6,12 @@
 
 <!-- Type -->
 
-<div *ngIf="col === 'type'">
+<div *ngIf="col === 'type' && row.typeObs | async as type">
   <span class="color-grey margin-right-3 type-icon
-    {{row.type?.icon}}"
-    title="{{row.type?.name}}">
-
+    {{type?.icon}}"
+    title="{{type?.name}}">
   </span>
-  <span>{{ row.type?.name }}</span>
+  <span>{{ type?.name }}</span>
 </div>
 
 <!-- Title -->
@@ -53,7 +52,7 @@
 </div>
 
 <!-- Iteration -->
-<span id="table-iteration" 
+<span id="table-iteration"
   *ngIf="col === 'iteration'"
   tooltip="{{ (row.iterationObs | async)?.parentPath === '/' ? 'NA' : (row.iterationObs | async)?.name }}"
   placement="left">

@@ -16,7 +16,7 @@ import {
 } from 'ngx-login-client';
 import { EmptyStateConfig } from 'patternfly-ng/empty-state';
 import { Observable } from 'rxjs/Observable';
-import { WorkItemTypeUI } from '../../models/work-item-type';
+import { WorkItemTypeQuery, WorkItemTypeUI } from '../../models/work-item-type';
 import { IterationQuery, IterationUI } from './../../models/iteration.model';
 import { CookieService } from './../../services/cookie.service';
 import { FilterService } from './../../services/filter.service';
@@ -52,10 +52,7 @@ import { WorkItemPreviewPanelComponent } from './../work-item-preview-panel/work
 export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked {
   private uiLockedAll: boolean = false;
   private sidePanelOpen: boolean = true;
-  private workItemTypeSource = this.store
-    .select('planner')
-    .select('workItemTypes')
-    .filter(w => !!w.length);
+  private workItemTypeSource = this.workItemTypeQuery.getWorkItemTypesWithChildren();
   private spaceSource = this.store
     .select('planner')
     .select('space')
@@ -114,7 +111,8 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
     private labelQuery: LabelQuery,
     private workItemQuery: WorkItemQuery,
     private areaQuery: AreaQuery,
-    private groupTypeQuery: GroupTypeQuery
+    private groupTypeQuery: GroupTypeQuery,
+    private workItemTypeQuery: WorkItemTypeQuery
   ) {}
 
   ngOnInit() {
@@ -383,6 +381,7 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
         } else {
           this.quickAddWorkItemTypes = workItemTypes;
         }
+        console.log('#### - 1', this.quickAddWorkItemTypes);
       })
     );
   }

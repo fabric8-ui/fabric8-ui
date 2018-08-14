@@ -11,7 +11,6 @@ import { PlannerModalModule } from '../../widgets/modal/modal.module';
 import { DynamicFieldComponent } from '../dynamic-field/dynamic-field.component';
 import { UserMapper, UserQuery } from './../../models/user';
 import { AlmUserNameModule } from './../../pipes/alm-user-name.module';
-import { WorkItemTypeControlService } from './../../services/work-item-type-control.service';
 import { InlineInputModule } from './../../widgets/inlineinput/inlineinput.module';
 import { AssigneeSelectorModule } from './../assignee-selector/assignee-selector.module';
 import { AssigneesModule } from './../assignee/assignee.module';
@@ -53,6 +52,7 @@ import { LabelSelectorModule } from '../label-selector/label-selector.module';
 
 import { AreaQuery } from '../../models/area.model';
 import { IterationQuery } from '../../models/iteration.model';
+import { WorkItemTypeQuery } from '../../models/work-item-type';
 import { CommentQuery } from './../../models/comment';
 import { LabelQuery } from './../../models/label.model';
 import { WorkItemQuery } from './../../models/work-item';
@@ -118,10 +118,10 @@ import { UserAvatarModule } from './../../widgets/user-avatar/user-avatar.module
     BsDropdownConfig,
     AuthenticationService,
     TooltipConfig,
-    WorkItemTypeControlService,
     IterationQuery,
     WorkItemQuery,
-    AreaQuery
+    AreaQuery,
+    WorkItemTypeQuery
   ],
   declarations: [
     WorkItemDetailComponent,

@@ -11,7 +11,6 @@ import * as WIStateActoins from './../actions/work-item-state.actions';
 import * as WorkItemTypeActions from './../actions/work-item-type.actions';
 import {
   WorkItemTypeMapper,
-  WorkItemTypeResolver,
   WorkItemTypeService
 } from './../models/work-item-type';
 import { WorkItemService } from './../services/work-item.service';
@@ -39,12 +38,8 @@ export class WorkItemTypeEffects {
       .map((types: WorkItemTypeService[]) => {
         const witm = new WorkItemTypeMapper();
         const wiTypes = types.map(t => witm.toUIModel(t));
-        const witResolver = new WorkItemTypeResolver(wiTypes);
-        witResolver.resolveChildren();
         this.store.dispatch(new WIStateActoins.GetSuccess(types));
-        return new WorkItemTypeActions.GetSuccess(
-          witResolver.getResolvedWorkItemTypes()
-        );
+        return new WorkItemTypeActions.GetSuccess(wiTypes);
       })
       .catch(e => {
         try {

@@ -2,7 +2,7 @@
   <div class="f8-detail form-horizontal work-item-page"
     id="wi-detail-form"
     *ngIf="workItem">
-    <fieldset>
+    <fieldset *ngIf="(workItem.typeObs | async) as type">
       <div class="f8-detail__header"
         #detailHeader>
         <span
@@ -19,11 +19,11 @@
             </span>
             <div class="dropdown-kebab-pf detail-type-dropdown">
               <span
-                class="margin-right-5 {{workItem.type.icon}} fa-lg"
+                class="margin-right-5 {{type.icon}} fa-lg"
                 id="wi-type-icon"
-                title="{{workItem.type.name}}">
+                title="{{type.name}}">
               </span>
-              {{ workItem.type.name }}
+              {{ type.name }}
               <strong>#{{ workItem.number }}</strong>
             </div>
           </div>
@@ -110,12 +110,12 @@
               </span>
               <span
                 *ngIf="!loadingTypes"
-                class="{{workItem.type.icon}} fa-lg dib">
+                class="{{type.icon}} fa-lg dib">
               </span>
               <span
                 *ngIf="!loadingTypes"
                 class="dib">
-                {{ workItem.type.name }}
+                {{ type.name }}
               </span>
               <span class="dib">
                 <strong>#{{ workItem.number }}</strong>
@@ -153,11 +153,11 @@
           [class.col-lg-7]="detailContext=='detail'"
           [class.col-md-12]="detailContext=='preview'"
           [class.col-lg-12]="detailContext=='preview'">
+          <!-- assignee -->
           <div class="form-group">
-            <!-- assignee -->
             <section class="f8-detail__assignee">
               <label class="pull-left padding-left-15 control-label">
-                {{ workItem.type.fields['system.assignees']?.label || 'Label' }}
+                {{ type.fields['system.assignees']?.label || 'Label' }}
               </label>
               <div class="f8-detail__content" #assignee >
                 <span *ngIf="loadingAssignees"
@@ -186,7 +186,7 @@
           <div class="form-group">
             <section class="f8-detail__area">
               <label class="pull-left padding-left-15 control-label ">
-                {{ workItem.type.fields['system.creator']?.label || 'Label' }}
+                {{ type.fields['system.creator']?.label || 'Label' }}
               </label>
               <div class="f8-detail__content" *ngIf="workItem?.creatorObs | async; let creator">
                 <span *ngIf="!creator"
@@ -211,7 +211,7 @@
           <div class="form-group">
             <section class="f8-detail__area">
               <label class="pull-left padding-left-15 control-label">
-                {{ workItem.type.fields['system.area']?.label || 'Label' }}
+                {{ type.fields['system.area']?.label || 'Label' }}
               </label>
               <div class="f8-detail__content">
                 <span *ngIf="loadingArea"
@@ -230,11 +230,12 @@
               </div>
             </section>
           </div>
+
           <!-- Iteration -->
           <div class="form-group">
             <section class="f8-detail__area">
               <label class="pull-left padding-left-15 control-label">
-                {{ workItem.type.fields['system.iteration']?.label || 'Label' }}
+                {{ type.fields['system.iteration']?.label || 'Label' }}
               </label>
               <div class="f8-detail__content">
                 <span *ngIf="loadingIteration"
@@ -258,7 +259,7 @@
           <div class="form-group">
             <section class="f8-detail__labels">
               <label class="pull-left padding-left-15 control-label ">
-                {{ workItem.type.fields['system.labels']?.label || 'Label' }}
+                {{ type.fields['system.labels']?.label || 'Label' }}
               </label>
               <div class="f8-detail__content">
                 <span *ngIf="loadingLabels"

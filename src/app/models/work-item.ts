@@ -41,8 +41,11 @@ import { Link } from './link';
 import { plannerSelector } from './space';
 import { UserQuery, UserService, UserUI } from './user';
 import {
+  getWorkItemTypeEntitiesSelector,
   WorkItemType,
   WorkItemTypeMapper,
+  WorkItemTypeQuery,
+  workItemTypeSelector,
   WorkItemTypeUI
 } from './work-item-type';
 
@@ -162,7 +165,8 @@ export interface WorkItemUI {
   assigneesObs?: Observable<UserUI[]>;
   creator: string;
   creatorObs?: Observable<UserUI>;
-  type: WorkItemTypeUI;
+  type: string;
+  typeObs?: Observable<WorkItemTypeUI>;
   labels: string[];
   labelsObs?: Observable<LabelUI[]>;
   comments?: CommentUI[];
@@ -247,9 +251,8 @@ export class WorkItemMapper implements Mapper<WorkItemService, WorkItemUI> {
       fromPath: ['relationships', 'iteration', 'data', 'id'],
       toPath: ['iterationId']
     }, {
-      fromPath: ['relationships', 'baseType', 'data'],
-      toPath: ['type'],
-      toFunction: this.wiTypeMapper.toUIModel.bind(this.wiTypeMapper)
+      fromPath: ['relationships', 'baseType', 'data', 'id'],
+      toPath: ['type']
     }, {
       fromPath: ['relationships', 'comments', 'links', 'related'],
       toPath: ['commentLink']
@@ -377,8 +380,10 @@ export class WorkItemMapper implements Mapper<WorkItemService, WorkItemUI> {
       }
     }, {
       fromPath: ['type'],
-      toPath: ['relationships', 'baseType', 'data'],
-      toFunction: this.wiTypeMapper.toServiceModel.bind(this.wiTypeMapper)
+      toPath: ['relationships', 'baseType', 'data', 'id']
+    }, {
+      toPath: ['relationships', 'baseType', 'data', 'type'],
+      toValue: 'workitemtypes'
     }, {
       fromPath: ['commentLink'],
       toPath: ['relationships', 'comments', 'links', 'related']
@@ -449,12 +454,12 @@ export class WorkItemMapper implements Mapper<WorkItemService, WorkItemUI> {
     );
   }
 
-  toDyanmicServiceModel(arg: WorkItemUI) {
+  toDyanmicServiceModel(arg: WorkItemUI, dynamicFields) {
     let dynamicUiToServiceMapTree: MapTree = [];
-    for (let i = 0; i < arg.type.dynamicfields.length; i++) {
+    for (let i = 0; i < dynamicFields.length; i++) {
       dynamicUiToServiceMapTree.push({
-        toPath: ['attributes', arg.type.dynamicfields[i]],
-        fromPath: ['dynamicfields', arg.type.dynamicfields[i]]
+        toPath: ['attributes', dynamicFields[i]],
+        fromPath: ['dynamicfields', dynamicFields[i]]
       });
     }
     const serviceModel = switchModel<WorkItemUI, any>(
@@ -503,22 +508,6 @@ export class WorkItemMapper implements Mapper<WorkItemService, WorkItemUI> {
   }
 }
 
-export class WorkItemResolver {
-  constructor(private workItem: WorkItemUI) {}
-
-  resolveType(types: WorkItemTypeUI[]) {
-    const type = types.find(t => t.id === this.workItem.type.id);
-    if (type) {
-      this.workItem.type = cloneDeep(type);
-    }
-  }
-
-  getWorkItem() {
-    return this.workItem;
-  }
-}
-
-
 export const workItemSelector = createSelector(
   plannerSelector,
   // TODO
@@ -543,7 +532,8 @@ export class WorkItemQuery {
     private userQuery: UserQuery,
     private iterationQuery: IterationQuery,
     private areaQuery: AreaQuery,
-    private labelQuery: LabelQuery
+    private labelQuery: LabelQuery,
+    private workItemTypeQuery: WorkItemTypeQuery
   ) {}
 
   private workItemSource = this.store
@@ -556,6 +546,7 @@ export class WorkItemQuery {
   resolveWorkItem(workItem: WorkItemUI): WorkItemUI {
     return {
       ...workItem,
+      typeObs: this.workItemTypeQuery.getWorkItemTypeWithChildrenById(workItem.type),
       creatorObs: this.userQuery.getUserObservableById(workItem.creator),
       assigneesObs: this.userQuery.getUserObservablesByIds(workItem.assignees),
       iterationObs: this.iterationQuery.getIterationObservableById(workItem.iterationId),

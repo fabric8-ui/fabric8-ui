@@ -46,6 +46,7 @@ import { UrlService } from '../../services/url.service';
 import { ClickOutModule } from '../../widgets/clickout/clickout.module';
 
 // Data Querries
+import { WorkItemTypeQuery } from '../../models/work-item-type';
 import { AreaQuery } from './../../models/area.model';
 import { CommentQuery } from './../../models/comment';
 import { GroupTypeQuery } from './../../models/group-types.model';
@@ -54,6 +55,7 @@ import { LabelQuery } from './../../models/label.model';
 import { SpaceQuery } from './../../models/space';
 import { UserQuery } from './../../models/user';
 import { WorkItemQuery } from './../../models/work-item';
+
 
 import { UserAvatarModule } from './../../widgets/user-avatar/user-avatar.module';
 
@@ -77,7 +79,6 @@ let providers = [
     WorkItemDataService,
     UrlService,
     InfotipService,
-
     CommentQuery,
     UserQuery,
     LabelQuery,
@@ -85,7 +86,8 @@ let providers = [
     WorkItemQuery,
     AreaQuery,
     SpaceQuery,
-    GroupTypeQuery
+    GroupTypeQuery,
+    WorkItemTypeQuery
   ];
 
 @NgModule({

@@ -155,10 +155,10 @@
             <div class="f8-wi-list__quick-add-table width-100 pull-left"
               id="workItemList_quickAdd_inline"
               #quickaddHeight>
-              <alm-work-item-quick-add
+              <alm-work-item-quick-add *ngIf="(row?.typeObs | async) as type"
                 [wilistview]="'wi-table-view'"
-                [workItemTypes]="row?.type?.childTypes"
-                [selectedType]="row?.type?.childTypes?.length ? row.type.childTypes[0] : null"
+                [workItemTypes]="type?.childTypes"
+                [selectedType]="type?.childTypes?.length ? type.childTypes[0] : null"
                 [selectedIteration]="selectedIterationSource | async"
                 [parentWorkItemId]="row.id"
                 (onStartCreateWI)="onCreateStart($event)">
@@ -180,16 +180,16 @@
               <span class="table-dnd-container">
                 <span class="table-dnd-header"></span>
               </span>
-              <a class="quick-add-icon"
+              <a class="quick-add-icon" *ngIf="(row?.typeObs | async) as type"
                 placement="right"
                 tooltip="Add Child Work Item"
                 href="javascript:void(0)"
                 [class.pficon-add-circle-o]="!expanded"
                 [class.pficon-close]="expanded"
-                [class.disabled]="!!!row?.type?.childTypes || !loggedIn"
+                [class.disabled]="!!!type?.childTypes || !loggedIn"
                 (click)="toggleExpandRow(
                   row,
-                  !!row?.type?.childTypes?.length
+                  !!type?.childTypes?.length
                 )">
               </a>
             </ng-template>

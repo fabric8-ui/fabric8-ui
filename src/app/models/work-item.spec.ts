@@ -122,12 +122,7 @@ describe('WorkItemMapper', () => {
         areaId: 'e5fc1d21-5c56-4aef-a58a-068865621881',
         creator: '29f698d6-5c65-4129-9e97-5286cdb18a1c',
         iterationId: '2561c0c9-6d36-46de-89f4-41cbe5b02cd3',
-        type: {
-          id: '71171e90-6d35-498f-a6a7-2083b5267c18', name: null, icon: null,
-          version: null, description: null, childTypes: [], type: 'workitemtypes', fields: null,
-          infotip: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-          dynamicfields: []
-        },
+        type: '71171e90-6d35-498f-a6a7-2083b5267c18',
         eventLink: 'https://api.prod-preview.openshift.io/api/workitems/a85b610d-6789-4989-bfe5-ebceb5ee4ef9/events',
         commentLink: 'https://api.openshift.io/api/workitems/8bccc228-bba7-43ad-b077-15fbb9148f7f/comments',
         assignees: ['330b19d2-28d3-4b29-9abf-a324c94b437d', '543d5193-d519-4126-9e9c-2d608f67639b'],
@@ -142,6 +137,15 @@ describe('WorkItemMapper', () => {
         editable: false,
         columnIds: null
       } as WorkItemUI;
+
+      const dynamicfields = [
+        'acceptance_criteria',
+        'business_value',
+        'effort',
+        'resolution',
+        'target_date',
+        'time_criticality'
+      ];
 
     it('should execute the canary test', () => {
         return expect(true).toBe(true);
@@ -341,14 +345,6 @@ describe('WorkItemMapper', () => {
         },
         'type': 'workitems'
       };
-      let dynamicfields = [
-        'acceptance_criteria',
-        'business_value',
-        'effort',
-        'resolution',
-        'target_date',
-        'time_criticality'
-      ];
       const output = workItemMapper.toDynamicUIModel(expWIService, dynamicfields);
       expect(output).toEqual(dynamicWiUi);
     });
@@ -364,14 +360,9 @@ describe('WorkItemMapper', () => {
         version: 14,
         dynamicfields: {
           resolution: 'Done'
-        },
-        type: {
-          dynamicfields: [
-            'resolution'
-          ]
         }
       } as WorkItemUI;
-      expect(workItemMapper.toDyanmicServiceModel(uiMap)).toEqual(serviceMap);
+      expect(workItemMapper.toDyanmicServiceModel(uiMap, dynamicfields)).toEqual(serviceMap);
 
     });
 
@@ -388,14 +379,9 @@ describe('WorkItemMapper', () => {
       const uiMap: WorkItemUI = {
         id: '020f756e-b51a-4b43-b113-45cec16b9ce9',
         version: 14,
-        title: 'New title',
-        type: {
-          dynamicfields: [
-            'resolution'
-          ]
-        }
+        title: 'New title'
       } as WorkItemUI;
-      const dynamicServiceModel = workItemMapper.toDyanmicServiceModel(uiMap);
+      const dynamicServiceModel = workItemMapper.toDyanmicServiceModel(uiMap, dynamicfields);
       const staticServiceModel = workItemMapper.toServiceModel(uiMap);
       const finalServiceModel = {
         ...staticServiceModel,
@@ -423,17 +409,9 @@ describe('WorkItemMapper', () => {
         title: 'New title',
         dynamicfields: {
           resolution: 'done'
-        },
-        type: {
-          id: '1234567jhgfds',
-          description: 'tbd',
-          name: 'Epic',
-          dynamicfields: [
-            'resolution'
-          ]
         }
       } as WorkItemUI;
-      const dynamicServiceModel = workItemMapper.toDyanmicServiceModel(uiMap);
+      const dynamicServiceModel = workItemMapper.toDyanmicServiceModel(uiMap, dynamicfields);
       const staticServiceModel = workItemMapper.toServiceModel(uiMap);
       const finalServiceModel = cleanObject({
         ...staticServiceModel,
