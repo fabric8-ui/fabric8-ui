@@ -35,11 +35,22 @@ export class TypeaheadSelectorComponent implements OnInit {
   @Input('allowMultiSelect') allowMultiSelect: boolean = false;
   @Input('closeOnSelect') closeOnSelect: boolean = true;
   @Input('selectedItems') set selectedItemsSetter(items: TypeaheadDropdownItem[]) {
+    // If selected items are not an array
+    // then return an empty array
+    // i.e. nothing is selected
     if (!Array.isArray(items)) {
       items = [];
     }
-    this.selectedItems = items;
+
+    // If multip selection for this component is off
+    // then take only one i.e. first element from items
+    if (!this.allowMultiSelect && items.length) {
+      this.selectedItems = [items[0]];
+    } else {
+      this.selectedItems = items;
+    }
     this._selectedItems = [...this.selectedItems];
+    this.selectedItemsBs.next(this._selectedItems);
   }
   @Input('itemTruncate') itemTruncate: number = 500;
   @Input('toggleTruncate') toggleTruncate: number = 500;
@@ -59,13 +70,13 @@ export class TypeaheadSelectorComponent implements OnInit {
   private _selectedItems: TypeaheadDropdownItem[] = [];
 
   // This is used to render the UI
-  private selectedItems: TypeaheadDropdownItem[] = [];
+  selectedItems: TypeaheadDropdownItem[] = [];
 
   private searchValue: string = '';
   searching: boolean = false;
   isOpen: boolean = false;
 
-  private menuItems: Observable<TypeaheadDropdownItem[]> =
+  menuItems: Observable<TypeaheadDropdownItem[]> =
     this.searchTermObs.asObservable()
     .do(term => this.searchValue = term)
     .switchMap((term) => {
@@ -86,7 +97,9 @@ export class TypeaheadSelectorComponent implements OnInit {
   ngOnInit() {
   }
 
-  updateSelection(items: TypeaheadDropdownItem[], selectedItems: TypeaheadDropdownItem[]) {
+  updateSelection(
+    items: TypeaheadDropdownItem[], selectedItems: TypeaheadDropdownItem[]
+  ): TypeaheadDropdownItem[] {
     const selectedItemsIds = selectedItems.map(i => i.key);
     items.forEach(item => {
       item.selected = selectedItemsIds.indexOf(item.key) > -1;
