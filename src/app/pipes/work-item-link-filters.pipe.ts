@@ -42,11 +42,11 @@ export class GroupWorkItemLinks implements PipeTransform {
       let reverseLinks = [];
       linksOfLinkType.forEach(link => {
         if (link.source.id === workItemId) {
-          forward.push(link.target);
+          forward.push({...link.target, ...{newlyAdded: link.newlyAdded}});
           forwardLinks.push(link);
         }
         if (link.target.id === workItemId) {
-          reverse.push(link.source);
+          reverse.push({...link.source, ...{newlyAdded: link.newlyAdded}});
           reverseLinks.push(link);
         }
       });

@@ -62,7 +62,9 @@ export class WorkItemLinkTypeQuery {
     .map(types => {
       // The common-dropdown component needs the data in a specific format
       // Each item should have `key` and `value` property
-      return types.map(t => {return {...t, value: t.name, key: t.name}; });
+      return types
+        .map(t => {return {...t, value: t.name, key: t.name}; })
+        .sort((t1, t2) => t1.value.localeCompare(t2.value));
     });
   }
 }

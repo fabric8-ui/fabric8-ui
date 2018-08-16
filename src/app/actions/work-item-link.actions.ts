@@ -12,6 +12,7 @@ export const ADD_ERROR = '[workItemLink] AddError';
 export const GET_ERROR = '[workItemLink] GetError';
 export const DELETE_ERROR = '[workItemLink] DeleteError';
 export const RESET_LINKS = '[workItemLink] Reset';
+export const TRIVIALIZE_ALL = '[workItemLink] TrivializeAll';
 
 export class Add implements Action {
   payload: WorkItemLinkService;
@@ -85,6 +86,10 @@ export class ResetLinks implements Action {
   readonly type = RESET_LINKS;
 }
 
+export class TrivializeAll implements Action {
+  readonly type = TRIVIALIZE_ALL;
+}
+
 export type All
   = Add
   | AddSuccess
@@ -95,4 +100,5 @@ export type All
   | Delete
   | DeleteSuccess
   | DeleteError
-  | ResetLinks;
+  | ResetLinks
+  | TrivializeAll;

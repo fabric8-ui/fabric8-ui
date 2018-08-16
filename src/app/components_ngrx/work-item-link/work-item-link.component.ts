@@ -1,4 +1,11 @@
 import {
+  animate,
+  state,
+  style,
+  transition,
+  trigger
+} from '@angular/animations';
+import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
@@ -29,7 +36,19 @@ import { TypeaheadDropdownItem } from './../typeahead-selector/typeahead-selecto
   selector: 'work-item-link',
   templateUrl: './work-item-link.component.html',
   styleUrls: ['./work-item-link.component.less'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  animations: [
+    trigger('linkState', [
+      state('inactive', style({
+        backgroundColor: '#fff'
+      })),
+      state('active',   style({
+        backgroundColor: '#39a5dc'
+      })),
+      transition('inactive => active', animate('0.2s 100ms')),
+      transition('active => inactive', animate('0.2s 100ms'))
+    ])
+  ]
 })
 
 export class WorkItemLinkComponent implements OnInit, OnDestroy {
@@ -70,6 +89,15 @@ export class WorkItemLinkComponent implements OnInit, OnDestroy {
       // Reset the create environment
       this.selectedWorkItem = null;
       this.lockCreation = false;
+
+      // to remove the highlight from newly added item
+      if (links.findIndex(l => l.newlyAdded) > -1) {
+        setTimeout(() => {
+          this.store.dispatch(
+            new WorkItemLinkActions.TrivializeAll()
+          );
+        }, 3000);
+      }
     });
   workItemLinksCountSource: Observable<number> =
     this.workItemLinkQuery.getWorkItemLinksCount;
@@ -110,7 +138,6 @@ export class WorkItemLinkComponent implements OnInit, OnDestroy {
   }
 
   createLink(event: Event) {
-    event.stopPropagation();
     if (
       this.selectedLinkType &&
       this.selectedWorkItem &&

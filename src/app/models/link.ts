@@ -143,6 +143,7 @@ export interface WorkItemLinkUI {
   linkType: LinkTypeUI;
   source: WorkItemUI;
   target: WorkItemUI;
+  newlyAdded: boolean;
 }
 
 export class WorkItemLinkMapper implements Mapper<WorkItemLinkService, WorkItemLinkUI> {
@@ -170,6 +171,9 @@ export class WorkItemLinkMapper implements Mapper<WorkItemLinkService, WorkItemL
     fromPath: ['relationships', 'target', 'data'],
     toPath: ['target'],
     toFunction: this.wiMapper.toUIModel.bind(this.wiMapper)
+  }, {
+    toPath: ['newlyAdded'],
+    toValue: false
   }];
 
   uiToServiceMapTree: MapTree = [{

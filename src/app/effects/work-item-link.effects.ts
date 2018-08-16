@@ -110,9 +110,12 @@ export class WorkItemLinkEffects {
               }
             }
           }
-          return new WorkItemLinkActions.AddSuccess(
-            this.wilMapper.toUIModel(link)
-          );
+          const linkUIValue = {
+            ...this.wilMapper.toUIModel(link),
+            ...{ newlyAdded: true }
+          };
+
+          return new WorkItemLinkActions.AddSuccess(linkUIValue);
         })
         .catch((e) => {
           try {
