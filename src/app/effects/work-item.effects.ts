@@ -384,4 +384,39 @@ export class WorkItemEffects {
           ];
         });
     });
+
+    @Effect() getWorkItemChildrenForQuery$: Observable<Action> = this.actions$
+      .ofType<WorkItemActions.GetWorkItemChildrenForQuery>(WorkItemActions.GET_WORKITEM_CHILDREN_FOR_Query)
+      .withLatestFrom(this.store.select('planner'))
+      .map(([action, state]) => {
+        return {
+          payload: action.payload,
+          state: state
+        };
+      })
+      .switchMap(wp => {
+        return this.workItemService
+          .getChildren2(wp.payload)
+          .map((data: WorkItemService[]) => {
+            return this.resolveWorkItems(data, wp.state);
+          })
+          .map((workItems: WorkItemUI[]) => {
+            return new WorkItemActions.GetSuccess(
+              workItems
+            );
+          })
+          .catch(() => {
+            try {
+              this.notifications.message({
+                message: `Problem loading children.`,
+                type: NotificationType.DANGER
+              } as Notification);
+            } catch (e) {
+              console.log('Problem loading children.');
+            }
+            return Observable.of(
+              new WorkItemActions.GetError()
+            );
+          });
+      });
 }
