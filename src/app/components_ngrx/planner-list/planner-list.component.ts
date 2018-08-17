@@ -28,6 +28,7 @@ import { datatableColumn } from './datatable-config';
 
 // ngrx stuff
 import { Store } from '@ngrx/store';
+import { SpaceQuery } from '../../models/space';
 import * as AreaActions from './../../actions/area.actions';
 import * as CollaboratorActions from './../../actions/collaborator.actions';
 import * as SpaceActions from './../../actions/space.actions';
@@ -53,11 +54,7 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
   private uiLockedAll: boolean = false;
   private sidePanelOpen: boolean = true;
   private workItemTypeSource = this.workItemTypeQuery.getWorkItemTypesWithChildren();
-  private spaceSource = this.store
-    .select('planner')
-    .select('space')
-    .do(s => {if (!s) { this.store.dispatch(new SpaceActions.Get()); }})
-    .filter(s => !!s);
+  private spaceSource = this.spaceQuery.getCurrentSpace.filter(s => !!s);
   private areaSource = this.areaQuery.getAreas()
     .filter(a => !!a.length);
   private labelSource = this.labelQuery.getLables();
@@ -112,7 +109,8 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
     private workItemQuery: WorkItemQuery,
     private areaQuery: AreaQuery,
     private groupTypeQuery: GroupTypeQuery,
-    private workItemTypeQuery: WorkItemTypeQuery
+    private workItemTypeQuery: WorkItemTypeQuery,
+    private spaceQuery: SpaceQuery
   ) {}
 
   ngOnInit() {
@@ -355,7 +353,6 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
               //const third_join = this.filterService.queryJoiner(second_join);
               //second_join gives json object
               let query = this.filterService.jsonToQuery(second_join);
-              console.log('query is ', query);
               // { queryParams : {q: query}
               this.router.navigate([], {
                 relativeTo: this.route,
@@ -381,7 +378,6 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
         } else {
           this.quickAddWorkItemTypes = workItemTypes;
         }
-        console.log('#### - 1', this.quickAddWorkItemTypes);
       })
     );
   }
@@ -522,7 +518,6 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
   }
 
   onRowDrop(event) {
-    console.log(event);
     if (event.source.id === event.target.id) {
       return;
     }

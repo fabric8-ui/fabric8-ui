@@ -56,7 +56,6 @@ import { SpaceQuery } from './../../models/space';
 import { UserQuery } from './../../models/user';
 import { WorkItemQuery } from './../../models/work-item';
 
-
 import { UserAvatarModule } from './../../widgets/user-avatar/user-avatar.module';
 
 let providers = [
@@ -87,7 +86,8 @@ let providers = [
     AreaQuery,
     SpaceQuery,
     GroupTypeQuery,
-    WorkItemTypeQuery
+    WorkItemTypeQuery,
+    SpaceQuery
   ];
 
 @NgModule({
