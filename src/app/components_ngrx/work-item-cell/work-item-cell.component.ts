@@ -23,6 +23,8 @@ export class WorkItemCellComponent {
     @Output() readonly onDetailPreview = new EventEmitter();
     @Output() readonly onQuickPreview = new EventEmitter();
     @Output() readonly clickLabel = new EventEmitter();
+    @Output() readonly onChildExploration = new EventEmitter();
+
 
     onDetail(Event: MouseEvent, id: string) {
       this.onDetailPreview.emit(id);
@@ -34,5 +36,9 @@ export class WorkItemCellComponent {
 
     onPreview(Event: MouseEvent, workItem: WorkItemUI) {
       this.onQuickPreview.emit(workItem);
+    }
+
+    onExploration(workItem: WorkItemUI) {
+      this.onChildExploration.emit(workItem);
     }
 }

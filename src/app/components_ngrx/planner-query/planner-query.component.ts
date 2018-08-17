@@ -2,6 +2,7 @@ import { AfterViewChecked, Component, ElementRef, HostListener, OnDestroy, OnIni
 import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { sortBy } from 'lodash';
+import { cloneDeep, isEqual } from 'lodash';
 import { EmptyStateConfig } from 'patternfly-ng';
 import { Observable } from 'rxjs';
 import { SpaceQuery } from '../../models/space';
@@ -12,7 +13,6 @@ import { AppState } from '../../states/app.state';
 import { datatableColumn } from '../planner-list/datatable-config';
 import * as WorkItemActions from  './../../actions/work-item.actions';
 import { WorkItemPreviewPanelComponent } from './../work-item-preview-panel/work-item-preview-panel.component';
-
 @Component({
   encapsulation: ViewEncapsulation.None,
   selector: 'planner-query',
@@ -24,15 +24,45 @@ export class PlannerQueryComponent implements OnInit, OnDestroy, AfterViewChecke
   @ViewChild('listContainer') listContainer: ElementRef;
   @ViewChild('querySearch') querySearchRef: ElementRef;
 
-  private workItems: Observable<WorkItemUI[]> = this.workItemQuery.getWorkItems();
+  workItemsSource: Observable<WorkItemUI[]> = Observable.combineLatest(
+    this.spaceQuery.getCurrentSpace.filter(s => !!s),
+    this.route.queryParams.filter(q => !!q))
+    .do((i) => this.setDataTableColumns())
+    .switchMap(([space, query]) => {
+      if (query.hasOwnProperty('q')) {
+        this.searchQuery = query.q;
+        this.disableInput = false;
+        const filters = this.filterService.queryToJson(query.q);
+        this.store.dispatch(new WorkItemActions.Get({
+          pageSize: 200,
+          filters: filters,
+          isShowTree: false
+        }));
+      } else if (query.hasOwnProperty('parentId')) {
+        this.disableInput = true;
+        this.searchQuery = 'Children of ' + query.parentId;
+        // FIXME: This is temporary untill we have support for parent.id/number in search endpoint
+        const payload = space.links.self.split('spaces')[0] + 'workitems/' + query.parentId + '/children';
+        this.store.dispatch(new WorkItemActions.GetWorkItemChildrenForQuery(payload));
+      }
+      if (query.hasOwnProperty('prevq')) {
+        this.breadcrumbs = JSON.parse(query.prevq);
+      }
+      return this.workItemQuery.getWorkItems();
+    })
+    .startWith([]);
+  breadcrumbs: any[] = [];
+  disableInput: boolean;
   private uiLockedList: boolean = false;
   private emptyStateConfig: EmptyStateConfig;
   private contentItemHeight: number = 50;
   private columns: any[];
+  private selectedRows: any = [];
   private eventListeners: any[] = [];
   private hdrHeight: number = 0;
   private querySearchRefHt: number = 0;
   private searchQuery: string = '';
+  private childrenApiUrl: string;
 
   constructor(
     private cookieService: CookieService,
@@ -51,14 +81,6 @@ export class PlannerQueryComponent implements OnInit, OnDestroy, AfterViewChecke
       title: 'No Work Items Available'
     } as EmptyStateConfig;
     this.store.dispatch(new WorkItemActions.ResetWorkItems());
-    this.eventListeners.push(
-      this.spaceQuery.getCurrentSpace
-      .do(() => {
-        this.setDataTableColumns();
-        this.checkURL();
-      })
-      .subscribe()
-    );
   }
 
   ngOnDestroy() {
@@ -66,28 +88,7 @@ export class PlannerQueryComponent implements OnInit, OnDestroy, AfterViewChecke
     this.eventListeners.forEach(e => e.unsubscribe());
   }
 
-  checkURL() {
-  this.eventListeners.push(
-    this.route.queryParams
-      .filter(params => params.hasOwnProperty('q'))
-      .subscribe(params => {
-        console.log('#### - 2 params', params, params.q);
-        if (this.searchQuery === '') {
-          this.searchQuery = params.q;
-          console.log('### - input updated');
-        }
-        const filters = this.filterService.queryToJson(params.q);
-        this.store.dispatch(new WorkItemActions.Get({
-          pageSize: 200,
-          filters: filters,
-          isShowTree: false
-        }));
-      })
-  );
-}
-
   onPreview(workItem: WorkItemUI): void {
-    console.log(workItem);
     this.quickPreview.open(workItem);
   }
 
@@ -129,7 +130,6 @@ export class PlannerQueryComponent implements OnInit, OnDestroy, AfterViewChecke
   // End:  Setting(tableConfig) Dropdown
 
   fetchWorkItemForQuery(event: KeyboardEvent, query: string) {
-    console.log(query);
     let keycode = event.keyCode ? event.keyCode : event.which;
     if (keycode === 13 && query !== '') {
       this.router.navigate([], {
@@ -139,6 +139,54 @@ export class PlannerQueryComponent implements OnInit, OnDestroy, AfterViewChecke
     } else if (keycode === 8 && (event.ctrlKey || event.metaKey)) {
       this.searchQuery = '';
     }
+  }
+
+  onChildExploration(workItem: WorkItemUI) {
+    let queryParams = cloneDeep(this.route.snapshot.queryParams);
+    let previousQuery;
+    if (queryParams.hasOwnProperty('prevq')) {
+      if (queryParams.hasOwnProperty('parentId')) {
+        previousQuery = {
+          prevq: [
+            ...JSON.parse(queryParams.prevq),
+            {
+              parentId: queryParams.parentId
+            }
+          ]
+        };
+      } else if (queryParams.hasOwnProperty('q')) {
+        previousQuery = {
+          prevq: [
+            ...JSON.parse(queryParams.prevq),
+            {
+              q: queryParams.q
+            }
+          ]
+        };
+      }
+    } else {
+      previousQuery = {prevq: [queryParams]};
+    }
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        parentId: workItem.id
+        ,
+        prevq: JSON.stringify(previousQuery.prevq)
+      }
+    });
+  }
+
+  navigateToQuery(query) {
+    const index = this.breadcrumbs.findIndex((c) => isEqual(c, query));
+    const prevq = [...this.breadcrumbs.slice(0, index)];
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams:  {
+        ...query,
+        prevq: JSON.stringify(prevq)
+      }
+    });
   }
 
   ngAfterViewChecked() {
