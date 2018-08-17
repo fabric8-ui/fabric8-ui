@@ -39,12 +39,12 @@ export class SelectDropdownComponent implements OnInit {
 
   private displayDropdown: boolean = false;
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   openDropdown() {
     if (!this.disabled) {
       this.displayDropdown = true;
+      setTimeout(() => this.searchInput.nativeElement.focus());
       this.onOpen.emit('open');
     }
   }

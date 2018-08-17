@@ -95,7 +95,7 @@
           <!-- This part should go in a different component-->
           <div class="f8-link__list"
             *ngIf="links.length">
-            <p class="f8-link__list-header">Links</p>
+            <p class="f8-link__list-header">Existing links</p>
             <div *ngFor="let linkDict of links | groupWorkItemLinks:(workItem.id)">
               <p class="f8-link__list-type-header">{{ linkDict.linkType[linkDict.linkDirection] }}</p>
               <ul class="padding-left-0">
