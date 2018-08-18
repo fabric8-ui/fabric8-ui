@@ -372,13 +372,13 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
     if (e) {
       e.preventDefault();
     }
-    if (type !== this.workItem.type) {
+    if (type.id !== this.workItem.type) {
       this.loadingTypes = true;
       let workItem = {} as WorkItemUI;
       workItem['version'] = this.workItem.version;
       workItem['link'] = this.workItem.link;
       workItem['id'] = this.workItem.id;
-      workItem['type'] = type;
+      workItem['type'] = type.id;
       this.store.dispatch(new WorkItemActions.Update(workItem));
     }
   }

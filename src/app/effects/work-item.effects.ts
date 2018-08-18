@@ -248,15 +248,13 @@ export class WorkItemEffects {
           );
           const staticPayload = this.workItemMapper.toServiceModel(wp.payload);
 
-          // We don't update work item type
-          // So we remove it from the payload
           payload = cleanObject({
             ...staticPayload,
             ...{ attributes: {
                  ...staticPayload.attributes,
                  ...dynamicPayload.attributes
             }}
-          }, ['baseType']);
+          });
         } else {
           payload = this.workItemMapper.toServiceModel(wp.payload);
         }
