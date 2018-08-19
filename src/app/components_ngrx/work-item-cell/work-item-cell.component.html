@@ -17,7 +17,9 @@
 <!-- Title -->
 <div class="width-100"
   *ngIf="col === 'title'">
-  <div class="wi-detail-title">
+  <div
+    [class.wi-detail-title]="context === 'list'"
+    [class.wi-detail-query-title]="context === 'query'">
     <p class="truncate pointer margin-0"
       [class.bold]="row.bold"
       [innerHTML]="row.title"
@@ -27,7 +29,11 @@
     <span *ngIf="context ==='query' && row.hasChildren"
       class="fa fa-angle-right bold padding-v-5 pointer"
       (click)="onExploration(row)"></span>
-    <a class="fa fa-list-alt padding-v-5 pointer"
+      <span *ngIf="context ==='query' && !row.hasChildren"
+      class="fa fa-angle-right icon__disabled padding-v-5 pointer"
+      style="cursor: not-allowed"
+      ></span>
+    <a class="fa fa-list-alt margin-left-20 padding-v-5 pointer"
       placement="right"
       tooltip="Open Detail View"
       [routerLink]="context === 'list' ? ['detail', row.number] : ['../', 'detail', row.number]"></a>

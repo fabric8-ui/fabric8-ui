@@ -17,7 +17,7 @@ import { WorkItemPreviewPanelComponent } from './../work-item-preview-panel/work
   encapsulation: ViewEncapsulation.None,
   selector: 'planner-query',
   templateUrl: './planner-query.component.html',
-  styleUrls: ['./../planner-list/planner-list.component.less']
+  styleUrls: ['./planner-query.component.less']
 })
 export class PlannerQueryComponent implements OnInit, OnDestroy, AfterViewChecked {
   @ViewChild('quickPreview') quickPreview: WorkItemPreviewPanelComponent;
@@ -32,6 +32,7 @@ export class PlannerQueryComponent implements OnInit, OnDestroy, AfterViewChecke
       if (query.hasOwnProperty('q')) {
         this.searchQuery = query.q;
         this.disableInput = false;
+        this.currentQuery = 'Query';
         const filters = this.filterService.queryToJson(query.q);
         this.store.dispatch(new WorkItemActions.Get({
           pageSize: 200,
@@ -41,6 +42,8 @@ export class PlannerQueryComponent implements OnInit, OnDestroy, AfterViewChecke
       } else if (query.hasOwnProperty('parentId')) {
         this.disableInput = true;
         this.searchQuery = 'Children of ' + query.parentId;
+        this.currentQuery = query.parentId;
+
         // FIXME: This is temporary untill we have support for parent.id/number in search endpoint
         const payload = space.links.self.split('spaces')[0] + 'workitems/' + query.parentId + '/children';
         this.store.dispatch(new WorkItemActions.GetWorkItemChildrenForQuery(payload));
@@ -51,6 +54,7 @@ export class PlannerQueryComponent implements OnInit, OnDestroy, AfterViewChecke
       return this.workItemQuery.getWorkItems();
     })
     .startWith([]);
+  currentQuery: string;
   breadcrumbs: any[] = [];
   disableInput: boolean;
   private uiLockedList: boolean = false;
