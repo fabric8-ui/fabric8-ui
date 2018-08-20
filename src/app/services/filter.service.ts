@@ -563,11 +563,11 @@ export class FilterService {
     if (queryString) {
       let decodedQuery = this.queryToJson(queryString);
       // we ignore non-AND queries for now, might want to extend that later.
-      if (!decodedQuery['$AND']) {
+      if (!decodedQuery['$AND'] && !(decodedQuery['$OR'] && decodedQuery['$OR'].length === 1)) {
         console.log('The current query is not supported by getConditionFromQuery() (non-AND query): ' + queryString);
         return undefined;
       } else {
-        let terms: any[] = decodedQuery['$AND'];
+        let terms: any[] = decodedQuery['$AND'] ? decodedQuery['$AND'] : decodedQuery['$OR'];
         if (terms || !Array.isArray(terms)) {
           for (let i = 0; i < terms.length; i++) {
             let thisTerm = terms[i];

@@ -666,8 +666,20 @@ describe('Unit Test :: Filter Service', () => {
 
   });
 
-  fit('should convert to json', () => {
+  it('should convert to json', () => {
     expect(filterService.queryToJson('typegroup.name:Work Items $AND iteration.name:Sprint #101')).toEqual({'$AND': [{'typegroup.name': {'$EQ': 'Work Items'}}, {'iteration.name': {'$EQ': 'Sprint #101'}}]});
+  });
+
+  it('should get a condition form query', () => {
+    expect(filterService.getConditionFromQuery('typegroup.name:Work Items', 'typegroup.name')).toEqual('Work Items');
+  });
+
+  it('should get a condtion from query - 2', () => {
+    expect(filterService.getConditionFromQuery('typegroup.name:Work Items $AND iteration.name:Sprint #101', 'typegroup.name')).toEqual('Work Items');
+  });
+
+  it('should get a condtion from query - 3', () => {
+    expect(filterService.getConditionFromQuery('typegroup.name:Work Items $OR iteration.name:Sprint #101', 'typegroup.name')).toEqual(undefined);
   });
 
 });
