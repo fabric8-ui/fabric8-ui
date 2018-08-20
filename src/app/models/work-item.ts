@@ -643,6 +643,61 @@ export class WorkItemQuery {
       });
   }
 
+  /**
+   * This function returns an observable for the the selector component
+   * with work item type data and the selected iteration flagged
+   * This data can be used in work item detail page for the
+   * work item type selector dropdown.
+   * @param number
+   */
+
+  getTypesForWorkItem(number: string | number): Observable<CommonSelectorUI[]> {
+    return this.getWorkItem(number)
+      .filter(w => !!w)
+      .switchMap(workItem => {
+        return this.workItemTypeQuery.getWorkItemTypes()
+          .map(types => {
+            return types.map(t => {
+              return {
+                key: t.id,
+                value: t.name,
+                selected: t.id === workItem.type,
+                icon: t.icon ? t.icon : ''
+              };
+            });
+          });
+        });
+  }
+
+  /**
+   * This function returns an observable for the the selector component
+   * with work item state data and the selected iteration flagged
+   * This data can be used in work item detail page for the
+   * work item states selector dropdown.
+   * @param number
+   */
+
+  getStatesForWorkItem(number: string | number): Observable<CommonSelectorUI[]> {
+    return this.getWorkItem(number)
+      .filter(w => !!w)
+      .switchMap(workItem => {
+        return this.workItemTypeQuery.getWorkItemTypes()
+          .map(types => types.find(type => type.id === workItem.type))
+          .map(type => {
+            if (!!!type) {
+              return [];
+            }
+            return type.fields['system.state'].type.values.map(s => {
+              return {
+                key: s,
+                value: s,
+                selected: s === workItem.state
+              };
+            });
+          });
+        });
+  }
+
   get getWorkItemEntities(): Observable<{[id: string]: WorkItemUI}> {
     return this.store.select(workItemEntities);
   }

@@ -17,7 +17,7 @@
               created by
               <span id="preview_created_by"
                 *ngIf="workItem?.creatorObs | async; let creator">
-                {{ creator.name }}</span>           
+                {{ creator.name }}</span>
               <span id="preview_created_at"
                 [innerHTML]="workItem.createdAt | almMomentTime"></span>
             </span>
@@ -36,7 +36,7 @@
             created by
             <span id="preview_created_by"
               *ngIf="workItem?.creatorObs | async; let creator">
-              {{ creator.name }}</span>           
+              {{ creator.name }}</span>
             <span id="preview_created_at"
               [innerHTML]="workItem.createdAt | almMomentTime"></span>
           </span>
@@ -64,9 +64,9 @@
           [class.col-lg-7]="detailContext=='detail'"
           [class.col-md-12]="detailContext=='preview'"
           [class.col-lg-12]="detailContext=='preview'">
-          <!-- assignee -->
+
+          <!-- Work item type dropdown -->
           <div class="form-group">
-            <!-- work-item-type dropdown -->
             <section class="f8-detail__area">
               <label class="pull-left padding-left-15 control-label">
                 Type
@@ -75,85 +75,45 @@
                 <span *ngIf="loadingTypes"
                   class="spinner spinner-sm spinner-inline">
                 </span>
-                <span class="dropdown" dropdown
-                  *ngIf="loggedIn && !loadingTypes" 
-                  [isDisabled]="!workItem?.editable">
-                  <span class="pointer"
-                    id="wi-type"
-                    dropdownToggle>
-                    <i class="dropdown-icon"
-                      [ngClass]="type ?
-                      type.icon : '' ">
-                    </i>
-                    <span class="padding-left-5">
-                      {{ type ? type.name : '' }}
-                    </span>
-                  </span>
-                  <ul class="dropdown-menu"
-                    id="wi-type-dropdown"
-                    role="menu"
-                    *dropdownMenu>
-                    <li *ngFor="let type of wiTypes"
-                      role="menuitem"
-                      (click)="updateType($event, type)">
-                      <a class="dropdown-item" href="#">
-                        <i class="fa dropdown-icon"
-                          [ngClass]="type.icon"></i>
-                        <span class="dropdown-text">
-                          {{ type.name }}
-                        </span>
-                      </a>
-                    </li>
-                  </ul>
-                </span>
+                <common-selector
+                  *ngIf="!loadingTypes"
+                  [allowUpdate]="workItem?.editable"
+                  [headerText]="'Update Type'"
+                  [items]="workItemTypeSource | async"
+                  [noValueLabel]="'None'"
+                  [selectedItems]="selectedWorkItemTypes | async"
+                  (onCloseSelector)="updateType($event)">
+                </common-selector>
               </div>
             </section>
           </div>
+          <!-- Work item type dropdown end -->
+
+          <!-- work-item state dropdown -->
           <div class="form-group">
-            <!-- work-item state dropdown -->
             <section class="f8-detail__area">
               <label class="pull-left padding-left-15 control-label">
-                State
+                {{ type.fields['system.state']?.label || 'Label' }}
               </label>
               <div class="f8-detail__content">
                 <span *ngIf="loadingStates"
                   class="spinner spinner-sm spinner-inline">
                 </span>
-                <span class="dropdown" dropdown
-                  *ngIf="loggedIn && !loadingStates" [isDisabled]="!workItem?.editable">
-                  <span class="pointer"
-                    id="wi-state"
-                    dropdownToggle>
-                    <span class="dropdown-icon"
-                      almIcon
-                      [iconType]="workItem.state">
-                    </span>
-                    <span class="padding-left-5">
-                      {{ workItem.state }}
-                    </span>
-                  </span>
-                  <ul class="dropdown-ul dropdown-menu"
-                    id="wi-status-dropdown"
-                    role="menu"
-                    *dropdownMenu>
-                    <li class="dropdown-li"
-                      (click)="onChangeState(state)"
-                      *ngFor="let state of workItemStates">
-                      <a>
-                        <span class='dropdown-icon'
-                          almIcon
-                          [iconType]="state">
-                        </span>
-                        <span class='dropdown-text'>
-                          {{ state }}
-                        </span>
-                      </a>
-                    </li>
-                  </ul>
-                </span>
+                <common-selector
+                  *ngIf="!loadingStates"
+                  [allowUpdate]="workItem?.editable"
+                  [headerText]="'Update State'"
+                  [items]="workItemStateSource | async"
+                  [noValueLabel]="'None'"
+                  [selectedItems]="selectedWorkItemStates | async"
+                  (onCloseSelector)="onChangeState($event)">
+                </common-selector>
               </div>
             </section>
           </div>
+          <!-- work-item state dropdown end -->
+
+
           <div class="form-group">
             <!-- assignee -->
             <section class="f8-detail__assignee">
