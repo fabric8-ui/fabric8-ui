@@ -9,9 +9,10 @@ export function workitemMatchesFilter(route,
   workitem: WorkItemUI,
   spaceId: string): Observable<WorkItemUI> {
     const currentRoute = route.queryParams;
-    if (currentRoute['q']
+    if ((currentRoute['q']
         && currentRoute.hasOwnProperty('q')
-        && currentRoute['q'].includes('boardContextId')
+        && currentRoute['q'].includes('boardContextId')) ||
+        (document.location.pathname.indexOf('/query') > -1)
       ) {
         return Observable.of(workitem);
     }
