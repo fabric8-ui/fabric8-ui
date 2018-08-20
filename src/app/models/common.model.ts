@@ -12,7 +12,8 @@ export interface CommonSelectorUI {
   key: string;
   value: string;
   selected: boolean;
-  cssLabelClass: string | undefined;
+  cssLabelClass?: string | undefined;
+  icon?: string; // holds the icon class
 }
 
 export interface MapTree {

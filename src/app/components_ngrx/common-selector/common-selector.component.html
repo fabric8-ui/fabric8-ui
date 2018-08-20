@@ -16,15 +16,20 @@
     <span
       class="pointer"
       *ngFor="let item of _selectedItemsBackup">
+      <i *ngIf="item?.icon"
+        [ngClass]="['margin-right-10', item.icon]"></i>
       {{ item.value }}
     </span>
     <span *ngIf="!_selectedItemsBackup.length" class="pointer">
       {{ noValueLabel }}
     </span>
   </ng-template>
-  <ng-template #dropdownItem let-value="value"
-    let-src="src + '&s=20'"
+  <ng-template #dropdownItem
+    let-value="value"
+    let-icon="icon"
     let-stickontop="stickontop">
+    <i *ngIf="icon"
+      [ngClass]="['margin-right-10', icon]"></i>
     <span *ngIf="!stickontop" [innerHTML]="value | truncate: -25 | almSearchHighlight: searchValue">
     </span>
   </ng-template>
