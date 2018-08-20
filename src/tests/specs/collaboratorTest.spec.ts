@@ -39,7 +39,8 @@ describe('Planner Collaborator Tests:', () => {
 
   it('Non Collaborator should not be able edit state of a workitem', async () => {
     await planner1.workItemList.clickWorkItem('Work Item 4');
-    expect(await planner1.quickPreview.stateDiv.getAttribute('disabled')).toBe('true');
+    await planner1.quickPreview.stateDropdown.clickWhenReady();
+    expect(await planner1.quickPreview.stateDiv.getAttribute('innerText')).not.toContain('Update Type');
   });
 
   it('Non collaborator should not be able to add assignee', async () => {
