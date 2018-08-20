@@ -14,7 +14,7 @@
 
 	<div #querySearch class="f8-query__input-wrapper">
 		<span
-			*ngIf="searchQuery !== '' || query.disabled"
+			*ngIf="searchQuery !== '' && !query.disabled"
 			class="pficon-close close f8-query__clear-button"
 			tooltip="Press ctrl+backspace to clear"
 			placement="left"
