@@ -204,7 +204,9 @@ export class BoardUIQuery {
   );
   constructor(private store: Store<AppState>) {}
 
-  get boardLocked(): Store<boolean> {
-    return this.store.select(this.boardUiSelector).select(state => state.lockBoard);
+  get boardLocked(): Observable<boolean> {
+    return this.store.select(this.boardUiSelector)
+      .select(state => state.lockBoard)
+      .filter(l => !!l);
   }
 }
