@@ -395,10 +395,10 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
       // Observables from the object so that
       // it works with Redux dev-tools
       new WorkItemActions.GetChildren(
-        cleanObject({...workItem}, [
-          'areaObs', 'assigneesObs', 'creatorObs',
-          'iterationObs', 'labelsObs']
-        )
+        {
+          id: workItem.id,
+          childrenLink: workItem.childrenLink
+        } as WorkItemUI
       )
     );
   }
