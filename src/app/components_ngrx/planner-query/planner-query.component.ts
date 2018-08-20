@@ -7,6 +7,7 @@ import { EmptyStateConfig } from 'patternfly-ng';
 import { Observable } from 'rxjs';
 import { SpaceQuery } from '../../models/space';
 import { WorkItemQuery, WorkItemUI } from '../../models/work-item';
+import { WorkItemTypeQuery } from '../../models/work-item-type';
 import { CookieService } from '../../services/cookie.service';
 import { FilterService } from '../../services/filter.service';
 import { AppState } from '../../states/app.state';
@@ -26,7 +27,9 @@ export class PlannerQueryComponent implements OnInit, OnDestroy, AfterViewChecke
 
   workItemsSource: Observable<WorkItemUI[]> = Observable.combineLatest(
     this.spaceQuery.getCurrentSpace.filter(s => !!s),
-    this.route.queryParams.filter(q => !!q))
+    this.route.queryParams.filter(q => !!q),
+    // Wait untill workItemTypes are loaded
+    this.workItemTypeQuery.getWorkItemTypes().filter(wt => !!wt.length))
     .do((i) => this.setDataTableColumns())
     .switchMap(([space, query]) => {
       if (query.hasOwnProperty('q')) {
@@ -76,7 +79,8 @@ export class PlannerQueryComponent implements OnInit, OnDestroy, AfterViewChecke
     private workItemQuery: WorkItemQuery,
     private store: Store<AppState>,
     private filterService: FilterService,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private workItemTypeQuery: WorkItemTypeQuery
   ) {}
 
   ngOnInit() {

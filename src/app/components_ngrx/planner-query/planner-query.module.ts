@@ -16,6 +16,7 @@ import { PlannerQueryRoutingModule } from './planner-query-routing.module';
 import { PlannerQueryComponent } from './planner-query.component';
 
 import { FeatureFlagResolver, FeatureTogglesService } from 'ngx-feature-flag';
+import { WorkItemTypeQuery } from '../../models/work-item-type';
 import { togglesApiUrlProvider } from '../../shared/toggles-api.provider';
 
 @NgModule({
@@ -38,7 +39,11 @@ import { togglesApiUrlProvider } from '../../shared/toggles-api.provider';
     CookieService,
     WorkItemQuery,
     FilterService,
-    TooltipConfig
+    TooltipConfig,
+    FeatureFlagResolver,
+    FeatureTogglesService,
+    togglesApiUrlProvider,
+    WorkItemTypeQuery
   ]
 })
 export class PlannerQueryModule { }
