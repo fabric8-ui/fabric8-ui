@@ -106,22 +106,15 @@ describe('Detail View test: ', () => {
     await planner.workItemList.openDetailPage(c.workItemTitle2);
     await planner.waitUntilUrlContains('detail');
     await planner.detailPage.titleInput.untilTextIsPresentInValue(c.workItemTitle2);
-    await planner.detailPage.changeState('open');
-    await planner.detailPage.stateToggle.untilTextIsPresent('open');
-    expect(planner.detailPage.stateToggle.getTextWhenReady()).toContain('open');
+    await planner.detailPage.changeStateTo('open');
+    expect(await planner.detailPage.getState()).toBe('open');
   });
 
-  xit('Should change the type of work item', async () => {
-    let newWorkItem = {
-      title: 'Should change the type of work item - xxx'
-    };
-    await planner.createWorkItem(newWorkItem);
-    expect(await planner.workItemList.hasWorkItem(newWorkItem.title)).toBeTruthy();
-    await planner.workItemList.clickWorkItem(newWorkItem.title);
-    await planner.quickPreview.changeTypeTo('Task');
-    await planner.quickPreview.close();
-    await planner.workItemList.clickWorkItem(newWorkItem.title);
-    expect(await planner.quickPreview.typeToggle.getTextWhenReady()).toEqual('Task');
-    await planner.quickPreview.close();
+  it('Should change the type of work item', async () => {
+    await planner.workItemList.openDetailPage(c.workItemTitle2);
+    await planner.waitUntilUrlContains('detail');
+    await planner.detailPage.titleInput.untilTextIsPresentInValue(c.workItemTitle2);
+    await planner.detailPage.changeTypeTo('Bug');
+    expect(await planner.detailPage.getType()).toBe('Bug');
   });
 });

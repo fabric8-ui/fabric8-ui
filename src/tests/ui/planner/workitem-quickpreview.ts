@@ -10,13 +10,22 @@ export class WorkItemQuickPreview extends ui.BaseElement {
   notificationToast = new ui.BaseElementArray($$('pfng-toast-notification'), 'Notification Toast');
   /* UI elements of the Top section of the workitem preview */
   closeButton = new ui.Button(this.$('.f8-detail--close'), 'WorkItem Quick Preview close button');
-  stateDiv = new ui.BaseElement(this.$('#wi-state'), ' State toggle');
   iterationDropdownCloseButton = new ui.Button(this.$('.iteration-dropdown .close-pointer'), 'Iteration dropdown close button');
   areaDropdownCloseButton = new ui.Button(this.$('.area-dropdown .close-pointer'), 'Area dropdown close button');
-  stateToggle = new ui.BaseElement(this.$('#wi-state'), 'State dropdown toggle');
-  stateDropdown = new ui.Dropdown(this.stateToggle, this.$('#wi-status-dropdown'), 'WorkItem State dropdown');
-  typeToggle = new ui.BaseElement(this.$('#wi-type'), 'Type dropdown toggle');
-  typeDropdown = new ui.Dropdown(this.typeToggle, this.$('#wi-type-dropdown'), 'WorkItem Type dropdown');
+  typeDropdownCloseButton = new ui.Button(this.$('.type-dropdown .close-pointer'), 'Type dropdown close button');
+  stateDropdownCloseButton = new ui.Button(this.$('.state-dropdown .close-pointer'), 'State dropdown close button');
+  stateDiv = new ui.BaseElement(this.$('.state-dropdown'), 'State dropdown toggle');
+  stateDropdown = new ui.Dropdown(
+    this.stateDiv.$('f8-select-dropdown>div>span'),
+    this.stateDiv.$('.select-dropdown-menu'),
+    'State select dropdown'
+  );
+  typeDiv = new ui.BaseElement(this.$('.type-dropdown'), 'Type dropdown toggle');
+  typeDropdown = new ui.Dropdown(
+    this.typeDiv.$('f8-select-dropdown>div>span'),
+    this.typeDiv.$('.select-dropdown-menu'),
+    'Type select dropdown'
+  );
   fullDetailButton = new ui.Clickable(this.$('span.dib'), 'View full details button');
   titleDiv = new ui.BaseElement(this.$('#wi-title-div'), 'Workitem title div');
   titleInput = new ui.TextInput(this.titleDiv.$('textarea'), 'WorkItem Title Input');
@@ -291,6 +300,18 @@ export class WorkItemQuickPreview extends ui.BaseElement {
     return iteration;
   }
 
+  async getType() {
+    await this.loadingAnimation.untilCount(0);
+    let type = await this.typeDropdown.getTextWhenReady();
+    return type;
+  }
+
+  async getState() {
+    await this.loadingAnimation.untilCount(0);
+    let state = await this.stateDropdown.getTextWhenReady();
+    return state;
+  }
+
   async getLabels() {
     let labelList = await this.labelListDiv.getTextWhenReady();
     return labelList;
@@ -346,15 +367,19 @@ export class WorkItemQuickPreview extends ui.BaseElement {
   }
 
   async changeStateTo(state: string) {
+    await this.loadingAnimation.untilCount(0);
+    await browser.sleep(2000);
     await this.stateDropdown.clickWhenReady();
     await this.stateDropdown.select(state);
-    await this.stateToggle.untilTextIsPresent(state);
+    await this.stateDropdownCloseButton.clickWhenReady();
   }
 
   async changeTypeTo(type: string) {
+    await this.loadingAnimation.untilCount(0);
+    await browser.sleep(2000);
     await this.typeDropdown.clickWhenReady();
     await this.typeDropdown.select(type);
-    await this.typeToggle.untilTextIsPresent(type);
+    await this.typeDropdownCloseButton.clickWhenReady();
   }
 
   /* Agile Template */
