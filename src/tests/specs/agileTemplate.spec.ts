@@ -19,6 +19,7 @@ describe('Agile template tests: ', () => {
 
   beforeEach(async () => {
     await plannerAgile.workItemList.overlay.untilHidden();
+    await plannerAgile.sidePanel.workItemsGroupAgile.clickWhenReady();
   });
 
   it('should have workitem types', async () => {

@@ -78,7 +78,7 @@ export class WorkItemEffects {
           itemUI.createId = createID;
           return { ...itemUI, ...wid };
         })
-        .switchMap(w => util.workitemMatchesFilter(this.route.snapshot, this.filterService, this.workItemService, w))
+        .switchMap(w => util.workitemMatchesFilter(this.route.snapshot, this.filterService, this.workItemService, w, state.space.id))
         .mergeMap(wItem => {
           // If a child item is created
           if (parentId) {
@@ -263,7 +263,7 @@ export class WorkItemEffects {
         const state = wp.state;
         return this.workItemService.update(payload)
           .map(w => this.resolveWorkItems([w], state)[0])
-          .switchMap(w => util.workitemMatchesFilter(this.route.snapshot, this.filterService, this.workItemService, w))
+          .switchMap(w => util.workitemMatchesFilter(this.route.snapshot, this.filterService, this.workItemService, w, state.space.id))
           .map(w => {
             const item = state.workItems.entities[w.id];
             if (item) {
