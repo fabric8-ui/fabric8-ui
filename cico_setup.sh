@@ -5,7 +5,7 @@
 function load_jenkins_vars() {
     if [ -e "jenkins-env" ]; then
         cat jenkins-env \
-        | grep -E "^(JENKINS_URL|DEVSHIFT_USERNAME|DEVSHIFT_PASSWORD|GIT_BRANCH|GIT_COMMIT|BUILD_NUMBER|ghprbSourceBranch|ghprbActualCommit|BUILD_URL|ghprbPullId|DEVSHIFT_TAG_LEN|GIT_COMMIT|NPM_TOKEN|GH_TOKEN|REFRESH_TOKEN)=" \
+        | grep -E "^(JENKINS_URL|QUAY_USERNAME|QUAY_PASSWORD|GIT_BRANCH|GIT_COMMIT|BUILD_NUMBER|ghprbSourceBranch|ghprbActualCommit|BUILD_URL|ghprbPullId|DEVSHIFT_TAG_LEN|GIT_COMMIT|NPM_TOKEN|GH_TOKEN|REFRESH_TOKEN)=" \
         | sed 's/^/export /g' \
         > /tmp/jenkins-env
         source /tmp/jenkins-env
@@ -86,9 +86,9 @@ function build_fabric8_ui() {
 }
 
 function build_test_and_push_image() {
-    REGISTRY="push.registry.devshift.net"
+    REGISTRY="quay.io"
     TAG="SNAPSHOT-PR-${ghprbPullId}"
-    IMAGE_REPO="fabric8-ui/fabric8-planner"
+    IMAGE_REPO="openshiftio/fabric8-ui-fabric8-planner"
 
     current_directory=$(pwd)
     cd fabric8-ui-dist
@@ -105,8 +105,8 @@ function build_test_and_push_image() {
 
 function push_image() {
     # login first
-    if [ -n "${DEVSHIFT_USERNAME}" -a -n "${DEVSHIFT_PASSWORD}" ]; then
-        docker login -u ${DEVSHIFT_USERNAME} -p ${DEVSHIFT_PASSWORD} ${REGISTRY}
+    if [ -n "${QUAY_USERNAME}" -a -n "${QUAY_PASSWORD}" ]; then
+        docker login -u ${QUAY_USERNAME} -p ${QUAY_PASSWORD} ${REGISTRY}
     else
         echo "Could not login, missing credentials for the registry"
         exit 1
@@ -116,7 +116,7 @@ function push_image() {
 }
 
 function show_docker_command() {
-    PULL_REGISTRY="registry.devshift.net"
+    PULL_REGISTRY="quay.io"
     image_name="${PULL_REGISTRY}/${IMAGE_REPO}:${TAG}"
     # turn off showing command before executing
     set +x
