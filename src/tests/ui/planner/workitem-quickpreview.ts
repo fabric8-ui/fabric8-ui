@@ -10,10 +10,6 @@ export class WorkItemQuickPreview extends ui.BaseElement {
   notificationToast = new ui.BaseElementArray($$('pfng-toast-notification'), 'Notification Toast');
   /* UI elements of the Top section of the workitem preview */
   closeButton = new ui.Button(this.$('.f8-detail--close'), 'WorkItem Quick Preview close button');
-  iterationDropdownCloseButton = new ui.Button(this.$('.iteration-dropdown .close-pointer'), 'Iteration dropdown close button');
-  areaDropdownCloseButton = new ui.Button(this.$('.area-dropdown .close-pointer'), 'Area dropdown close button');
-  typeDropdownCloseButton = new ui.Button(this.$('.type-dropdown .close-pointer'), 'Type dropdown close button');
-  stateDropdownCloseButton = new ui.Button(this.$('.state-dropdown .close-pointer'), 'State dropdown close button');
   stateDiv = new ui.BaseElement(this.$('.state-dropdown'), 'State dropdown toggle');
   stateDropdown = new ui.Dropdown(
     this.stateDiv.$('f8-select-dropdown>div>span'),
@@ -381,7 +377,7 @@ export class WorkItemQuickPreview extends ui.BaseElement {
     await browser.sleep(2000);
     await this.stateDropdown.clickWhenReady();
     await this.stateDropdown.select(state);
-    await this.stateDropdownCloseButton.clickWhenReady();
+    await this.loadingAnimation.untilCount(0);
   }
 
   async changeTypeTo(type: string) {
@@ -389,7 +385,7 @@ export class WorkItemQuickPreview extends ui.BaseElement {
     await browser.sleep(2000);
     await this.typeDropdown.clickWhenReady();
     await this.typeDropdown.select(type);
-    await this.typeDropdownCloseButton.clickWhenReady();
+    await this.loadingAnimation.untilCount(0);
   }
 
   /* Agile Template */
