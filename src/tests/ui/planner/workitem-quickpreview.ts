@@ -10,17 +10,23 @@ export class WorkItemQuickPreview extends ui.BaseElement {
   notificationToast = new ui.BaseElementArray($$('pfng-toast-notification'), 'Notification Toast');
   /* UI elements of the Top section of the workitem preview */
   closeButton = new ui.Button(this.$('.f8-detail--close'), 'WorkItem Quick Preview close button');
+  iterationDropdownCloseButton = new ui.Button(this.$('.iteration-dropdown .close-pointer'), 'Iteration dropdown close button');
+  areaDropdownCloseButton = new ui.Button(this.$('.area-dropdown .close-pointer'), 'Area dropdown close button');
+  typeDropdownCloseButton = new ui.Button(this.$('.type-dropdown .close-pointer'), 'Type dropdown close button');
+  stateDropdownCloseButton = new ui.Button(this.$('.state-dropdown .close-pointer'), 'State dropdown close button');
   stateDiv = new ui.BaseElement(this.$('.state-dropdown'), 'State dropdown toggle');
   stateDropdown = new ui.Dropdown(
-    this.stateDiv.$('f8-select-dropdown>div>span'),
+    this.stateDiv.$('f8-select-dropdown .dropdown-toggle'),
     this.stateDiv.$('.select-dropdown-menu'),
-    'State select dropdown'
+    'State select dropdown',
+    'li>div>.item-value'
   );
   typeDiv = new ui.BaseElement(this.$('.type-dropdown'), 'Type dropdown toggle');
   typeDropdown = new ui.Dropdown(
-    this.typeDiv.$('f8-select-dropdown>div>span'),
+    this.typeDiv.$('f8-select-dropdown .dropdown-toggle'),
     this.typeDiv.$('.select-dropdown-menu'),
-    'Type select dropdown'
+    'Type select dropdown',
+    'li>div>.item-value'
   );
   fullDetailButton = new ui.Clickable(this.$('span.dib'), 'View full details button');
   titleDiv = new ui.BaseElement(this.$('#wi-title-div'), 'Workitem title div');
@@ -48,14 +54,16 @@ export class WorkItemQuickPreview extends ui.BaseElement {
   areaDropdown = new ui.Dropdown(
     this.areaDiv.$('f8-select-dropdown .dropdown-toggle'),
     this.areaDiv.$('.select-dropdown-menu'),
-    'Area select dropdown'
+    'Area select dropdown',
+    'li>div>.item-value'
   );
 
   iterationDiv = new ui.BaseElement(this.$('.iteration-dropdown'), 'Iteration List Div');
   iterationDropdown = new ui.Dropdown(
     this.iterationDiv.$('f8-select-dropdown .dropdown-toggle'),
     this.iterationDiv.$('.select-dropdown-menu'),
-    'Iteration select dropdown'
+    'Iteration select dropdown',
+    'li>div>.item-value'
   );
   iterationInput = new ui.TextInput(this.iterationDiv.$('.select-dropdown-search-input'), 'Iteration input');
 
@@ -231,7 +239,7 @@ export class WorkItemQuickPreview extends ui.BaseElement {
   }
 
   async removeLink(workItem: string) {
-    await new ui.BaseElement(this.element(by.xpath("//li[contains(@class,'f8-link__list-item')][.//span[text()='" + workItem + "']]")).$('.pficon-close')).clickWhenReady();
+    await new ui.BaseElement(this.element(by.xpath("//li[contains(@class,'f8-link__list-item')][.//span[contains(text(), '" + workItem + "')]]")).$('.pficon-close')).clickWhenReady();
   }
 
   async createNewLabel(label: string, isPressEnter: boolean = false) {

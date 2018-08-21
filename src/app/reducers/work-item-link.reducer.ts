@@ -40,7 +40,11 @@ export const WorkItemLinkReducer: ActionReducer<WorkItemLinkState> =
       }
 
       case WorkItemLinkActions.TRIVIALIZE_ALL: {
-        return state.map(s => s.newlyAdded ? {...s, ...{newlyAdded: false}} : s);
+        if (state) {
+          return state.map(s => s.newlyAdded ? {...s, ...{newlyAdded: false}} : s);
+        } else {
+          return null;
+        }
       }
 
       default: {

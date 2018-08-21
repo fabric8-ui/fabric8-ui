@@ -43,11 +43,15 @@ export class SelectDropdownComponent implements OnInit {
 
   openDropdown() {
     if (!this.disabled) {
+      this.loading = false;
       this.displayDropdown = true;
-      setTimeout(() => this.searchInput.nativeElement.focus());
+      if (this.searchInput) {
+        setTimeout(() => this.searchInput.nativeElement.focus());
+      }
       this.onOpen.emit('open');
     }
   }
+
   closeDropdown() {
     this.displayDropdown = false;
     this.onClose.emit('close');
@@ -58,6 +62,9 @@ export class SelectDropdownComponent implements OnInit {
   }
 
   searchItem(text: string) {
+    if (!text.trim()) {
+      this.loading = false;
+    }
     this.onSearch.emit(text);
   }
 

@@ -68,6 +68,7 @@ export class WorkItemLinkComponent implements OnInit, OnDestroy {
       );
       // Reset links value for the new work item first
       this.store.dispatch(new WorkItemLinkActions.ResetLinks());
+      this.searchNotAllowedIds = [];
       this.setSearchNotAllowedIds();
     }
   }
@@ -91,7 +92,7 @@ export class WorkItemLinkComponent implements OnInit, OnDestroy {
       this.lockCreation = false;
 
       // to remove the highlight from newly added item
-      if (links.findIndex(l => l.newlyAdded) > -1) {
+      if (links && links.findIndex(l => l.newlyAdded) > -1) {
         setTimeout(() => {
           this.store.dispatch(
             new WorkItemLinkActions.TrivializeAll()

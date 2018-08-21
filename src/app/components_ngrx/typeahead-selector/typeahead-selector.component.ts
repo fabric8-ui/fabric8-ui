@@ -87,7 +87,11 @@ export class TypeaheadSelectorComponent implements OnInit {
             this.selectedItemsObs
           )
           .map(([items, selectedItems]) => this.updateSelection(items, selectedItems))
-          .do(v => this.searching = false);
+          .do(v => this.searching = false)
+          .catch(err => {
+            this.searching = false;
+            return Observable.of([]);
+          });
       } else {
         return Observable.of([]);
       }

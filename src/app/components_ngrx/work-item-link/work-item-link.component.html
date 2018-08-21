@@ -111,7 +111,7 @@
                       [innerHTML]="wi.number + ' - ' + wi.title">
                     </span>
                   </a>
-                  <a *ngIf="loggedIn"
+                  <a *ngIf="workItem.editable"
                     (click)="deleteLink($event, linkDict.links[i], workItem)">
                     <i class="pull-right pficon pficon-close list-close-icon margin-top-5"
                       id="closeLink_{{counterlink}}"></i>

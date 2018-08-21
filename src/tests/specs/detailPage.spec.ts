@@ -107,10 +107,11 @@ describe('Detail View test: ', () => {
   });
 
   it('should change the state of workitem', async () => {
-    let workItemTitle2 = 'Workitem_Title_2';
-    await planner.workItemList.openDetailPage(workItemTitle2);
+    let workitemname = {'title': 'change state test'};
+    await planner.createWorkItem(workitemname);
+    await planner.workItemList.openDetailPage(workitemname.title);
     await planner.waitUntilUrlContains('detail');
-    await planner.detailPage.titleInput.untilTextIsPresentInValue(workItemTitle2);
+    await planner.detailPage.titleInput.untilTextIsPresentInValue(workitemname.title);
     await planner.detailPage.changeStateTo(testData.stateOpen);
     expect(await planner.detailPage.getState()).toBe(testData.stateOpen);
   });
