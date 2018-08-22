@@ -26,6 +26,7 @@ import { LabelService } from './../../services/label.service';
 import { WorkItemDataService } from './../../services/work-item-data.service';
 import { WorkItemService } from './../../services/work-item.service';
 import { GlobalSettings } from './../../shared/globals';
+import { PlannerHttpClientModule } from './../../shared/http-module/http.module';
 import {
   PlannerLayoutModule
 } from './../../widgets/planner-layout/planner-layout.module';
@@ -46,9 +47,6 @@ import { ClickOutModule } from '../../widgets/clickout/clickout.module';
 // Data Querries
 import { AreaQuery } from '../../models/area.model';
 import { WorkItemTypeQuery } from '../../models/work-item-type';
-import { AuthInterceptor } from '../../services/auth.interceptors';
-import { HttpClientService } from '../../services/http.service';
-import { HttpBackendClient } from '../../services/httpbackendclient.service';
 import { CommentQuery } from './../../models/comment';
 import { GroupTypeQuery } from './../../models/group-types.model';
 import { IterationQuery } from './../../models/iteration.model';
@@ -67,11 +65,6 @@ let providers = [
       useFactory: factoryForHttpService,
       deps: [XHRBackend, RequestOptions, AuthenticationService]
     },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor,
-      multi: true
-    },
     CustomQueryService,
     IterationService,
     TooltipConfig,
@@ -85,8 +78,6 @@ let providers = [
     WorkItemDataService,
     UrlService,
     InfotipService,
-    HttpClientService,
-    HttpBackendClient,
     CommentQuery,
     UserQuery,
     LabelQuery,
@@ -105,7 +96,7 @@ let providers = [
     CommonModule,
     ClickOutModule,
     FilterColumnModule,
-    HttpClientModule,
+    PlannerHttpClientModule,
     PlannerListRoutingModule,
     PlannerLayoutModule,
     PlannerModalModule,

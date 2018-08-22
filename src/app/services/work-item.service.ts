@@ -24,7 +24,8 @@ import {
   WorkItem,
   WorkItemService as WIService
 } from '../models/work-item';
-import { WorkItemType } from '../models/work-item-type';
+import { WorkItemType } from './../models/work-item-type';
+import { HttpClientService } from './../shared/http-module/http.service';
 import { AreaService } from './area.service';
 import { HttpService } from './http-service';
 
@@ -47,6 +48,7 @@ export class WorkItemService {
 
   constructor(
     private http: HttpService,
+    private httpClientService: HttpClientService,
     private logger: Logger,
     private areaService: AreaService,
     private userService: UserService,
@@ -285,10 +287,10 @@ export class WorkItemService {
    * @param: Comment
    */
   createComment(url: string, comment: Comment): Observable<Comment> {
-    return this.http
-      .post(url, {data: comment})
+    return this.httpClientService
+      .post<{data: Comment}>(url, {data: comment})
       .map(response => {
-        return response.json().data as Comment;
+        return response.data as Comment;
       }).catch((error: Error | any) => {
         this.notifyError('Creating comment failed.', error);
         return Observable.throw(new Error(error.message));
