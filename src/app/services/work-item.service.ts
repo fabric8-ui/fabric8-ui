@@ -25,7 +25,7 @@ import {
   WorkItemService as WIService
 } from '../models/work-item';
 import { WorkItemType } from './../models/work-item-type';
-import { HttpClientService } from './../shared/http-module/http.service';
+import { HttpBackendClient, HttpClientService } from './../shared/http-module/http.service';
 import { AreaService } from './area.service';
 import { HttpService } from './http-service';
 
@@ -49,6 +49,7 @@ export class WorkItemService {
   constructor(
     private http: HttpService,
     private httpClientService: HttpClientService,
+    private httpBackendClient: HttpBackendClient,
     private logger: Logger,
     private areaService: AreaService,
     private userService: UserService,
@@ -143,22 +144,21 @@ export class WorkItemService {
    */
   getWorkItemByNumber(id: string | number, owner: string = '', space: string = ''): Observable<WorkItem> {
     if (owner && space) {
-      return this.http.get(
+      return this.httpBackendClient.get<{data: WorkItem}>(
         this.baseApiUrl +
         'namedspaces' +
         '/' + owner +
         '/' + space +
-        '/workitems/' + id,
-        {'no-header': null}
+        '/workitems/' + id
       )
-      .map(item => item.json().data)
+      .map(item => item.data)
       .catch((error: Error | any) => {
         this.notifyError('Getting work item data failed.', error);
         return Observable.throw(new Error(error.message));
       });
     } else {
-      return this.http.get(this.baseApiUrl + 'workitems/' + id)
-        .map(item => item.json().data)
+      return this.httpClientService.get<{data: WorkItem}>(this.baseApiUrl + 'workitems/' + id)
+        .map(item => item.data)
         .catch((error: Error | any) => {
           this.notifyError('Getting work item data failed.', error);
           return Observable.throw(new Error(error.message));
