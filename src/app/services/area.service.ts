@@ -1,30 +1,23 @@
 import { Observable } from 'rxjs/Observable';
-import { GlobalSettings } from '../shared/globals';
+import { catchError, map } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
 
-import { Subscription } from 'rxjs/Subscription';
 
-import { cloneDeep } from 'lodash';
 import { Logger } from 'ngx-base';
-import { AuthenticationService } from 'ngx-login-client';
-import { HttpService } from './http-service';
 
-import { Space, Spaces } from 'ngx-fabric8-wit';
+import { Spaces } from 'ngx-fabric8-wit';
 import { AreaModel } from '../models/area.model';
+import { HttpClientService } from '../shared/http-module/http.service';
 
 @Injectable()
 export class AreaService {
   public areas: AreaModel[] = [];
-  private headers = new Headers({'Content-Type': 'application/json'});
   private _currentSpace;
 
   constructor(
       private logger: Logger,
-      private http: HttpService,
-      private auth: AuthenticationService,
-      private globalSettings: GlobalSettings,
+      private http: HttpClientService,
       private spaces: Spaces
   ) {
     this.spaces.current.subscribe(val => this._currentSpace = val);
@@ -41,18 +34,15 @@ export class AreaService {
       let areasUrl = this._currentSpace.relationships.areas.links.related;
       if (this.checkValidUrl(areasUrl)) {
         return this.http
-          .get(areasUrl)
-          .map (response => {
-            if (/^[5, 4][0-9]/.test(response.status.toString())) {
-              throw new Error('API error occured');
-            }
-            return response.json().data as AreaModel[];
+          .get<{data: AreaModel[]}>(areasUrl)
+          .map(response => {
+            return response.data as AreaModel[];
           })
           .map((data) => {
             this.areas = data;
             return this.areas;
           })
-          .catch ((error: Error | any) => {
+          .catch((error: Error | any) => {
             if (error.status === 401) {
               //this.auth.logout(true);
             } else {
@@ -77,25 +67,24 @@ export class AreaService {
   getAreas2(areaUrl): Observable<AreaModel[]> {
     if (this.checkValidUrl(areaUrl)) {
       return this.http
-        .get(areaUrl)
-        .map (response => {
-          if (/^[5, 4][0-9]/.test(response.status.toString())) {
-            throw new Error('API error occured');
-          }
-          return response.json().data as AreaModel[];
-        })
-        .map((data) => {
-          this.areas = data;
-          return this.areas;
-        })
-        .catch ((error: Error | any) => {
-          if (error.status === 401) {
-            //this.auth.logout(true);
-          } else {
-            console.log('Fetch area API returned some error - ', error.message);
-            return Promise.reject<AreaModel[]>([] as AreaModel[]);
-          }
-        });
+        .get<{data: AreaModel[]}>(areaUrl)
+        .pipe(
+          map(response => {
+            return response.data as AreaModel[];
+          }),
+          map((data) => {
+            this.areas = data;
+            return this.areas;
+          }),
+          catchError((error: Error | any) => {
+            if (error.status === 401) {
+              //this.auth.logout(true);
+            } else {
+              console.log('Fetch area API returned some error - ', error.message);
+              return Promise.reject<AreaModel[]>([] as AreaModel[]);
+            }
+          })
+        );
     } else {
       this.logger.log('URL not matched');
       return Observable.of<AreaModel[]>([] as AreaModel[]);
@@ -105,8 +94,8 @@ export class AreaService {
   getArea(area: any): Observable<AreaModel> {
     if (Object.keys(area).length) {
       let areaLink = area.data.links.self;
-      return this.http.get(areaLink)
-        .map(arearesp => arearesp.json().data);
+      return this.http.get<{data: AreaModel}>(areaLink)
+        .map(arearesp => arearesp.data);
     } else {
       return Observable.of(area);
     }

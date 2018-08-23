@@ -1,19 +1,20 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { HttpClientService } from '../shared/http-module/http.service';
 import { BoardModel } from './../models/board.model';
 import { HttpService } from './http-service';
 
 @Injectable()
 export class BoardService {
-    constructor(private http: HttpService) {}
+    constructor(private http: HttpClientService) {}
 
     /**
      * Usage: this is used to get the board API url from spacetemplate response
      * @param spaceTemplateApiUrl
      */
     getBoardApiUrl(spaceTemplateApiUrl: string) {
-        return this.http.get(spaceTemplateApiUrl)
-            .map(resp => resp.json().data)
+        return this.http.get<{data: any}>(spaceTemplateApiUrl)
+            .map(resp => resp.data)
             .map(template => template.relationships.workitemboards.links.related);
     }
 
@@ -22,14 +23,13 @@ export class BoardService {
      * @param boardUrl
      */
     getBoards(boardUrl: string): Observable<BoardModel> {
-        return this.http.get(boardUrl)
+        return this.http.get<{data: any, included: any[]}>(boardUrl)
             .map(resp => {
                 return {
-                    data: resp.json().data,
-                    included: resp.json().included
+                    data: resp.data,
+                    included: resp.included
                 };
             });
     }
-
 
 }
