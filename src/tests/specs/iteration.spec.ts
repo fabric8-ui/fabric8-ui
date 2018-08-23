@@ -5,12 +5,15 @@ import * as support from '../support';
 
 describe('Iteration test', () => {
   let planner: PlannerPage;
+  let c = new support.Constants();
+  let testData;
 
   beforeAll(async () => {
     await support.desktopTestSetup();
     planner = new PlannerPage(browser.baseUrl);
     await planner.openInBrowser();
     await planner.waitUntilUrlContains('typegroup');
+    testData = await c.browserName[browser.browserName];
   });
 
   beforeEach(async () => {
@@ -24,7 +27,6 @@ describe('Iteration test', () => {
 
   it('should create a new iteration', async () => {
     let newIteration = 'new Iteration';
-    let iteration3 = '/' + process.env.SPACE_NAME;
     await planner.sidePanel.createNewIteration();
     await planner.iteration.addNewIteration(newIteration, null, true);
     let month = await planner.iteration.getMonth();
@@ -38,10 +40,9 @@ describe('Iteration test', () => {
 
   it('should create a new child iteration', async () => {
     let newIteration = 'new Iteration1';
-    let parentIteration = '/' + process.env.SPACE_NAME + '/Iteration_2';
     let iteration = 'Iteration_2';
     await planner.sidePanel.createNewIteration();
-    await planner.iteration.addNewIteration(newIteration, parentIteration);
+    await planner.iteration.addNewIteration(newIteration, testData.parentIteration);
     await planner.iteration.clickCreateIteration();
     await planner.sidePanel.clickExpander(iteration);
     expect(await planner.sidePanel.getIterationList()).toContain(newIteration);
@@ -55,7 +56,6 @@ describe('Iteration test', () => {
     await planner.sidePanel.createNewIteration();
     await planner.iteration.addNewIteration(dropdownIteration1);
     await planner.iteration.clickCreateIteration();
-
     await planner.workItemList.workItem(workItemTitle1).openQuickPreview();
     await planner.quickPreview.addIteration(dropdownIteration1);
     await planner.quickPreview.close();
@@ -81,7 +81,7 @@ describe('Iteration test', () => {
     await planner.iteration.parentIteration.enterText(iterationName);
     let val = await planner.iteration.parentDropdownList.getTextWhenReady();
     // Ensure val is exactly the value we expect it to be
-    expect(val).toBe('/' + process.env.SPACE_NAME + '/' + iterationName);
+    expect(val).toBe(testData.rootIteration + '/' + iterationName);
     await planner.iteration.clickCancel();
   });
 });

@@ -44,6 +44,7 @@ export class BaseElement extends ElementFinder implements BaseElementInterface {
   name: string = '';
   log: (action: string, ...msg: string[]) => void;
   debug: (context: string, ...msg: string[]) => void;
+  fail: (action: string, ...msg: string[]) => void;
 
   /**
    * Extend this class, to describe single custom fragment on your page
@@ -58,25 +59,45 @@ export class BaseElement extends ElementFinder implements BaseElementInterface {
   }
 
   async untilClickable(timeout?: number) {
-    await this.waitFor('clickable', EC.elementToBeClickable(this), timeout);
+    try {
+      await this.waitFor('clickable', EC.elementToBeClickable(this), timeout);
+    } catch (e) {
+      this.fail('ERROR Element: ', this.name, 'is not clickable');
+    }
   }
 
   async untilPresent(timeout?: number) {
-    await this.waitFor('present', EC.presenceOf(this), timeout);
+    try {
+      await this.waitFor('present', EC.presenceOf(this), timeout);
+    } catch (e) {
+      this.fail('ERROR Element: ', this.name, 'is not present');
+    }
   }
 
   async untilDisplayed(timeout?: number) {
-    await this.waitFor('visible', EC.visibilityOf(this), timeout);
+    try {
+      await this.waitFor('visible', EC.visibilityOf(this), timeout);
+    } catch (e) {
+      this.fail('ERROR Element: ', this.name, 'is not displayed');
+    }
   }
 
   async untilTextIsPresent(text: string, timeout?: number) {
-    let condition = EC.textToBePresentInElement(this, text);
-    await this.waitFor(`text ${text}`, condition, timeout);
+    try {
+      let condition = EC.textToBePresentInElement(this, text);
+      await this.waitFor(`text ${text}`, condition, timeout);
+    } catch (e) {
+      this.fail('ERROR Element: ', this.name, 'text is not present');
+    }
   }
 
   async untilTextIsPresentInValue(text: string, timeout?: number) {
-    let condition = EC.textToBePresentInElementValue(this, text);
-    await this.waitFor(`text ${text}`, condition, timeout);
+    try {
+      let condition = EC.textToBePresentInElementValue(this, text);
+      await this.waitFor(`text ${text}`, condition, timeout);
+    } catch (e) {
+      this.fail('ERROR Element: ', this.name, 'text is not present in value');
+    }
   }
 
   async untilHidden(timeout?: number) {

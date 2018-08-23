@@ -47,7 +47,14 @@ export class PlannerPage extends AppPage {
   }
 
   async resetState() {
-    await this.sidePanel.clickScenarios();
+    if (await browser.browserName === 'browserSDD') {
+      await this.sidePanel.clickWorkItemGroup('Scenarios');
+    } else if (await browser.browserName === 'browserAgile') {
+        await this.sidePanel.clickWorkItemGroup('Work Items');
+    } else {
+        support.debug('browser Name not defined');
+    }
+
     await $('body').sendKeys(Key.ESCAPE);
   }
 }

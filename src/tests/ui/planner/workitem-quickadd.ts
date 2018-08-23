@@ -6,8 +6,8 @@ export class WorkItemQuickAdd extends ui.BaseElement {
   titleTextInput = new ui.TextInput(this.$('input.f8-quickadd-input'), 'Work item Title');
   buttonsDiv = this.$('div.f8-quickadd__wiblk-btn.pull-right');
   addButton = new ui.Button(this.buttonsDiv.$$('button.btn.btn-primary').first(), 'Add Button');
-addAndOpenButton = new ui.Button(this.buttonsDiv.$$('button.btn.btn-primary').last(), 'Add and Open Button');
-  private workItemTypeDropdown = new ui.Dropdown(
+  addAndOpenButton = new ui.Button(this.buttonsDiv.$$('button.btn.btn-primary').last(), 'Add and Open Button');
+  workItemTypeDropdown = new ui.Dropdown(
     this.$('.f8-quickadd__wiblk button.dropdown-toggle'),
     this.$('.f8-quickadd__wiblk .dropdown-menu'),
     'WorkItem Type dropdown'

@@ -1,25 +1,22 @@
 import { browser } from 'protractor';
-import { PlannerPage } from '../page_objects/planner';
-import * as support from '../support';
+import { PlannerPage } from '../../page_objects/planner';
+import * as support from '../../support';
 
 
 describe('Agile template tests: ', () => {
   let plannerAgile: PlannerPage;
   let c = new support.Constants();
-  let URL;
 
   beforeAll(async () => {
     await support.desktopTestSetup();
-    URL = process.env.BASE_URL + '/' + process.env.USER_NAME + '/' + process.env.SPACE_NAME_SCRUM + '/plan';
-    plannerAgile = new PlannerPage(URL);
+    plannerAgile = new PlannerPage(browser.baseUrl);
     plannerAgile.openInBrowser();
-    await browser.get(URL);
-    await plannerAgile.waitUntilUrlContains('typegroup');
+    await plannerAgile.waitUntilUrlContains('typegroup.name:Work');
   });
 
   beforeEach(async () => {
+    await plannerAgile.ready();
     await plannerAgile.workItemList.overlay.untilHidden();
-    await plannerAgile.sidePanel.workItemsGroupAgile.clickWhenReady();
   });
 
   it('should have workitem types', async () => {
@@ -31,6 +28,7 @@ describe('Agile template tests: ', () => {
     expect(wiTypes[3]).toBe('Task');
     expect(wiTypes[4]).toBe('Defect');
     expect(wiTypes[5]).toBe('Impediment');
+    await plannerAgile.quickAdd.workItemTypeDropdown.clickWhenReady();
   });
 
   it('should create a workitem of type defect and update Effort', async () => {
