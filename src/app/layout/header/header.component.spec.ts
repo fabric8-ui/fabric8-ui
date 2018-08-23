@@ -18,14 +18,10 @@ import {
 } from 'testing/test-context';
 
 import {
-  Broadcaster,
-  Logger
+  Broadcaster
 } from 'ngx-base';
-import { BsModalService } from 'ngx-bootstrap/modal';
 import { Contexts } from 'ngx-fabric8-wit';
-import { FeatureTogglesService } from 'ngx-feature-flag';
 import {
-  AuthenticationService,
   UserService
 } from 'ngx-login-client';
 
@@ -76,9 +72,7 @@ describe('HeaderComponent', () => {
     ],
     declarations: [ MockRoutedComponent ],
     providers: [
-      { provide: FeatureTogglesService, useClass: MockFeatureToggleService },
       { provide: UserService, useValue: { loggedInUser: Observable.never() } },
-      { provide: Logger, useValue: createMock(Logger) },
       { provide: LoginService, useValue: jasmine.createSpyObj('LoginService', ['login']) },
       { provide: Broadcaster, useValue: mockBroadcaster },
       {
@@ -87,9 +81,7 @@ describe('HeaderComponent', () => {
           current: Observable.of({ name: 'current' }),
           recent: Observable.never()
         }
-      },
-      { provide: BsModalService, useValue: createMock(BsModalService) },
-      { provide: AuthenticationService, useValue: createMock(AuthenticationService) }
+      }
     ],
     schemas: [ NO_ERRORS_SCHEMA ]
   });
@@ -139,26 +131,6 @@ describe('HeaderComponent', () => {
         expect(this.testedDirective.context).toBeFalsy();
         done();
       });
-    });
-  });
-
-  describe('#formatUrl', () => {
-    it('should remove an action outlet from the end of the url', () => {
-      let url: string = 'create/(action:add-codebase)';
-      let result = component.formatUrl(url);
-      expect(result).toEqual('create');
-    });
-
-    it('should remove an action outlet that contains a nested route', () => {
-      let url: string = 'create/(pipelines//action:add-codebase)';
-      let result = component.formatUrl(url);
-      expect(result).toEqual('create/pipelines');
-    });
-
-    it('should remove a query from the url', () => {
-      let url: string = 'space/plan?q=(space:1234567890)&showTree=true';
-      let result = component.formatUrl(url);
-      expect(result).toEqual('space/plan');
     });
   });
 
