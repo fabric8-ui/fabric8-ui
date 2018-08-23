@@ -25,7 +25,7 @@ import {
     workItemTypesResponseSnapshot
 } from './work-item.snapshot';
 
-fdescribe('Unit Test :: WorkItemService', () => {
+describe('Unit Test :: WorkItemService', () => {
     beforeEach(() => {
         const mockHttpService = jasmine.createSpyObj(
             'HttpService', ['get', 'delete', 'post', 'patch']

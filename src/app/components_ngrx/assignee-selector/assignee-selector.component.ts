@@ -139,8 +139,6 @@ export class AssigneeSelectorComponent {
     }
   }
 
-  updateOnList() {}
-
   cancelAssignment(): void {
     this.searchAssignee = false;
   }
