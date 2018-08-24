@@ -147,6 +147,7 @@
           <ngx-datatable-column
             *ngFor="let c of (columns | filterColumn:'display')"
             [isTreeColumn]="c.name==='Title'"
+            [indentTree]="c.name==='Title' ? 20 : 0"
             [name]="c.name"
             [resizeable]="false"
             [width]="c.width"
