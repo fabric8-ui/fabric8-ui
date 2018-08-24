@@ -74,7 +74,7 @@ export class WorkItemLinkEffects {
       let createLinkPayload = {'data': p.payload};
       return this.workItemService
         .createLink(
-          p.space.links.self.split('space')[0],
+          p.space.links.self.split('space')[0] + 'workitemlinks',
           createLinkPayload
         )
         .map(([link, includes]) => {

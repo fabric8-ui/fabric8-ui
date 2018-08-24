@@ -102,13 +102,13 @@ export class WorkItemEffects {
               // Add item success notification
               const parent = state.workItems.entities[parentId];
               if (!parent.childrenLoaded && parent.hasChildren) {
-                return Observable.of(new WorkItemActions.GetChildren(parent));
+                return new WorkItemActions.GetChildren(parent);
               } else {
                 if (payload.openDetailPage) {
                   this.router.navigateByUrl(document.location.pathname + '/detail/' + wItem.number,
                                             {relativeTo: this.route});
                 }
-                return Observable.of(new WorkItemActions.AddSuccess(wItem));
+                return new WorkItemActions.AddSuccess(wItem);
               }
             });
           } else {
@@ -117,9 +117,9 @@ export class WorkItemEffects {
             if (payload.openDetailPage) {
               this.router.navigateByUrl(document.location.pathname + '/detail/' + wItem.number,
                                         {relativeTo: this.route});
+            }
+            return Observable.of(new WorkItemActions.AddSuccess(wItem));
           }
-          return Observable.of(new WorkItemActions.AddSuccess(wItem));
-        }
       })
       .catch(() => {
         try {
