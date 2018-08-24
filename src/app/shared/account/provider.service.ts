@@ -1,5 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 
 import * as jwt_decode from 'jwt-decode';
 import { Logger } from 'ngx-base';
@@ -14,7 +15,7 @@ export class ProviderService {
   private linkUrl: string;
 
   constructor(
-      private http: Http,
+      private http: HttpClient,
       private auth: AuthenticationService,
       private logger: Logger,
       @Inject(AUTH_API_URL) private apiUrl: string) {
@@ -57,24 +58,17 @@ export class ProviderService {
 
   getGitHubStatus(): Observable<any> {
     let tokenUrl = this.apiUrl + 'token?force_pull=true&for=https://github.com';
-    return this.http.get(tokenUrl)
-      .map((response) => {
-        return response.json();
-      });
+    return this.http.get(tokenUrl);
   }
 
   getOpenShiftStatus(cluster: string): Observable<any> {
     let tokenUrl = this.apiUrl + 'token?force_pull=true&for=' + cluster;
-    return this.http.get(tokenUrl)
-      .map((response) => {
-        return response.json();
-      });
+    return this.http.get(tokenUrl);
   }
 
   disconnectOpenShift(cluster: string): Observable<any> {
     let tokenUrl = this.apiUrl + 'token?for=' + cluster;
-    return this.http
-      .delete(tokenUrl);
+    return this.http.delete(tokenUrl);
   }
 
   getLegacyLinkingUrl(provider: string, redirect: string): string {
@@ -114,15 +108,13 @@ export class ProviderService {
    */
   link(provider: string, redirect: string): void {
     let linkURL = this.linkUrl + '?for=' + provider + '&redirect=' +  encodeURIComponent(redirect) ;
-    this.http
-    .get(linkURL)
-    .map(response => {
-      let redirectInfo = response.json() as Link;
-      this.redirectToAuth(redirectInfo.redirect_location);
-    })
-    .catch((error) => {
-      return this.handleError(error);
-    }).subscribe();
+    this.http.get(linkURL)
+      .map((resp: Link) => {
+        this.redirectToAuth(resp.redirect_location);
+      })
+      .catch((err: HttpErrorResponse) => {
+        return this.handleError(err);
+      }).subscribe();
   }
 
   // Private
@@ -131,7 +123,7 @@ export class ProviderService {
     window.location.href = url;
   }
 
-  private handleError(error: any) {
+  private handleError(error: HttpErrorResponse) {
     this.logger.error(error);
     return Observable.throw(error.message || error);
   }

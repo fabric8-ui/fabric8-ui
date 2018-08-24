@@ -1,60 +1,47 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpModule, Response, ResponseOptions, XHRBackend } from '@angular/http';
-import { MockBackend } from '@angular/http/testing';
-
 import { AuthenticationService } from 'ngx-login-client';
 import { JenkinsService } from './jenkins.service';
 import { FABRIC8_JENKINS_API_URL } from './runtime-console/fabric8-ui-jenkins-api';
 
-
-function initTestBed() {
-  let fakeAuthService: any = {
-    getToken: function() {
-      return 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiY2xpZW50X3Nlc3Npb24iOiJURVNUU0VTU0lPTiIsInNlc3Npb25fc3RhdGUiOiJURVNUU0VTU0lPTlNUQVRFIiwiYWRtaW4iOnRydWUsImp0aSI6ImY5NWQyNmZlLWFkYzgtNDc0YS05MTk0LWRjM2E0YWFiYzUwMiIsImlhdCI6MTUxMDU3MTMxOSwiZXhwIjoxNTEwNTgwODI3fQ.l0m6EFvk5jbND3VOXL3gTkzTz0lYQtPtXS_6C24kPQk';
-    },
-    isLoggedIn: function() {
-      return true;
-    }
-  };
-  TestBed.configureTestingModule({
-    imports: [
-      HttpModule
-    ],
-    providers: [
-      JenkinsService,
-      {provide: AuthenticationService, useValue: fakeAuthService},
-      {provide: FABRIC8_JENKINS_API_URL, useValue: 'http://fabric8.jenkins.api.url'},
-      {provide: XHRBackend, useClass: MockBackend}
-    ]
-  });
-}
-
-function fakeJenkinsStatus(): any {
-  let JenkinsStatus: any = {'data': {'state': 'idled'}};
-  return JenkinsStatus;
-}
+import { HttpRequest, HttpResponse } from '@angular/common/http';
+import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
+import { createMock } from 'testing/mock';
 
 describe('Service: JenkinsService', () => {
-  let jenkinsService: JenkinsService;
-  let mockBackend: MockBackend;
+  let service: JenkinsService;
+  let controller: HttpTestingController;
+  const fakeJenkinsStatus = {
+    'data': {
+      'state': 'idled'
+    }
+  }
 
   beforeEach(() => {
-    initTestBed();
-    jenkinsService = TestBed.get(JenkinsService);
-    mockBackend = TestBed.get(XHRBackend);
+    const mockAuthenticationService: jasmine.SpyObj<AuthenticationService> = createMock(AuthenticationService);
+    mockAuthenticationService.getToken.and.returnValue('mock-token');
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      providers: [
+        { provide: AuthenticationService, useValue: mockAuthenticationService },
+        { provide: FABRIC8_JENKINS_API_URL, useValue: 'http://example.com' },
+        JenkinsService
+      ]
+    });
+    service = TestBed.get(JenkinsService);
+    controller = TestBed.get(HttpTestingController);
   });
 
-  it('should return jenkins status', (done: DoneFn) => {
-    mockBackend.connections.subscribe((connection) => {
-      connection.mockRespond(new Response(new ResponseOptions({
-        body: JSON.stringify(fakeJenkinsStatus()),
-        status: 200
-      })));
-    });
 
-    jenkinsService.getJenkinsStatus().subscribe(response => {
-      expect(response.data.state).toBe('idled');
-      done();
-    });
+  it('should return jenkins status', (done: DoneFn) => {
+    service.getJenkinsStatus()
+      .subscribe((resp: HttpResponse<any>) => {
+        expect(resp['data'].state).toBe('idled');
+        done();
+      });
+
+    const req: TestRequest = controller.expectOne('http://example.com/api/jenkins/start');
+    expect(req.request.method).toEqual('POST');
+    expect(req.request.headers.get('Authorization')).toEqual('Bearer mock-token');
+    req.flush(fakeJenkinsStatus);
   });
 });

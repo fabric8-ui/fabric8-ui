@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpModule } from '@angular/http';
 import { Router } from '@angular/router';
 import { Broadcaster } from 'ngx-base';
 import { Contexts, Spaces } from 'ngx-fabric8-wit';
@@ -36,7 +35,6 @@ describe('Analytic Service:', () => {
     });
 
     TestBed.configureTestingModule({
-      imports: [HttpModule],
       providers: [
         {
           provide: Router, useValue: mockRouter

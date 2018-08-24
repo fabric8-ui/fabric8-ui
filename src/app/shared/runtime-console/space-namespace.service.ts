@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Response } from '@angular/http';
+
+import { HttpErrorResponse } from '@angular/common/http';
 
 import * as yaml from 'js-yaml';
 import { Notifications, NotificationType } from 'ngx-base';
@@ -43,11 +44,11 @@ export class SpaceNamespaceService {
       .switchMap(namespace => this.configMapService
         .list(namespace)
         .map(configMaps => ({ namespace: namespace, configMaps: configMaps } as ConfigMapWrapper))
-        .catch((err: Response, caught) => {
+        .catch((err: HttpErrorResponse, caught) => {
           if (err.status === 403) {
             let errDetail;
             try {
-              errDetail = yaml.safeLoad(err.text());
+              errDetail = yaml.safeLoad(err.message);
             } catch (e) {
               // Swallow an exception from the YAML parser, we'll just dump the entire response in this case.
             }

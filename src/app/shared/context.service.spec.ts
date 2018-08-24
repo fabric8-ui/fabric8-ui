@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpModule } from '@angular/http';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { LocalStorageService } from 'angular-2-local-storage';
@@ -45,7 +44,6 @@ describe('Context Service:', () => {
     mockFeatureTogglesService = jasmine.createSpyObj('FeatureTogglesService', ['getAllFeaturesEnabledByLevel']);
     mockFeatureTogglesService.getAllFeaturesEnabledByLevel.and.returnValue(Observable.of([]));
     TestBed.configureTestingModule({
-      imports: [HttpModule],
       providers: [
         {
           provide: Router, useValue: mockRouter
