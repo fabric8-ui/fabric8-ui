@@ -30,11 +30,11 @@ export class HttpClientService {
       flatMap(error => {
         if (error.status == 0) { // Server offline :: keep trying
           console.log('########### Now offline #############', error);
-          return Observable.timer(++count * 1000);
+          return Observable.timer(++count * 1000); // TODO ng6: use timer from rxjs 6
         } else if (error.status == 500 || error.status == 401) { // Server error :: Try 3 times then throw error
-          return ++count >= 3 ? Observable.throw(error) : Observable.timer(1000);
+          return ++count >= 3 ? Observable.throw(error) : Observable.timer(1000); // TODO ng6: use _throw, timer from rxjs 6
         } else {
-          return Observable.throw(error);
+          return Observable.throw(error); // TODO ng6: use _throw from rxjs 6
         }
       })
     );

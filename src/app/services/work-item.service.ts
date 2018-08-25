@@ -270,10 +270,10 @@ export class WorkItemService {
    * @param: WorkItem - workItem (Item to be created)
    */
   update(workItem: WorkItem): Observable<WorkItem> {
-    return this.http
-      .patch(workItem.links.self, JSON.stringify({data: workItem}))
+    return this.httpClientService
+      .patch<{data: WorkItem}>(workItem.links.self, JSON.stringify({data: workItem}))
       .map(response => {
-        return response.json().data;
+        return response.data;
       }).catch((error: Error | any) => {
         this.notifyError('Updating work item failed.', error);
         return Observable.throw(new Error(error.message));

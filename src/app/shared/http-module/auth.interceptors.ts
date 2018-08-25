@@ -9,7 +9,6 @@ export class AuthInterceptor implements HttpInterceptor {
   constructor(private auth: AuthenticationService) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    console.log('#### - 1.0', req);
     const authreq = req.clone(
       {
         setHeaders: {
