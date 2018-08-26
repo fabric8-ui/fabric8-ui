@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import { User } from 'ngx-login-client';
 import { Observable } from 'rxjs/Observable';
+import { map } from 'rxjs/operators';
 import { HttpClientService } from './../shared/http-module/http.service';
 
 
@@ -10,6 +11,8 @@ export class CollaboratorService {
 
   getCollaborators(url: string): Observable<User[]> {
     return this.httpClienService.get<{data: User[]}>(url)
-      .map(resp => resp.data);
+      .pipe(
+        map(resp => resp.data)
+      );
   }
 }
