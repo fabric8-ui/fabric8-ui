@@ -32,7 +32,7 @@ export class GroupTypeEffects {
     .ofType(GroupTypeActions.GET)
     .withLatestFrom(this.store.select('planner').select('space'))
     .switchMap(([action, space]) => {
-      return this.groupTypeService.getGroupTypes2(
+      return this.groupTypeService.getGroupTypes(
           space.relationships.workitemtypegroups.links.related
         )
         .map((types: GroupTypeService[]) => {

@@ -81,10 +81,6 @@ export class IterationListEntryComponent implements OnInit, OnDestroy {
     this.eventListeners.forEach(subscriber => subscriber.unsubscribe());
   }
 
-  setGuidedTypeWI(wiCollection) {
-    this.groupTypesService.setCurrentGroupType(wiCollection, 'execution');
-  }
-
   constructURL(iterationId: string) {
     //Query for work item type group
     const type_query = this.filterService.queryBuilder('typegroup.name', this.filterService.equal_notation, this.witGroup.name);
