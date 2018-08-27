@@ -33,8 +33,8 @@ export class LinkTypeEffects {
         .map((data) => {
           let lts: any = {};
           let linkTypes: LinkTypeUI[] = [];
-          lts['forwardLinks'] = data.json().data;
-          lts['backwardLinks'] = data.json().data;
+          lts['forwardLinks'] = data;
+          lts['backwardLinks'] = data;
           lts.forwardLinks.forEach((linkType) => {
             linkTypes.push({
               name: linkType.attributes['forward_name'],

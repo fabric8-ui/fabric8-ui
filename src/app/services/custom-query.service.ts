@@ -66,7 +66,7 @@ export class CustomQueryService {
       } else {
         console.log(str, error.message);
       }
-      return Observable.throw(new Error(error.message)); // TODO ng6: use _throw from rxjs 6
+      return Observable.throw(new Error(error.message)); // TODO ng6: use throwError from rxjs 6
     }
 
 }
