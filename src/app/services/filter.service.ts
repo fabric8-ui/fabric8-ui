@@ -2,11 +2,11 @@ import { Inject, Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Spaces, WIT_API_URL } from 'ngx-fabric8-wit';
 import { Observable } from 'rxjs/Observable';
+import { catchError, map } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
-import { WorkItem } from './../models/work-item';
-import { HttpService } from './http-service';
-
 import { FilterModel } from '../models/filter.model';
+import { HttpClientService } from '../shared/http-module/http.service';
+import { WorkItem } from './../models/work-item';
 
 @Injectable()
 export class FilterService {
@@ -53,7 +53,7 @@ export class FilterService {
   };
 
   constructor(
-    private http: HttpService,
+    private httpClientService: HttpClientService,
     private spaces: Spaces,
     private route: ActivatedRoute,
     @Inject(WIT_API_URL) private baseApiUrl: string
@@ -139,40 +139,16 @@ export class FilterService {
    * @param apiUrl - The url to get list of all filters
    * @return Observable of FilterModel[] - Array of filters
    */
-  getFilters(): Observable<FilterModel[]> {
-    return this.spaces.current.switchMap(space => {
-      if (space) {
-        let apiUrl = space.links.filters;
-        return this.http
-          .get(apiUrl)
-          .map(response => {
-            return response.json().data as FilterModel[];
-          })
-          .catch ((error: Error | any) => {
-            console.log('API returned error: ', error.message);
-            return Observable.throw('Error  - [FilterService - getFilters]' + error.message);
-          });
-      } else {
-        return Observable.of([] as FilterModel[]);
-      }
-    });
-  }
-
-  /**
-   * getFilters - Fetches all the available filters
-   * @param apiUrl - The url to get list of all filters
-   * @return Observable of FilterModel[] - Array of filters
-   */
   getFilters2(apiUrl): Observable<FilterModel[]> {
-    return this.http
-      .get(apiUrl)
-      .map(response => {
-        return response.json().data as FilterModel[];
-      })
-      .catch ((error: Error | any) => {
-        console.log('API returned error: ', error.message);
-        return Observable.throw('Error  - [FilterService - getFilters]' + error.message);
-      });
+    return this.httpClientService
+      .get<{data: FilterModel[]}>(apiUrl)
+      .pipe(
+        map(response => response.data as FilterModel[]),
+        catchError((error: Error | any) => {
+          console.log('API returned error: ', error.message);
+          return Observable.throw('Error  - [FilterService - getFilters]' + error.message); // TODO ng6: use throwError from rxjs 6
+        })
+      );
   }
 
   returnFilters() {

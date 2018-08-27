@@ -1,9 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import {
-  Http, HttpModule,
-  RequestOptions, XHRBackend } from '@angular/http';
 import { RouterModule } from '@angular/router';
 
 import {
@@ -22,18 +19,12 @@ import {
   WidgetsModule
 } from 'ngx-widgets';
 import { SafePipeModule } from '../../pipes/safe.module';
-import { factoryForHttpService, HttpService } from './../../services/http-service';
 import { GlobalSettings } from './../../shared/globals';
 import { CommentModule } from './../../widgets/comment-module/comment.module';
 import { UserAvatarModule } from './../../widgets/user-avatar/user-avatar.module';
 import { WorkItemCommentComponent } from './work-item-comment.component';
 
 let providers = [
-  {
-    provide: HttpService,
-    useFactory: factoryForHttpService,
-    deps: [XHRBackend, RequestOptions, AuthenticationService]
-  },
   GlobalSettings,
   TooltipConfig,
   BsDropdownConfig
@@ -50,7 +41,6 @@ let providers = [
     FormsModule,
     MarkdownModule,
     RouterModule,
-    HttpModule,
     TooltipModule,
     WidgetsModule,
     SafePipeModule,

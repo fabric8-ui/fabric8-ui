@@ -145,9 +145,7 @@ export class WorkItemLinkEffects {
       let wiLink = this.wilMapper.toServiceModel(p.payload.wiLink);
       return this.workItemService
         .deleteLink(
-          `${p.space.links.self.split('space')[0]}workitemlinks/${wiLink.id}`,
-          p.payload.workItemId
-        )
+          `${p.space.links.self.split('space')[0]}workitemlinks/${wiLink.id}`)
         .map(response => {
           let targetWorkItem;
           let sourceWorkItem;

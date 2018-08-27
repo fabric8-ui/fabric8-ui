@@ -10,7 +10,5 @@ export { WorkItemDetailExternalModule as PlannerDetailModule } from './app/compo
 export { WorkItemQuickAddComponent } from './app/components_ngrx/work-item-quick-add/work-item-quick-add.component';
 export { WorkItemQuickAddModule } from './app/components_ngrx/work-item-quick-add/work-item-quick-add.module';
 
-export { HttpService } from './app/services/http-service';
-
 export { PlannerListModule } from './app/components_ngrx/planner-list/planner-list.module';
 export { PlannerBoardModule } from './app/components_ngrx/planner-board/planner-board.module';

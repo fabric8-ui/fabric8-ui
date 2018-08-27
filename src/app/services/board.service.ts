@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClientService } from '../shared/http-module/http.service';
 import { BoardModel } from './../models/board.model';
-import { HttpService } from './http-service';
 
 @Injectable()
 export class BoardService {

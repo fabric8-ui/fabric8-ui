@@ -1,5 +1,4 @@
 import { CommonModule }     from '@angular/common';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NgModule }         from '@angular/core';
 import {
   RequestOptions,
@@ -9,14 +8,12 @@ import { NgxDatatableModule } from 'rh-ngx-datatable';
 import { WorkItemCellModule } from './../work-item-cell/work-item-cell.module';
 import { WorkItemPreviewPanelModule } from './../work-item-preview-panel/work-item-preview-panel.module';
 
-import { AuthenticationService } from 'ngx-login-client';
 
 import { PlannerListComponent } from './planner-list.component';
 
 import { TruncateModule } from 'ng2-truncate';
 import { BsDropdownConfig, BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
-import { factoryForHttpService, HttpService } from '../../services/http-service';
 import { PlannerModalModule } from '../../widgets/modal/modal.module';
 import { AreaService } from './../../services/area.service';
 import { CollaboratorService } from './../../services/collaborator.service';
@@ -59,11 +56,6 @@ import { TableConfigModule } from './../table-config/table-config.module';
 
 let providers = [
     WorkItemService,
-    {
-      provide: HttpService,
-      useFactory: factoryForHttpService,
-      deps: [XHRBackend, RequestOptions, AuthenticationService]
-    },
     CustomQueryService,
     IterationService,
     TooltipConfig,
