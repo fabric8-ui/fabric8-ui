@@ -23,7 +23,6 @@ import { CollaboratorService } from './../../services/collaborator.service';
 import { CustomQueryService } from './../../services/custom-query.service';
 import { IterationService } from './../../services/iteration.service';
 import { LabelService } from './../../services/label.service';
-import { WorkItemDataService } from './../../services/work-item-data.service';
 import { WorkItemService } from './../../services/work-item.service';
 import { GlobalSettings } from './../../shared/globals';
 import { PlannerHttpClientModule } from './../../shared/http-module/http.module';
@@ -75,7 +74,6 @@ let providers = [
     FilterService,
     BsDropdownConfig,
     CookieService,
-    WorkItemDataService,
     UrlService,
     InfotipService,
     CommentQuery,
