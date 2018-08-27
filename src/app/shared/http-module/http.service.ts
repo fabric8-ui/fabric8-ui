@@ -71,11 +71,10 @@ export class HttpClientService {
       );
   }
 
-  public delete<T>(url: string, options = {}): Observable<T> {
+  public delete(url: string): Observable<any> {
     console.log('DELETE request initiated');
     console.log('URL - ', url);
-    console.log('Options - ', options);
-    return this.http.delete<T>(url, { headers: this.setHeaders(options) })
+    return this.http.delete(url, {responseType: 'text' })
       .pipe(
         retryWhen(attempts => this.requestRetryLogic(attempts))
       );
