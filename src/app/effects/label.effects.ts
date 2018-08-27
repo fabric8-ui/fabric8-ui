@@ -27,7 +27,7 @@ export class LabelEffects {
     .ofType(LabelActions.GET)
     .withLatestFrom(this.store.select('planner').select('space'))
     .switchMap(([action, space]) => {
-      return this.labelService.getLabels2(space.links.self + '/labels')
+      return this.labelService.getLabels(space.links.self + '/labels')
       .map(labels => {
          const lMapper = new LabelMapper();
          return labels.map(l => lMapper.toUIModel(l));

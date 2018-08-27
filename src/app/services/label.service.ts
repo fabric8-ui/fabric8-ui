@@ -2,59 +2,28 @@ import { Component, Inject, Injectable } from '@angular/core';
 
 import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import { Subscription } from 'rxjs/Subscription';
+import { map } from 'rxjs/operators';
 
-import { cloneDeep } from 'lodash';
-import { Logger } from 'ngx-base';
-import { Space, Spaces } from 'ngx-fabric8-wit';
 import { LabelModel } from '../models/label.model';
-import { WorkItem } from '../models/work-item';
-import { HttpService } from './http-service';
+import { HttpClientService } from './../shared/http-module/http.service';
 
 @Injectable()
 export class LabelService {
 
-  constructor(
-    private http: HttpService,
-    private logger: Logger,
-    private spaces: Spaces
-  ) {}
+  constructor(private http: HttpClientService) {}
 
-  notifyError(message: string, httpError: any) {
-    this.logger.log('ERROR [WorkItemService] ' + message + (httpError.message ? ' ' + httpError.message : ''));
-  }
-
-    /**
+  /**
    * getLabels - We call this service method to fetch all labels in currect space
    * @return Observable of LabelModel[] - Array of labels.
    * Url - http://localhost:8080/api/spaces/829d2039-3929-4e8e-865b-fd463b8b34f1/labels/
    */
-
-  getLabels(): Observable<LabelModel[]> {
-    return this.spaces.current
-    .switchMap(currentSpace => {
-        if (currentSpace) {
-          return this.http.get(currentSpace.links.self + '/labels');
-        } else {
-          return [];
-        }
-    }).map (response => {
-      return response.json().data as LabelModel[];
-    });
-  }
-
-  getLabels2(labelUrl): Observable<LabelModel[]> {
-    return this.http.get(labelUrl)
-    .map (response => {
-      return response.json().data as LabelModel[];
-    });
+  getLabels(labelUrl): Observable<LabelModel[]> {
+    return this.http.get<{data: LabelModel[]}>(labelUrl)
+      .pipe(map(r => r.data));
   }
 
   createLabel(label: LabelModel, url: string): Observable<LabelModel> {
-    return this.http.post(url, {data: label})
-      .map (response => {
-        return response.json().data as LabelModel;
-      });
+    return this.http.post<{data: LabelModel}>(url, {data: label})
+      .pipe(map(r => r.data));
   }
 }
