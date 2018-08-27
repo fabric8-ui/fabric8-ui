@@ -1,10 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 
-import 'rxjs/add/operator/catch';
-import 'rxjs/add/operator/toPromise';
 import { Observable } from 'rxjs/Observable';
 import { catchError, map } from 'rxjs/operators';
-import { Subject } from 'rxjs/Subject';
 
 import { Logger } from 'ngx-base';
 import { Spaces } from 'ngx-fabric8-wit';
@@ -20,6 +17,7 @@ import {
 
 import { AreaModel } from '../models/area.model';
 import { Link } from '../models/link';
+import { LinkTypeService } from '../models/link-type';
 import {
   WorkItem
 } from '../models/work-item';
@@ -36,14 +34,6 @@ export class WorkItemService {
   public workItemTypes: WorkItemType[] = [];
   public _currentSpace;
 
-  private selfId;
-
-  public addWIObservable: Subject<any> = new Subject();
-  public addWIChildObservable: Subject<any> = new Subject();
-  public editWIObservable: Subject<WorkItem> = new Subject();
-  public selectedWIObservable: Subject<WorkItem> = new Subject();
-  public showTree: Subject<boolean> = new Subject();
-
   constructor(
     private httpClientService: HttpClientService,
     private httpBackendClient: HttpBackendClient,
@@ -54,21 +44,16 @@ export class WorkItemService {
     @Inject(WIT_API_URL) private baseApiUrl: string
   ) {
     this.spaces.current.subscribe(val => this._currentSpace = val);
-    this.selfId = this.createId();
-    this.logger.log('Launching WorkItemService instance id ' + this.selfId);
+    this.logger.log('Launching WorkItemService');
   }
 
-  notifyError(message: string, httpError: any) {
+  private notifyError(message: string, httpError: any) {
     this.logger.log('ERROR [WorkItemService] ' + message + (httpError.message ? ' ' + httpError.message : ''));
   }
 
-  createId(): string {
-    let id = '';
-    let possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    for (let i = 0; i < 5; i++) {
-      id += possible.charAt(Math.floor(Math.random() * possible.length));
-    }
-    return id;
+  private handleError(error: Error | any, msg: string) {
+    this.notifyError(msg, error);
+    return Observable.throw(new Error(error.message)); // TODO ng6: use throwError from rxjs 6
   }
 
   /**
@@ -82,10 +67,7 @@ export class WorkItemService {
       .get<{data: WorkItem[]}>(url)
       .pipe(
         map(response => response.data as WorkItem[]),
-        catchError((error: Error | any) => {
-          this.notifyError('Getting children failed.', error);
-          return Observable.throw(new Error(error.message));
-        })
+        catchError(err => this.handleError(err, 'Getting children failed.'))
       );
   }
 
@@ -120,7 +102,7 @@ export class WorkItemService {
         }),
         catchError((error: Error | any) => {
           this.notifyError('Getting work items failed.', error);
-          return Observable.throw(new Error(error.message));
+          return Observable.throw(new Error(error.message)); // TODO ng6: use throwError from rxjs 6
         })
       );
   }
@@ -152,11 +134,11 @@ export class WorkItemService {
           }),
           catchError((error: Error | any) => {
             this.notifyError('Getting more work items failed.', error);
-            return Observable.throw(new Error(error.message));
+            return Observable.throw(new Error(error.message)); // TODO ng6: use throwError from rxjs 6
           })
         );
     } else {
-      return Observable.throw('No more item found');
+      return Observable.throw('No more item found'); // TODO ng6: use throwError from rxjs 6
     }
   }
 
@@ -180,16 +162,18 @@ export class WorkItemService {
         map(item => item.data),
         catchError((error: Error | any) => {
           this.notifyError('Getting work item data failed.', error);
-          return Observable.throw(new Error(error.message));
+          return Observable.throw(new Error(error.message)); // TODO ng6: use throwError from rxjs 6
         })
       );
     } else {
       return this.httpClientService.get<{data: WorkItem}>(this.baseApiUrl + 'workitems/' + id)
-        .map(item => item.data)
-        .catch((error: Error | any) => {
-          this.notifyError('Getting work item data failed.', error);
-          return Observable.throw(new Error(error.message));
-        });
+        .pipe(
+          map(i => i.data),
+          catchError((error: Error | any) => {
+            this.notifyError('Getting work item data failed.', error);
+            return Observable.throw(new Error(error.message)); // TODO ng6: use throwError from rxjs 6
+          })
+        );
     }
   }
 
@@ -203,11 +187,7 @@ export class WorkItemService {
   getEvents(url: string): Observable<any> {
     return this.httpClientService
       .get<{data: Event[]}>(url)
-      .pipe(
-        map(response => {
-          return response.data;
-        })
-      );
+      .pipe(map(response => response.data));
   }
 
   /**
@@ -243,7 +223,7 @@ export class WorkItemService {
         map(response => [response.data as Link[], response.included]),
         catchError((error: Error | any) => {
           this.notifyError('Getting linked items data failed.', error);
-          return Observable.throw(new Error(error.message));
+          return Observable.throw(new Error(error.message)); // TODO ng6: use throwError from rxjs 6
         })
       );
   }
@@ -258,7 +238,6 @@ export class WorkItemService {
       .get<{data: WorkItemType[]}>(workItemTypeUrl)
       .pipe(
         map((response) => {
-
           // TODO : this line can be removed when
           // getWorkItemTypesById function is removed
           this.workItemTypes = response.data;
@@ -267,7 +246,7 @@ export class WorkItemService {
         }),
         catchError((error: Error | any) => {
           this.notifyError('Getting work item type information failed.', error);
-          return Observable.throw(new Error(error.message));
+          return Observable.throw(new Error(error.message)); // TODO ng6: use throwError from rxjs 6
         })
       );
   }
@@ -281,10 +260,7 @@ export class WorkItemService {
    */
   delete(workItem: WorkItem): Observable<void> {
     return this.httpClientService
-      .delete(workItem.links.self)
-      .pipe(
-        map(() => {return; })
-      );
+      .delete(workItem.links.self);
   }
 
   /**
@@ -298,9 +274,7 @@ export class WorkItemService {
       return this.httpClientService
         .post<{data: WorkItem}>(url, payload)
         .pipe(
-          map(response => {
-            return response.data as WorkItem;
-          })
+          map(response => response.data as WorkItem)
         );
   }
 
@@ -320,7 +294,7 @@ export class WorkItemService {
         }),
         catchError((error: Error | any) => {
           this.notifyError('Updating work item failed.', error);
-          return Observable.throw(new Error(error.message));
+          return Observable.throw(new Error(error.message)); // TODO ng6: use throwError from rxjs 6
         })
       );
   }
@@ -340,7 +314,7 @@ export class WorkItemService {
         }),
         catchError((error: Error | any) => {
           this.notifyError('Creating comment failed.', error);
-          return Observable.throw(new Error(error.message));
+          return Observable.throw(new Error(error.message)); // TODO ng6: use throwError from rxjs 6
         })
       );
   }
@@ -363,7 +337,7 @@ export class WorkItemService {
         }),
         catchError((error: Error | any) => {
           this.notifyError('Updating comment failed.', error);
-          return Observable.throw(new Error(error.message));
+          return Observable.throw(new Error(error.message)); // TODO ng6: use throwError from rxjs 6
         })
       );
   }
@@ -378,7 +352,7 @@ export class WorkItemService {
       .pipe(
         catchError((error: Error | any) => {
           this.notifyError('Deleting comment failed.', error);
-          return Observable.throw(new Error(error.message));
+          return Observable.throw(new Error(error.message)); // TODO ng6: use throwError from rxjs 6
         })
       );
   }
@@ -389,12 +363,13 @@ export class WorkItemService {
    *
    * @return Promise of LinkType[]
    */
-  getAllLinkTypes(url: string): Observable<any> {
-    return this.httpClientService.get(url)
+  getAllLinkTypes(url: string): Observable<LinkTypeService[]> {
+    return this.httpClientService.get<{data: LinkTypeService[]}>(url)
       .pipe(
+        map(d => d.data),
         catchError((error: Error | any) => {
           this.notifyError('Getting link meta info failed (forward).', error);
-          return Observable.throw(new Error(error.message));
+          return Observable.throw(new Error(error.message)); // TODO ng6: use throwError from rxjs 6
         })
       );
   }
@@ -420,10 +395,9 @@ export class WorkItemService {
    * Removes the new link to the workItem
    *
    * @param link: Link
-   * @param currentWiId: string - The work item ID where the link is created
    * @returns Promise<void>
    */
-  deleteLink(url: string, currentWiId: string): Observable<void> {
+  deleteLink(url: string): Observable<void> {
     return this.httpClientService
       .delete(url);
   }
@@ -432,9 +406,7 @@ export class WorkItemService {
     let searchUrl = this.baseApiUrl + 'search?spaceID=' + spaceId + '&q=' + term;
     return this.httpClientService
         .get<{data: WorkItem[]}>(searchUrl)
-        .pipe(
-          map((response) => response.data as WorkItem[])
-        );
+        .pipe(map((response) => response.data as WorkItem[]));
   }
 
   /**
@@ -461,10 +433,7 @@ export class WorkItemService {
     return this.httpClientService
       .patch<{data: WorkItem}>(url, JSON.stringify({data: arr, position: {direction: direction, id: prevWiId}}))
       .pipe(
-        map(response => {
-          let updatedWorkItem: WorkItem = response.data[0] as WorkItem;
-          return updatedWorkItem;
-        }),
+        map(response => response.data[0] as WorkItem),
         catchError(err => Observable.of(workItem))
       );
   }
@@ -488,9 +457,7 @@ export class WorkItemService {
     this.renderUrl = this.baseApiUrl + 'render';
     return this.httpClientService
       .post<{data: any}>(this.renderUrl, JSON.stringify(params))
-      .pipe(
-        map(response => response.data.attributes.renderedContent)
-      );
+      .pipe(map(response => response.data.attributes.renderedContent));
   }
 
 
@@ -553,7 +520,7 @@ export class WorkItemService {
             }),
             catchError((error: Error | any) => {
               this.notifyError('Getting work item type info failed.', error);
-              return Observable.throw(new Error(error.message));
+              return Observable.throw(new Error(error.message)); // TODO ng6: use throwError from rxjs 6
             })
           );
       }
@@ -580,9 +547,8 @@ export class WorkItemService {
    * Usage: Fetch an area by it's ID from the areas list
    */
   getAreaById(areaId: string): Observable<AreaModel> {
-    return this.areaService.getAreas().map((areas) => {
-      return areas.find(item => item.id == areaId);
-    });
+    return this.areaService.getAreas()
+    .pipe(map(areas => areas.find(item => item.id == areaId)));
   }
 
   /**
