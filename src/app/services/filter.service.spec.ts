@@ -4,27 +4,18 @@ import {
   inject,
   TestBed
 } from '@angular/core/testing';
-import {
-    BaseRequestOptions,
-    Response,
-    ResponseOptions,
-    XHRBackend
-} from '@angular/http';
-import {
-    MockBackend,
-    MockConnection
-} from '@angular/http/testing';
 import { ActivatedRoute } from '@angular/router';
 import { Spaces } from 'ngx-fabric8-wit';
 import { WIT_API_URL } from 'ngx-fabric8-wit';
-import { AuthenticationService } from 'ngx-login-client';
+import { Observable } from 'rxjs';
+import { delay } from 'rxjs/operators';
+import { FilterModel } from '../models/filter.model';
 import { WorkItem } from './../models/work-item';
+import { HttpClientService } from './../shared/http-module/http.service';
 import { FilterService } from './filter.service';
-import { HttpService } from './http-service';
 
 describe('Unit Test :: Filter Service', () => {
   let filterService: FilterService;
-  let backend: MockBackend;
   let mockActivatedRoute = {
     snapshot: {
       queryParams: { }
@@ -33,34 +24,30 @@ describe('Unit Test :: Filter Service', () => {
 
   beforeEach(
     async(() => {
+      const mockHttpService = jasmine.createSpyObj('HttpClientService', [
+        'get',
+        'delete',
+        'post',
+        'patch'
+      ]);
       TestBed.configureTestingModule({
         imports: [],
         providers: [
-          BaseRequestOptions,
-          MockBackend,
           FilterService,
-          Spaces,
+          {
+            provide: HttpClientService,
+            useValue: mockHttpService
+          },
           { provide: ActivatedRoute,
             useValue: mockActivatedRoute
           },
           {
             provide: WIT_API_URL,
             useValue: 'https://api.url.com'
-          },
-          {
-            deps: [
-              MockBackend,
-              BaseRequestOptions
-            ],
-            provide: HttpService,
-            useFactory: (backend: MockBackend, defaultOptions: BaseRequestOptions, auth: AuthenticationService) => {
-                return new HttpService(backend, defaultOptions, auth);
-            }
           }
         ]
       });
       const testbed = getTestBed();
-      backend = testbed.get(MockBackend);
       filterService = testbed.get(FilterService);
       mockActivatedRoute.snapshot.queryParams = {q: ''};
     })
@@ -85,6 +72,22 @@ describe('Unit Test :: Filter Service', () => {
       paramKey: 'filter[assignee]'
     }];
     expect(filterService.doesMatchCurrentFilter(workItem as WorkItem)).toBeTruthy();
+  });
+
+  it('should get the filters using get filters', (done) => {
+    const service = TestBed.get(FilterService);
+    const returnValue = {
+      data: [] as FilterModel[]
+    };
+
+    service.httpClientService.get.and.returnValue(
+      Observable.of(returnValue).pipe(delay(200))
+    );
+
+    filterService.getFilters('').subscribe((data) => {
+      expect(data).toEqual(returnValue.data);
+      done();
+    });
   });
 
   it('should not match the assignee filter', () => {

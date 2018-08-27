@@ -1,6 +1,5 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Spaces, WIT_API_URL } from 'ngx-fabric8-wit';
 import { Observable } from 'rxjs/Observable';
 import { catchError, map } from 'rxjs/operators';
 import { Subject } from 'rxjs/Subject';
@@ -54,9 +53,7 @@ export class FilterService {
 
   constructor(
     private httpClientService: HttpClientService,
-    private spaces: Spaces,
-    private route: ActivatedRoute,
-    @Inject(WIT_API_URL) private baseApiUrl: string
+    private route: ActivatedRoute
   ) {}
 
   setFilterValues(id, value): void {
@@ -139,7 +136,7 @@ export class FilterService {
    * @param apiUrl - The url to get list of all filters
    * @return Observable of FilterModel[] - Array of filters
    */
-  getFilters2(apiUrl): Observable<FilterModel[]> {
+  getFilters(apiUrl): Observable<FilterModel[]> {
     return this.httpClientService
       .get<{data: FilterModel[]}>(apiUrl)
       .pipe(

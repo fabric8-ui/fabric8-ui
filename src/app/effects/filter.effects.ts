@@ -28,7 +28,7 @@ export class FilterEffects {
     .ofType(FilterActions.GET)
     .withLatestFrom(this.spaceQuery.getCurrentSpace)
     .switchMap(([action, space]) => {
-      return this.filterService.getFilters2(space.links.filters)
+      return this.filterService.getFilters(space.links.filters)
         .map((types: FilterModel[]) => {
           return new FilterActions.GetSuccess(types);
         })
