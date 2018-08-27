@@ -10,7 +10,8 @@ import { IterationService } from '.././services/iteration.service';
 import { UpdateWorkitemIteration } from '../actions/work-item.actions';
 import { IterationMapper, IterationUI } from '../models/iteration.model';
 
-import { normalizeArray } from '../models/common.model';
+import { cleanObject, normalizeArray } from '../models/common.model';
+import { SpaceQuery } from '../models/space';
 
 
 @Injectable()
@@ -18,56 +19,54 @@ export class IterationEffects {
   constructor(private actions$: Actions,
                private iterationService: IterationService,
                private notifications: Notifications,
-               private store: Store<AppState>) {
-  }
+               private spaceQuery: SpaceQuery) {}
 
   @Effect() getIterations$: Observable<Action> = this.actions$
     .ofType(IterationActions.GET)
-    .withLatestFrom(this.store.select('planner').select('space'))
+    .withLatestFrom(this.spaceQuery.getCurrentSpace)
     .switchMap(([action, space]) => {
-      return this.iterationService.getIterations2(
-          space.relationships.iterations.links.related
-        )
-        .map(iterations => {
-           const itMapper = new IterationMapper();
-           return iterations.map(it => itMapper.toUIModel(it));
-        })
-        .map(iterations => (new IterationActions.GetSuccess(normalizeArray(iterations))))
-        .catch(() => Observable.of(new IterationActions.GetError()));
+      return this.iterationService.getIterations(
+        space.relationships.iterations.links.related
+      )
+      .map(iterations => {
+        const itMapper = new IterationMapper();
+        return iterations.map(it => itMapper.toUIModel(it));
+      })
+      .map(iterations => (new IterationActions.GetSuccess(normalizeArray(iterations))))
+      .catch(() => Observable.of(new IterationActions.GetError()));
     });
 
   @Effect() addIteration$: Observable<Action> = this.actions$
-    .ofType(IterationActions.ADD)
-    .switchMap((action: IterationActions.Add) => {
+    .ofType<IterationActions.Add>(IterationActions.ADD)
+    .withLatestFrom(this.spaceQuery.getCurrentSpace)
+    .switchMap(([action, space]) => {
       const itMapper = new IterationMapper();
       const iteration = itMapper.toServiceModel(action.payload.iteration);
-      const parent = action.payload.parent ?
-        itMapper.toServiceModel(action.payload.parent) :
-        null;
-      return this.iterationService.createIteration(iteration, parent)
-        .map(iteration => {
-          return itMapper.toUIModel(iteration);
-        })
-        .map(iteration => {
-          let iterationName = iteration.name;
-          if (iterationName.length > 15) {
-            iterationName = iterationName.slice(0, 15) + '...';
-          }
-          return new IterationActions.AddSuccess({
-            iteration, parent: parent ? itMapper.toUIModel(parent) : null
-          });
-        })
-        .catch(() => {
-          try {
-            this.notifications.message({
-              message: `There was some problem adding the iteration.`,
-              type: NotificationType.DANGER
-            } as Notification);
-          } catch (e) {
-            console.log('There was some problem adding the iteration..');
-          }
-          return Observable.of(new IterationActions.AddError());
+      cleanObject(iteration, ['id']);
+      const url = action.payload.parent ?
+        action.payload.parent.link :
+        space.relationships.iterations.links.related;
+      return this.iterationService.createIteration(url, iteration)
+      .map(iteration => {
+        return itMapper.toUIModel(iteration);
+      })
+      .map(iteration => {
+        return new IterationActions.AddSuccess({
+          iteration: iteration,
+          parent: action.payload.parent ? action.payload.parent : null
         });
+      })
+      .catch(() => {
+        try {
+          this.notifications.message({
+            message: `There was some problem adding the iteration.`,
+            type: NotificationType.DANGER
+          } as Notification);
+        } catch (e) {
+          console.log('There was some problem adding the iteration..');
+        }
+        return Observable.of(new IterationActions.AddError());
+      });
     });
 
   @Effect() updateIteration$: Observable<Action> = this.actions$
@@ -80,16 +79,8 @@ export class IterationEffects {
           return itMapper.toUIModel(iteration);
         })
         .map(iteration => {
-          let iterationName = iteration.name;
-          if (iterationName.length > 15) {
-            iterationName = iterationName.slice(0, 15) + '...';
-          }
-          const payload = {
-            iteration: iteration
-          };
           return [
-            new IterationActions.UpdateSuccess(iteration),
-            new UpdateWorkitemIteration(payload)
+            new IterationActions.UpdateSuccess(iteration)
           ];
         })
         .switchMap(res => res)

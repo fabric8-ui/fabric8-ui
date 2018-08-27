@@ -51,7 +51,7 @@ export class IterationRelations {
       id: string;
       type: string;
     };
-    links: {
+    links?: {
       self: string;
     };
   };
@@ -261,7 +261,7 @@ export class IterationQuery {
   getIterationForTree(): Observable<IterationUI[]> {
     return this.getIterationsWithChildren().
       map((iterations: IterationUI[]) => {
-        return this.iterationService.getTopLevelIterations2(iterations);
+        return this.iterationService.getTopLevelIterations(iterations);
       });
   }
 

@@ -18,7 +18,7 @@ export class CustomQueryService {
    */
   getCustomQueries(apiUrl): Observable<CustomQueryModel[]> {
     return this.http
-      .get<{data: CustomQueryModel[]}>(apiUrl + 'jhghg')
+      .get<{data: CustomQueryModel[]}>(apiUrl)
       .pipe(
         map(r => r.data as CustomQueryModel[]),
         catchError(e => this.handleError(e, 'Fetch iteration API returned some error - '))
