@@ -3,9 +3,9 @@ import { TestBed } from '@angular/core/testing';
 import { Response, ResponseOptions } from '@angular/http';
 import { User } from 'ngx-login-client';
 import { Observable } from 'rxjs/Observable';
+import { delay } from 'rxjs/operators';
 import { HttpClientService } from '../shared/http-module/http.service';
 import { CollaboratorService } from './collaborator.service';
-
 
 describe('Unit test :: Collaborator Service', () => {
   let spy;
@@ -28,15 +28,9 @@ describe('Unit test :: Collaborator Service', () => {
     };
 
     collabService.httpClienService.get.and.returnValue(
-      Observable.of(new Response(
-        new ResponseOptions({
-          body: JSON.stringify(returnValue),
-          status: 200
-        })
-      ))
+      Observable.of(returnValue).pipe(delay(200))
     );
     collabService.getCollaborators('').subscribe((d) => {
-      console.log('########', d, returnValue.data);
       expect(d).toEqual(returnValue.data);
     });
   });

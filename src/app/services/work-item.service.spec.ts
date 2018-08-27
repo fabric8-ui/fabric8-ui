@@ -8,6 +8,7 @@ import {
 } from 'ngx-login-client';
 import { Observable } from 'rxjs';
 
+import { delay } from 'rxjs/operators';
 import { HttpBackendClient, HttpClientService } from '../shared/http-module/http.service';
 import { WorkItem } from './../models/work-item';
 import { AreaService } from './area.service';
@@ -107,12 +108,7 @@ describe('Unit Test :: WorkItemService', () => {
         const wiService = TestBed.get(WorkItemService);
         wiService['baseApiUrl'] = 'link/to/spaces/';
         wiService.httpClientService.get.and.returnValue(
-            Observable.of(new Response(
-                new ResponseOptions({
-                    body: JSON.stringify(workItemSnapshot),
-                    status: 200
-                })
-            )).delay(100)
+            Observable.of(workItemSnapshot)
         );
         wiService.getChildren('')
             .subscribe((data) => {
@@ -125,12 +121,7 @@ describe('Unit Test :: WorkItemService', () => {
         const wiService = TestBed.get(WorkItemService);
         wiService['baseApiUrl'] = 'link/to/spaces/';
         wiService.httpClientService.get.and.returnValue(
-            Observable.of(new Response(
-                new ResponseOptions({
-                    body: JSON.stringify(workItemSnapshot),
-                    status: 200
-                })
-            )).delay(100)
+            Observable.of(workItemSnapshot).pipe(delay(200))
         );
         wiService.getWorkItems('', {})
             .subscribe((data) => {
@@ -147,7 +138,7 @@ describe('Unit Test :: WorkItemService', () => {
         wiService['baseApiUrl'] = 'link/to/spaces/';
         wiService.httpClientService.get.and.returnValue(
             Observable.throw(new Error('Internal service error'))
-            .delay(100)
+            .pipe(delay(100))
         );
         spyOn(wiService, 'notifyError');
         wiService.getWorkItems('', {})
@@ -167,12 +158,7 @@ describe('Unit Test :: WorkItemService', () => {
     it('getMoreWorkItems :: Should get the list of workitems in proper format when getMoreWorkItems is called', (done) => {
         const wiService = TestBed.get(WorkItemService);
         wiService.httpClientService.get.and.returnValue(
-            Observable.of(new Response(
-                new ResponseOptions({
-                    body: JSON.stringify(workItemSnapshot),
-                    status: 200
-                })
-            )).delay(100)
+            Observable.of(workItemSnapshot).pipe(delay(100))
         );
         wiService.getMoreWorkItems('some/url')
             .subscribe((data) => {
@@ -186,7 +172,7 @@ describe('Unit Test :: WorkItemService', () => {
         const wiService = TestBed.get(WorkItemService);
         wiService.httpClientService.get.and.returnValue(
             Observable.throw(new Error('Internal service error'))
-            .delay(100)
+            .pipe(delay(100))
         );
         spyOn(wiService, 'notifyError');
         wiService.getMoreWorkItems('some/url')
@@ -218,12 +204,7 @@ describe('Unit Test :: WorkItemService', () => {
         const wiService = TestBed.get(WorkItemService);
         wiService['baseApiUrl'] = 'link/to/';
         wiService.httpClientService.get.and.returnValue(
-            Observable.of(new Response(
-                new ResponseOptions({
-                    body: JSON.stringify(getSingleWorkItemSnapShot),
-                    status: 200
-                })
-            )).delay(100)
+            Observable.of(getSingleWorkItemSnapShot).pipe(delay(100))
         );
         // We are providing the owner name as empty to the function
         wiService.getWorkItemByNumber('1', '', 'space1')
@@ -239,12 +220,7 @@ describe('Unit Test :: WorkItemService', () => {
         const wiService = TestBed.get(WorkItemService);
         wiService['baseApiUrl'] = 'link/to/';
         wiService.httpClientService.get.and.returnValue(
-            Observable.of(new Response(
-                new ResponseOptions({
-                    body: JSON.stringify(getSingleWorkItemSnapShot),
-                    status: 200
-                })
-            )).delay(100)
+            Observable.of(getSingleWorkItemSnapShot).pipe(delay(100))
         );
         // We are providing the space name as empty to the function
         wiService.getWorkItemByNumber('1', 'owner1', '')
@@ -261,7 +237,7 @@ describe('Unit Test :: WorkItemService', () => {
         wiService['baseApiUrl'] = 'link/to/';
         wiService.httpClientService.get.and.returnValue(
             Observable.throw(new Error('Internal service error'))
-            .delay(100)
+            .pipe(delay(100))
         );
         spyOn(wiService, 'notifyError');
         // We are providing the space name as empty to the function
@@ -280,20 +256,14 @@ describe('Unit Test :: WorkItemService', () => {
         'space' are provided considering to fetch workItem by the number`, (done) => {
         const wiService = TestBed.get(WorkItemService);
         wiService['baseApiUrl'] = 'link/to/';
-        wiService.httpClientService.get.and.returnValue(
-            Observable.of(new Response(
-                new ResponseOptions({
-                    body: JSON.stringify(getSingleWorkItemSnapShot),
-                    status: 200
-                })
-            )).delay(100)
+        wiService.httpBackendClient.get.and.returnValue(
+            Observable.of(getSingleWorkItemSnapShot).pipe(delay(100))
         );
         // We are providing the owner name as empty to the function
         wiService.getWorkItemByNumber('1', 'owner1', 'space1')
             .subscribe((data) => {
-                expect(wiService.httpClientService.get).toHaveBeenCalledWith(
-                    'link/to/namedspaces/owner1/space1/workitems/1',
-                    {'no-header': null}
+                expect(wiService.httpBackendClient.get).toHaveBeenCalledWith(
+                    'link/to/namedspaces/owner1/space1/workitems/1'
                 );
                 expect(data).toEqual(getSingleWorkItemSnapShot.data);
                 done();
@@ -304,9 +274,9 @@ describe('Unit Test :: WorkItemService', () => {
         the number considering 'space' or 'owner' is provided`, (done) => {
         const wiService = TestBed.get(WorkItemService);
         wiService['baseApiUrl'] = 'link/to/';
-        wiService.httpClientService.get.and.returnValue(
+        wiService.httpBackendClient.get.and.returnValue(
             Observable.throw(new Error('Internal service error'))
-            .delay(100)
+            .pipe(delay(100))
         );
         spyOn(wiService, 'notifyError');
         // We are providing the space name as empty to the function
@@ -314,9 +284,8 @@ describe('Unit Test :: WorkItemService', () => {
             .subscribe(
                 () => {},
                 (err) => {
-                    expect(wiService.httpClientService.get).toHaveBeenCalledWith(
-                        'link/to/namedspaces/owner1/space1/workitems/1',
-                        {'no-header': null}
+                    expect(wiService.httpBackendClient.get).toHaveBeenCalledWith(
+                        'link/to/namedspaces/owner1/space1/workitems/1'
                     );
                     expect(wiService.notifyError).toHaveBeenCalledTimes(1);
                     done();
@@ -327,12 +296,7 @@ describe('Unit Test :: WorkItemService', () => {
     it('getEvents :: Should return the list of events', (done) => {
         const wiService = TestBed.get(WorkItemService);
         wiService.httpClientService.get.and.returnValue(
-            Observable.of(new Response(
-                new ResponseOptions({
-                    body: JSON.stringify(workItemEventsSnapshot),
-                    status: 200
-                })
-            )).delay(100)
+            Observable.of(workItemEventsSnapshot).pipe(delay(100))
         );
         wiService.getEvents('link/to/events')
             .subscribe((data) => {
@@ -345,12 +309,7 @@ describe('Unit Test :: WorkItemService', () => {
     it('resolveComments :: Should fetch comments', (done) => {
         const wiService = TestBed.get(WorkItemService);
         wiService.httpClientService.get.and.returnValue(
-            Observable.of(new Response(
-                new ResponseOptions({
-                    body: JSON.stringify(commentsSnapshot),
-                    status: 200
-                })
-            )).delay(100)
+            Observable.of(commentsSnapshot).pipe(delay(100))
         );
         wiService.resolveComments('link/to/comments')
             .subscribe((data) => {
@@ -363,12 +322,7 @@ describe('Unit Test :: WorkItemService', () => {
     it('resolveLinks :: Should fetch links', (done) => {
         const wiService = TestBed.get(WorkItemService);
         wiService.httpClientService.get.and.returnValue(
-            Observable.of(new Response(
-                new ResponseOptions({
-                    body: JSON.stringify(linkResponseSnapShot),
-                    status: 200
-                })
-            )).delay(100)
+            Observable.of(linkResponseSnapShot).pipe(delay(100))
         );
         wiService.resolveLinks('link/to/links')
             .subscribe((data) => {
@@ -381,12 +335,7 @@ describe('Unit Test :: WorkItemService', () => {
     it('getWorkItemTypes :: Should fetch work item types', (done) => {
         const wiService = TestBed.get(WorkItemService);
         wiService.httpClientService.get.and.returnValue(
-            Observable.of(new Response(
-                new ResponseOptions({
-                    body: JSON.stringify(workItemTypesResponseSnapshot),
-                    status: 200
-                })
-            )).delay(100)
+            Observable.of(workItemTypesResponseSnapshot).pipe(delay(100))
         );
         wiService.getWorkItemTypes('link/to/types')
             .subscribe((data) => {
@@ -399,7 +348,7 @@ describe('Unit Test :: WorkItemService', () => {
     it('getWorkItemTypes :: Should call notifyError on error', (done) => {
         const wiService = TestBed.get(WorkItemService);
         wiService.httpClientService.get.and.returnValue(
-            Observable.throw(new Error('Internal server error')).delay(100)
+            Observable.throw(new Error('Internal server error')).pipe(delay(100))
         );
         spyOn(wiService, 'notifyError');
         wiService.getWorkItemTypes('link/to/types')
@@ -416,7 +365,7 @@ describe('Unit Test :: WorkItemService', () => {
     it('delete :: Should call httpClientService delete', (done) => {
         const wiService = TestBed.get(WorkItemService);
         wiService.httpClientService.delete.and.returnValue(
-            Observable.of({}).delay(100)
+            Observable.of({}).pipe(delay(100))
         );
         wiService.delete({links: {self: 'link/to/delete'}})
             .subscribe(
@@ -431,12 +380,7 @@ describe('Unit Test :: WorkItemService', () => {
     it('create :: Should call httpClientService post to create work item', (done) => {
         const wiService = TestBed.get(WorkItemService);
         wiService.httpClientService.post.and.returnValue(
-            Observable.of(new Response(
-                new ResponseOptions({
-                    body: JSON.stringify(getSingleWorkItemSnapShot),
-                    status: 200
-                })
-            )).delay(100)
+            Observable.of(getSingleWorkItemSnapShot).pipe(delay(100))
         );
         wiService.create('link/to/create', getSingleWorkItemSnapShot.data)
             .subscribe(
@@ -454,12 +398,7 @@ describe('Unit Test :: WorkItemService', () => {
     it('update :: Should call httpClientService patch to update work item', (done) => {
         const wiService = TestBed.get(WorkItemService);
         wiService.httpClientService.patch.and.returnValue(
-            Observable.of(new Response(
-                new ResponseOptions({
-                    body: JSON.stringify(getSingleWorkItemSnapShot),
-                    status: 200
-                })
-            )).delay(100)
+            Observable.of(getSingleWorkItemSnapShot).pipe(delay(100))
         );
         wiService.update(getSingleWorkItemSnapShot.data)
             .subscribe(
@@ -477,12 +416,7 @@ describe('Unit Test :: WorkItemService', () => {
     it('createComment :: Should call httpClientService post to create comment', (done) => {
         const wiService = TestBed.get(WorkItemService);
         wiService.httpClientService.post.and.returnValue(
-            Observable.of(new Response(
-                new ResponseOptions({
-                    body: JSON.stringify(singleCommentResponseSnapshot),
-                    status: 200
-                })
-            )).delay(100)
+            Observable.of(singleCommentResponseSnapshot).pipe(delay(100))
         );
         wiService.createComment('link/to/create/comment', singleCommentResponseSnapshot.data)
             .subscribe(
