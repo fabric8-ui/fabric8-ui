@@ -3,6 +3,7 @@ import { getTestBed, TestBed } from '@angular/core/testing';
 
 
 import { HttpClientService } from './http.service';
+import { HttpResponse } from '@angular/common/http';
 
 describe('HttpService', () => {
   let injector: TestBed;
@@ -86,25 +87,15 @@ describe('HttpService', () => {
     req.flush(mockItems);
   });
 
-  it('Should return correct response on delete request Observable<Item[]>', () => {
-    type Item = {
-      name: string; id: string
-    };
-
-    const mockItems: Item[] = [
-      {name: 'Laptop', id: '1'},
-      {name: 'PC', id: '2'}
-    ];
-
-    service.delete<Item[]>('/some/url')
+  it('Should return correct response on delete request', () => {
+    service.delete('/some/url')
     .subscribe(items => {
-      expect(items.length).toBe(2);
-      expect(items).toEqual(mockItems);
+      expect(items).toBeNull();
     });
 
     const req = httpMock.expectOne('/some/url');
     expect(req.request.method).toBe('DELETE');
-    req.flush(mockItems);
+    req.event(new HttpResponse<boolean>({body: false}));
   });
 
 });
