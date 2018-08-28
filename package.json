@@ -81,7 +81,7 @@
   },
   "dependencies": {
     "moment": "^2.18.1",
-    "patternfly-ng": "^4.2.0"
+    "patternfly-ng": "^4.5.1"
   },
   "peerDependencies": {
     "@angular/animations": "^6.1.0",
