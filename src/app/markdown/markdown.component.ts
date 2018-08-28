@@ -269,8 +269,9 @@ export class MarkdownComponent implements OnChanges, OnInit, AfterViewChecked {
   }
 
   editorKeyUp(event: Event) {
-    this.fieldEmpty =
-      event.srcElement.textContent.trim() === '';
+    // Do not use this.event.srcElement. The "event" object is not consistent
+    // across browsers. Chrome has event.srcElement while firefox has event.originalTarget.
+    this.fieldEmpty = this.editorInput.nativeElement.innerText.trim()  === '';
   }
 
   closeClick() {
