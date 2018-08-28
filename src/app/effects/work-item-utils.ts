@@ -1,7 +1,13 @@
-import { Observable } from 'rxjs';
+import { ofType } from '@ngrx/effects';
+import { Observable, pipe } from 'rxjs';
+import { withLatestFrom } from 'rxjs/operators';
 import { WorkItemUI } from '../models/work-item';
 import { FilterService } from '../services/filter.service';
 import { WorkItemService } from '../services/work-item.service';
+
+export const nameless = (x, y) => pipe(
+  ofType(x),
+  withLatestFrom(y));
 
 export function workitemMatchesFilter(route,
   filterService: FilterService,
