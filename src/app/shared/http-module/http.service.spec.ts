@@ -1,9 +1,7 @@
+import { HttpResponse } from '@angular/common/http';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { getTestBed, TestBed } from '@angular/core/testing';
-
-
 import { HttpClientService } from './http.service';
-import { HttpResponse } from '@angular/common/http';
 
 describe('HttpService', () => {
   let injector: TestBed;
