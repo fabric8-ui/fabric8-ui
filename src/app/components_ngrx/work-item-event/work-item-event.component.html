@@ -1,14 +1,15 @@
 <div class="f8-event__wrap">
   <user-avatar
     class="pull-left"
-    *ngIf="(event.modifier | async).avatar"
-    [imgSrc]= "(event.modifier | async).avatar | almAvatarSize: 25"
+    *ngIf="(event.modifier | async)?.avatar"
+    [imgSrc]= "(event.modifier | async)?.avatar | almAvatarSize: 25"
     container="body">
   </user-avatar>
   <div class="f8-event-body margin-v-3">
       <strong class="f8-event-author pull-left">
-        {{ (event.modifier | async).name.split(' ')[0] }}
+        {{ (event.modifier | async)?.name.split(' ')[0] }}
       </strong>
+      &nbsp;
       <!-- Decription -->
       <span *ngIf="textType === 'description'">
         edited the description
