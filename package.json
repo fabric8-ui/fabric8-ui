@@ -116,7 +116,7 @@
     "child_process": "1.0.2",
     "clean-css": "4.2.1",
     "clean-webpack-plugin": "0.1.19",
-    "codelyzer": "4.4.3",
+    "codelyzer": "4.4.4",
     "copy-webpack-plugin": "4.5.2",
     "copyfiles": "2.0.0",
     "core-js": "2.5.7",
