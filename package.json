@@ -128,7 +128,7 @@
     "exports-loader": "0.7.0",
     "expose-loader": "0.7.5",
     "extract-text-webpack-plugin": "4.0.0-beta.0",
-    "file-loader": "1.1.11",
+    "file-loader": "2.0.0",
     "gh-pages": "1.2.0",
     "gulp": "4.0.0",
     "gulp-changed": "3.2.0",
