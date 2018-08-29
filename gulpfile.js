@@ -21,12 +21,12 @@ const gulp = require('gulp'),
   stylelint = require('gulp-stylelint'),
   stylus = require('stylus');
 
-var appSrc = 'src';
-var libraryBuild = 'build';
-var libraryDist = 'dist';
-var demoDist = 'dist-demo';
-var watchDist = 'dist-watch';
-var globalExcludes = [
+const appSrc = 'src';
+const libraryBuild = 'build';
+const libraryDist = 'dist';
+const demoDist = 'dist-demo';
+const watchDist = 'dist-watch';
+const globalExcludes = [
   '!./**/demo.*',
   '!./**/demo/**',
   '!./**/example',
@@ -72,7 +72,7 @@ function copyToDist(srcArr) {
 // Minify HTML templates
 function minifyTemplate(file) {
   try {
-    var minifiedFile = htmlMinifier.minify(file, {
+    let minifiedFile = htmlMinifier.minify(file, {
       collapseWhitespace: true,
       caseSensitive: true,
       removeComments: true
@@ -81,13 +81,6 @@ function minifyTemplate(file) {
   } catch (err) {
     console.log(err);
   }
-}
-
-function updateWatchDist() {
-  return gulp
-    .src([libraryDist + '/**'].concat(globalExcludes))
-    .pipe(changed(watchDist))
-    .pipe(gulp.dest(watchDist));
 }
 
 // Build LESS
@@ -115,7 +108,6 @@ function transpileMinifyLESS(src) {
     }))
     .pipe(rename({suffix: '.min'}))
     .pipe(sourcemaps.write())
-    // .pipe(gulp.dest('./dist/src/'));
     .pipe(gulp.dest(function (file) {
       return __dirname + file.base.slice(__dirname.length);
     }));
@@ -187,9 +179,9 @@ function transpileLess() {
 function inlineTemplate() {
   return gulp.src(['./src/app/**/*.ts'].concat(globalExcludes), {base: './'})
     .pipe(replace(/templateUrl.*\'/g, function (matched) {
-      var fileName = matched.match(/\/.*html/g).toString();
-      var dirName = this.file.relative.substring(0, this.file.relative.lastIndexOf('/'));
-      var fileContent = fs.readFileSync(dirName + fileName, "utf8");
+      let fileName = matched.match(/\/.*html/g).toString();
+      let dirName = this.file.relative.substring(0, this.file.relative.lastIndexOf('/'));
+      let fileContent = fs.readFileSync(dirName + fileName, "utf8");
       return 'template: \`' + minifyTemplate(fileContent) + '\`';
     }))
     .pipe(gulp.dest(libraryBuild));
