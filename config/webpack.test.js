@@ -124,7 +124,12 @@ module.exports = function () {
         {
           test: /\.ts$/,
           use: [
-            'ts-loader',
+            {
+              loader: 'ts-loader',
+              options: {
+                configFile: 'tsconfig-test.json'
+              }
+            },
             'angular2-template-loader'
           ],
           exclude: [/\.e2e\.ts$/]
