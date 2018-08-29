@@ -95,12 +95,13 @@ describe('Dialog component - ', () => {
     expect(el.children.length).toBe(comp.dialog.actionButtons.length);
   });
 
-  it('Clicking a button will close the dialog.', () => {
+  it('Clicking a button will close the dialog.', (done: DoneFn) => {
     comp.dialog = dialog;
     fixture.detectChanges();
     comp.btnClick(0);
     setTimeout(() => {
       expect(comp.modalFadeIn).toBeFalsy();
+      done();
     }, 300); // 300ms takes to close the modal
   });
 
