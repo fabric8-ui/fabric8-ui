@@ -9,12 +9,10 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { sortBy } from 'lodash';
 import { DragulaService } from 'ng2-dragula';
-import { Observable } from 'rxjs';
 import { Subject } from 'rxjs';
+import { filter, map, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 import { BoardQuery, BoardUIQuery } from '../../models/board.model';
-import { cleanObject } from '../../models/common.model';
 import { WorkItemQuery, WorkItemUI } from '../../models/work-item';
 import { FilterService } from '../../services/filter.service';
 import { AppState } from '../../states/app.state';
@@ -36,11 +34,11 @@ export class PlannerBoardComponent implements AfterViewChecked, OnInit, OnDestro
     @ViewChild('quickPreview') quickPreview: WorkItemPreviewPanelComponent;
 
 
-    private uiLockedSidebar: boolean = false;
-    private sidePanelOpen: boolean = true;
+    public uiLockedSidebar: boolean = false;
+    public sidePanelOpen: boolean = true;
+    public board$;
+
     private eventListeners: any[] = [];
-    private board$;
-    private columns;
     private destroy$ = new Subject();
 
     constructor(
@@ -61,7 +59,11 @@ export class PlannerBoardComponent implements AfterViewChecked, OnInit, OnDestro
       if (bag !== undefined) {
         this.dragulaService.destroy('board-column');
       }
-      this.dragulaService.drop.asObservable().takeUntil(this.destroy$).subscribe((value) => {
+      this.dragulaService.drop.asObservable()
+      .pipe(
+        takeUntil(this.destroy$)
+      )
+      .subscribe((value) => {
         this.onDrop(value.slice(1));
       });
       // card is not draggable if loggedInUser is not collaborator or creator of workItem
@@ -76,13 +78,14 @@ export class PlannerBoardComponent implements AfterViewChecked, OnInit, OnDestro
       this.iterationQuery.deselectAllIteration();
       this.eventListeners.push(
         this.spaceQuery.getCurrentSpace
-          .switchMap(() => {
-            return this.groupTypeQuery.getFirstGroupType;
-          }).take(1)
-          .do((groupType) => {
-            this.setDefaultUrl(groupType);
-            this.checkUrl(groupType);
-          })
+          .pipe(
+            switchMap(() => this.groupTypeQuery.getFirstGroupType),
+            take(1),
+            tap((groupType) => {
+              this.setDefaultUrl(groupType);
+              this.checkUrl(groupType);
+            })
+          )
           .subscribe()
       );
     }
@@ -113,8 +116,10 @@ export class PlannerBoardComponent implements AfterViewChecked, OnInit, OnDestro
     checkUrl(groupType) {
       this.eventListeners.push(
         this.router.events
-          .filter(event => event instanceof NavigationStart)
-          .map((e: NavigationStart) => e.url)
+          .pipe(
+            filter(event => event instanceof NavigationStart),
+            map((e: NavigationStart) => e.url)
+          )
           .subscribe(url => {
             if (url.indexOf('?q') === -1 &&
               url.indexOf('/plan/board') > -1) {
@@ -125,16 +130,18 @@ export class PlannerBoardComponent implements AfterViewChecked, OnInit, OnDestro
 
       this.eventListeners.push(
         this.route.queryParams
-          .filter(params => params.hasOwnProperty('q'))
-          .map(params => {
-            let iterationId = this.filterService.getConditionFromQuery(params.q, 'iteration');
-            if (iterationId !== undefined) {
-              return [this.filterService.getConditionFromQuery(params.q, 'boardContextId'), iterationId];
-            } else {
-              const contextId = this.filterService.queryToFlat(params.q)[0].value;
-              return [contextId];
-            }
-          })
+          .pipe(
+            filter(params => params.hasOwnProperty('q')),
+            map(params => {
+              let iterationId = this.filterService.getConditionFromQuery(params.q, 'iteration');
+              if (iterationId !== undefined) {
+                return [this.filterService.getConditionFromQuery(params.q, 'boardContextId'), iterationId];
+              } else {
+                const contextId = this.filterService.queryToFlat(params.q)[0].value;
+                return [contextId];
+              }
+            })
+          )
           .subscribe(ids => {
             // ids[0]: boardContextId, ids[1]: iteration
             if (ids.length > 1) {
@@ -192,7 +199,9 @@ export class PlannerBoardComponent implements AfterViewChecked, OnInit, OnDestro
         direction = null;
       }
       this.workItemQuery.getWorkItemWithId(el.children[0].getAttribute('data-id'))
-        .take(1)
+        .pipe(
+          take(1)
+        )
         .subscribe((workItem: WorkItemUI) => {
           let workitem = {} as WorkItemUI;
           workitem['version'] = workItem.version;
