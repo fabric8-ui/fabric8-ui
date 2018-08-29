@@ -9,6 +9,7 @@
   "compileOnSave": false,
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
+    "allowUnreachableCode": false,
     "baseUrl": ".",
     "declaration": true,
     "emitDecoratorMetadata": true,
@@ -21,25 +22,19 @@
     "noImplicitAny": true,
     "outDir": "dist",
     "paths": {
-      "@angular/common": ["node_modules/@angular/common"],
       "@angular/core": ["node_modules/@angular/core"],
-      "@angular/forms": ["node_modules/@angular/forms"],
       "@angular/http": ["node_modules/@angular/http"],
       "@angular/router": ["node_modules/@angular/router"],
       "rxjs/*": ["node_modules/rxjs/*"]
     },
-    "rootDir": "build/src/app",
+    "rootDir": ".",
     "skipLibCheck": true,
     "sourceMap": true,
     "strictNullChecks": false,
     "stripInternal": true,
     "target": "es5"
   },
-  "exclude": [
-    "node_modules",
-    "dist"
-  ],
   "files": [
-    "build/src/app/index.ts"
+    "src/app/index.ts"
   ]
 }
