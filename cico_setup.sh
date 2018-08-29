@@ -36,13 +36,6 @@ install_dependencies() {
   cp config/google-chrome.repo /etc/yum.repos.d/google-chrome.repo
   yum install -y google-chrome-stable
 
-  # Set the branch as it defaults to the branch 'origin/master'
-  git checkout master
-  export GIT_BRANCH=master
-  # check where we are
-  git branch -va
-  git remote -v
-
   if [ $? -eq 0 ]; then
       echo 'CICO: npm install : OK'
   else

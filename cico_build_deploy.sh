@@ -6,6 +6,8 @@ set -ex
 
 install_dependencies
 
+set_branch_to_master
+
 run_unit_tests
 
 build_project
