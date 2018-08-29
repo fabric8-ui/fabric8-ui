@@ -21,7 +21,7 @@
     "reinstall": "npm run clean && npm install",
     "remove-dist": "rimraf dist dist-watch",
     "rimraf": "rimraf",
-    "semantic-release": "semantic-release pre && npm run build && cp -r .git dist && npm publish dist/ && semantic-release post",
+    "semantic-release": "semantic-release",
     "start": "webpack-dev-server --config config/webpack.demo.js --progress --host 0.0.0.0 --port 3001 --profile --watch --content-base src/",
     "test": "npm run test:unit",
     "test:unit": "karma start",
@@ -195,7 +195,7 @@
     "rxjs-compat": "6.2.2",
     "rxjs-tslint": "0.1.5",
     "script-ext-html-webpack-plugin": "2.0.1",
-    "semantic-release": "8.2.0",
+    "semantic-release": "15.9.12",
     "source-map-loader": "0.2.4",
     "style-loader": "0.23.0",
     "stylelint": "9.5.0",
@@ -223,10 +223,8 @@
   },
   "release": {
     "branch": "master",
-    "debug": false,
-    "verifyConditions": {
-      "path": "./node_modules/@krux/condition-jenkins"
-    }
+    "debug": "true",
+    "pkgRoot": "dist"
   },
   "config": {
     "commitizen": {
