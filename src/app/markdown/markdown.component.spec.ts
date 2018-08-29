@@ -86,7 +86,7 @@ describe('Markdown component - ', () => {
   );
 
   it('should emit output onsave empty field when ' +
-  '`allowEmptySave` is false and the field is empty', () => {
+  '`allowEmptySave` is false and the field is empty', (done: DoneFn) => {
     spyOn(comp.onSaveClick, 'emit');
     comp.allowEmptySave = false;
     comp.fieldEmpty = true;
@@ -94,9 +94,10 @@ describe('Markdown component - ', () => {
     comp.rawText = 'xyz';
     comp.saveClick();
     expect(comp.onSaveClick.emit).not.toHaveBeenCalled();
+    done();
   });
 
-  it('should emit output onsave empty field when `allowEmptySave` is true', () => {
+  it('should emit output onsave empty field when `allowEmptySave` is true', (done: DoneFn) => {
     spyOn(comp.onSaveClick, 'emit');
     comp.allowEmptySave = true;
     comp.fieldEmpty = true;
@@ -104,10 +105,11 @@ describe('Markdown component - ', () => {
     comp.rawText = 'xyz';
     comp.saveClick();
     expect(comp.onSaveClick.emit).toHaveBeenCalled();
+    done();
   });
 
   it('should emit output onsave empty field when ' +
-      '`allowEmptySave` is false and the field is not empty', () => {
+      '`allowEmptySave` is false and the field is not empty', (done: DoneFn) => {
     spyOn(comp.onSaveClick, 'emit');
     comp.allowEmptySave = false;
     comp.fieldEmpty = false;
@@ -115,5 +117,6 @@ describe('Markdown component - ', () => {
     comp.rawText = 'xyz';
     comp.saveClick();
     expect(comp.onSaveClick.emit).toHaveBeenCalled();
+    done();
   });
 });
