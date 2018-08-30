@@ -1,13 +1,39 @@
+import { Injectable } from '@angular/core';
 import { ofType } from '@ngrx/effects';
+import { Action } from '@ngrx/store';
+import { Notification, Notifications, NotificationType } from 'ngx-base';
 import { Observable, pipe } from 'rxjs';
-import { withLatestFrom } from 'rxjs/operators';
+import { catchError, withLatestFrom } from 'rxjs/operators';
 import { WorkItemUI } from '../models/work-item';
 import { FilterService } from '../services/filter.service';
 import { WorkItemService } from '../services/work-item.service';
 
-export const nameless = (x, y) => pipe(
+
+export const filterTypeWithSpace = (x, y) => pipe(
   ofType(x),
   withLatestFrom(y));
+
+@Injectable()
+export class ErrorHandler {
+  constructor(private notifications: Notifications) {}
+
+  public handleError<T>(error: any, msg: string, nextActions: T | T[]): T[] {
+    this.notifyError(msg);
+    return Array.isArray(nextActions) ? nextActions : [nextActions];
+  }
+
+  private notifyError(msg: string): void {
+    try {
+      this.notifications.message({
+        message: msg,
+        type: NotificationType.DANGER
+      } as Notification);
+    } catch (e) {
+      console.log('Problem in fetching Areas.');
+    }
+  }
+
+}
 
 export function workitemMatchesFilter(route,
   filterService: FilterService,
