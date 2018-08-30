@@ -1,10 +1,12 @@
 import { AfterViewChecked, Component, ElementRef, HostListener, OnDestroy, OnInit, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
-import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { sortBy } from 'lodash';
 import { cloneDeep, isEqual } from 'lodash';
 import { EmptyStateConfig } from 'patternfly-ng';
 import { Observable } from 'rxjs';
+import { combineLatest } from 'rxjs/Observable/combineLatest';
+import { filter, startWith, switchMap, tap } from 'rxjs/operators';
 import { SpaceQuery } from '../../models/space';
 import { WorkItemQuery, WorkItemUI } from '../../models/work-item';
 import { WorkItemTypeQuery } from '../../models/work-item-type';
@@ -14,6 +16,7 @@ import { AppState } from '../../states/app.state';
 import { datatableColumn } from '../planner-list/datatable-config';
 import * as WorkItemActions from  './../../actions/work-item.actions';
 import { WorkItemPreviewPanelComponent } from './../work-item-preview-panel/work-item-preview-panel.component';
+
 @Component({
   encapsulation: ViewEncapsulation.None,
   selector: 'planner-query',
@@ -25,51 +28,53 @@ export class PlannerQueryComponent implements OnInit, OnDestroy, AfterViewChecke
   @ViewChild('listContainer') listContainer: ElementRef;
   @ViewChild('querySearch') querySearchRef: ElementRef;
 
-  workItemsSource: Observable<WorkItemUI[]> = Observable.combineLatest(
-    this.spaceQuery.getCurrentSpace.filter(s => !!s),
-    this.route.queryParams.filter(q => !!q),
+  workItemsSource: Observable<WorkItemUI[]> = combineLatest(
+    this.spaceQuery.getCurrentSpace.pipe(filter(s => !!s)),
+    this.route.queryParams.pipe(filter(q => !!q)),
     // Wait untill workItemTypes are loaded
-    this.workItemTypeQuery.getWorkItemTypes().filter(wt => !!wt.length))
-    .do((i) => this.setDataTableColumns())
-    .switchMap(([space, query]) => {
-      if (query.hasOwnProperty('q')) {
-        this.searchQuery = query.q;
-        this.disableInput = false;
-        this.currentQuery = 'Query';
-        const filters = this.filterService.queryToJson(query.q);
-        this.store.dispatch(new WorkItemActions.Get({
-          pageSize: 200,
-          filters: filters,
-          isShowTree: false
-        }));
-      } else if (query.hasOwnProperty('parentId')) {
-        this.disableInput = true;
-        this.searchQuery = 'Children of ' + query.parentId;
-        this.currentQuery = query.parentId;
+    this.workItemTypeQuery.getWorkItemTypes().pipe(filter(wt => !!wt.length)))
+    .pipe(
+      tap((i) => this.setDataTableColumns()),
+      switchMap(([space, query]) => {
+        if (query.hasOwnProperty('q')) {
+          this.searchQuery = query.q;
+          this.disableInput = false;
+          this.currentQuery = 'Query';
+          const filters = this.filterService.queryToJson(query.q);
+          this.store.dispatch(new WorkItemActions.Get({
+            pageSize: 200,
+            filters: filters,
+            isShowTree: false
+          }));
+        } else if (query.hasOwnProperty('parentId')) {
+          this.disableInput = true;
+          this.searchQuery = 'Children of ' + query.parentId;
+          this.currentQuery = query.parentId;
 
-        // FIXME: This is temporary untill we have support for parent.id/number in search endpoint
-        const payload = space.links.self.split('spaces')[0] + 'workitems/' + query.parentId + '/children';
-        this.store.dispatch(new WorkItemActions.GetWorkItemChildrenForQuery(payload));
-      }
-      if (query.hasOwnProperty('prevq')) {
-        this.breadcrumbs = JSON.parse(query.prevq);
-      }
-      return this.workItemQuery.getWorkItems();
-    })
-    .startWith([]);
-  currentQuery: string;
-  breadcrumbs: any[] = [];
-  disableInput: boolean;
-  private uiLockedList: boolean = false;
-  private emptyStateConfig: EmptyStateConfig;
-  private contentItemHeight: number = 50;
-  private columns: any[];
-  private selectedRows: any = [];
+          // FIXME: This is temporary untill we have support for parent.id/number in search endpoint
+          const payload = space.links.self.split('spaces')[0] + 'workitems/' + query.parentId + '/children';
+          this.store.dispatch(new WorkItemActions.GetWorkItemChildrenForQuery(payload));
+        }
+        if (query.hasOwnProperty('prevq')) {
+          this.breadcrumbs = JSON.parse(query.prevq);
+        }
+        return this.workItemQuery.getWorkItems();
+      }),
+      startWith([])
+    );
+  public currentQuery: string;
+  public breadcrumbs: any[] = [];
+  public disableInput: boolean;
+  public uiLockedList: boolean = false;
+  public emptyStateConfig: EmptyStateConfig;
+  public contentItemHeight: number = 50;
+  public columns: any[];
+  public selectedRows: any = [];
+  public searchQuery: string = '';
+
   private eventListeners: any[] = [];
   private hdrHeight: number = 0;
   private querySearchRefHt: number = 0;
-  private searchQuery: string = '';
-  private childrenApiUrl: string;
 
   constructor(
     private cookieService: CookieService,

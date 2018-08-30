@@ -24,6 +24,8 @@ import { AreaQuery } from '../../models/area.model';
 import { IterationQuery } from '../../models/iteration.model';
 import { WorkItemTypeQuery } from '../../models/work-item-type';
 import { FilterEffects } from './../../effects/filter.effects';
+import { GroupTypeQuery } from './../../models/group-types.model';
+import { SpaceQuery } from './../../models/space';
 import { FilterReducer } from './../../reducers/filter.reducer';
 import {
   initialState as initialFilterState
@@ -58,7 +60,9 @@ import {
     WorkItemService,
     IterationQuery,
     AreaQuery,
-    WorkItemTypeQuery
+    WorkItemTypeQuery,
+    GroupTypeQuery,
+    SpaceQuery
   ],
   exports: [ToolbarPanelComponent]
 })

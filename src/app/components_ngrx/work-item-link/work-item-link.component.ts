@@ -17,6 +17,7 @@ import {
   ViewChild
 } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { map } from 'rxjs/operators';
 import { WorkItemLinkQuery } from '../../models/link';
 import { WorkItemLinkUI } from './../../models/link';
 import { WorkItemLinkTypeQuery } from './../../models/link-type';
@@ -170,7 +171,7 @@ export class WorkItemLinkComponent implements OnInit, OnDestroy {
   searchWorkItem(term: string): Observable<TypeaheadDropdownItem[]> {
     return this.spaceQuery.getCurrentSpace.switchMap(space => {
       return this.workItemService.searchLinkWorkItem(term, space.id)
-      .map(items => {
+      .pipe(map(items => {
         return items
         .filter(item => this.searchNotAllowedIds.indexOf(item.id) == -1)
         .map(item => {
@@ -180,7 +181,7 @@ export class WorkItemLinkComponent implements OnInit, OnDestroy {
             selected: false
           };
         });
-      });
+      }));
     });
   }
 

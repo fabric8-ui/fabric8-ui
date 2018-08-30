@@ -1,16 +1,12 @@
 import {
   Component,
   EventEmitter,
-  Input,
   OnChanges,
   OnDestroy,
   OnInit,
   Output,
   ViewChild
 } from '@angular/core';
-
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
 
 import { cloneDeep } from 'lodash';
 import * as moment from 'moment';

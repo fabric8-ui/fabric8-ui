@@ -1,34 +1,21 @@
 import {
   Component,
-  DoCheck,
   EventEmitter,
   Input,
-  OnChanges,
-  OnDestroy,
   OnInit,
   Output,
-  SimpleChanges,
-  ViewChild,
   ViewEncapsulation
 } from '@angular/core';
 import {
   ActivatedRoute,
-  Event as NavigationEvent,
-  NavigationEnd,
-  NavigationStart,
   Router
 } from '@angular/router';
 
-import { Broadcaster, Logger, Notification, Notifications, NotificationType } from 'ngx-base';
-import { Space, Spaces } from 'ngx-fabric8-wit';
 import { AuthenticationService } from 'ngx-login-client';
-import { Dialog } from 'ngx-widgets';
-import { Subscription } from 'rxjs/Subscription';
 
-import { GroupTypeUI } from '../../models/group-types.model';
-import { IterationUI } from '../../models/iteration.model';
-import { FilterService } from '../../services/filter.service';
-import { GroupTypesService } from '../../services/group-types.service';
+import { GroupTypeUI } from './../../models/group-types.model';
+import { IterationUI } from './../../models/iteration.model';
+import { FilterService } from './../../services/filter.service';
 
 @Component({
   encapsulation: ViewEncapsulation.None,
@@ -36,7 +23,7 @@ import { GroupTypesService } from '../../services/group-types.service';
   templateUrl: './iteration-list-entry.component.html',
   styleUrls: ['./iteration-list-entry.component.less']
 })
-export class IterationListEntryComponent implements OnInit, OnDestroy {
+export class IterationListEntryComponent implements OnInit {
   //@Input() listItem: TreeListItemComponent;
   @Input() iteration: IterationUI;
   @Input() selected: boolean = false;
@@ -53,32 +40,14 @@ export class IterationListEntryComponent implements OnInit, OnDestroy {
 
   loggedIn: Boolean = false;
   queryParams: Object = {};
-  eventListeners: any[] = [];
   selectedItemId: string | number = 0;
-  private spaceSubscription: Subscription = null;
-  spaceId: string = '';
 
   constructor(private auth: AuthenticationService,
-    private broadcaster: Broadcaster,
-    private route: ActivatedRoute,
-    private filterService: FilterService,
-    private groupTypesService: GroupTypesService,
-    private notifications: Notifications,
-    private router: Router,
-    private spaces: Spaces,
-    private logger: Logger) {}
+    private filterService: FilterService
+  ) {}
 
   ngOnInit(): void {
     this.loggedIn = this.auth.isLoggedIn();
-    this.spaceSubscription = this.spaces.current.subscribe(space => {
-      if (space) {
-        this.spaceId = space.id;
-      }
-    });
-  }
-
-  ngOnDestroy() {
-    this.eventListeners.forEach(subscriber => subscriber.unsubscribe());
   }
 
   constructURL(iterationId: string) {

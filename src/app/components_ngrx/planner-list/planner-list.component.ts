@@ -311,7 +311,7 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
 
   setWorkItemTypes() {
     this.eventListeners.push(
-      Observable.combineLatest(
+      combineLatest(
         this.workItemTypeSource,
         this.groupTypeQuery.getGroupTypes
       ).subscribe(([workItemTypes, groupTypes]) => {

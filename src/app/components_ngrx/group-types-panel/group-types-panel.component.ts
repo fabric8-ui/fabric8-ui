@@ -1,4 +1,5 @@
 import { combineLatest } from 'rxjs/observable/combineLatest';
+import { filter } from 'rxjs/operators';
 
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -7,7 +8,6 @@ import { Spaces } from 'ngx-fabric8-wit';
 import { AuthenticationService } from 'ngx-login-client';
 
 import { GroupTypeQuery, GroupTypeUI } from '../../models/group-types.model';
-import { WorkItemType } from '../../models/work-item-type';
 import { FilterService } from '../../services/filter.service';
 
 // ngrx stuff
@@ -49,8 +49,9 @@ export class GroupTypesComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     const groupTypesData = this.groupTypeQuery.getGroupTypes;
-    const spaceData = this.spaceQuery.getCurrentSpace
-      .filter(space => space !== null);
+    const spaceData = this.spaceQuery.getCurrentSpace.pipe(
+      filter(space => space !== null)
+    );
 
     this.eventListeners.push(
       combineLatest(
