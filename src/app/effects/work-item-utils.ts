@@ -19,6 +19,7 @@ export class ErrorHandler {
 
   public handleError<T>(error: any, msg: string, nextActions: T | T[]): T[] {
     this.notifyError(msg);
+    console.log('#################', error);
     return Array.isArray(nextActions) ? nextActions : [nextActions];
   }
 
