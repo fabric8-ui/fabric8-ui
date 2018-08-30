@@ -1,18 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
-import {
-  Notification,
-  Notifications,
-  NotificationType
-} from 'ngx-base';
 import { Observable } from 'rxjs';
+import { catchError, map, switchMap } from 'rxjs/operators';
+import { SpaceQuery } from '../models/space';
 import * as CustomQueryActions from './../actions/custom-query.actions';
 import { CustomQueryModel } from './../models/custom-query.model';
 import {
   CustomQueryService
 } from './../services/custom-query.service';
-import { AppState } from './../states/app.state';
+import { ErrorHandler, filterTypeWithSpace } from './work-item-utils';
+
 
 export type Action = CustomQueryActions.All;
 
@@ -21,88 +18,74 @@ export class CustomQueryEffects {
   constructor(
     private actions$: Actions,
     private customQueryService: CustomQueryService,
-    private store: Store<AppState>,
-    private notifications: Notifications
+    private spaceQuery: SpaceQuery,
+    private errHandler: ErrorHandler
   ) {}
 
   @Effect() GetCustomQueries$: Observable<Action> = this.actions$
-    .ofType(CustomQueryActions.GET)
-    .withLatestFrom(this.store.select('planner').select('space'))
-    .switchMap(([action, space]) => {
-      return this.customQueryService.getCustomQueries(
-        space.links.self + '/queries'
-      )
-      .map((types: CustomQueryModel[]) => {
-        types = types.map((t) => {
-          t['selected'] = false;
-          return t;
-        });
-        return new CustomQueryActions.GetSuccess(types);
+    .pipe(
+      filterTypeWithSpace(CustomQueryActions.GET, this.spaceQuery.getCurrentSpace),
+      switchMap(([action, space]) => {
+        return this.customQueryService.getCustomQueries(
+          space.links.self + '/queries'
+        )
+        .pipe(
+          map((types: CustomQueryModel[]) => {
+            types = types.map((t) => {
+              t['selected'] = false;
+              return t;
+            });
+            return new CustomQueryActions.GetSuccess(types);
+          }),
+          catchError(err => this.errHandler.handleError<Action>(
+            err, 'Problem in fetching custom queries.', new CustomQueryActions.GetError()
+          ))
+        );
       })
-      .catch(e => {
-        try {
-          this.notifications.message({
-            message: 'Problem in fetching custom queries.',
-            type: NotificationType.DANGER
-          } as Notification);
-        } catch (e) {
-          console.log('Problem in fetching custom queries');
-        }
-        return Observable.of(new CustomQueryActions.GetError());
-      });
-    });
+    );
+
 
   @Effect() addCustomQuery$ = this.actions$
-    .ofType<CustomQueryActions.Add>(CustomQueryActions.ADD)
-    .withLatestFrom(this.store.select('planner').select('space'))
-    .switchMap(([action, space]) => {
-      let payload = action.payload;
-      return this.customQueryService.create(
-        payload,
-        space.links.self + '/queries'
-      )
-      .map(customQuery => {
-        customQuery['selected'] = true;
-        let customQueryName = customQuery.attributes.title;
-        if (customQueryName.length > 15) {
-          customQueryName = customQueryName.slice(0, 15) + '...';
-        }
-        return new CustomQueryActions.AddSuccess(customQuery);
+    .pipe(
+      filterTypeWithSpace(CustomQueryActions.ADD, this.spaceQuery.getCurrentSpace),
+      switchMap(([action, space]) => {
+        let payload = action.payload;
+        return this.customQueryService.create(
+          payload,
+          space.links.self + '/queries'
+        )
+        .pipe(
+          map(customQuery => {
+            customQuery['selected'] = true;
+            let customQueryName = customQuery.attributes.title;
+            if (customQueryName.length > 15) {
+              customQueryName = customQueryName.slice(0, 15) + '...';
+            }
+            return new CustomQueryActions.AddSuccess(customQuery);
+          }),
+          catchError(err => this.errHandler.handleError<Action>(
+            err, 'There was some problem creating custom query.', new CustomQueryActions.AddError()
+          ))
+        );
       })
-      .catch(() => {
-        try {
-          this.notifications.message({
-            message: `There was some problem creating custom query.`,
-            type: NotificationType.DANGER
-          } as Notification);
-        } catch (e) {
-          console.log('There was some problem creating custom query.');
-        }
-        return Observable.of(new CustomQueryActions.AddError());
-      });
-    });
+    );
 
   @Effect() deleteCustomQuery = this.actions$
-    .ofType<CustomQueryActions.Delete>(CustomQueryActions.DELETE)
-    .withLatestFrom(this.store.select('planner').select('space'))
-    .switchMap(([action, space]) => {
-      return this.customQueryService.delete(
-        space.links.self + '/queries/' + action.payload.id
-      )
-      .map(() => {
-        return new CustomQueryActions.DeleteSuccess(action.payload);
+    .pipe(
+      filterTypeWithSpace(CustomQueryActions.DELETE, this.spaceQuery.getCurrentSpace),
+      switchMap(([action, space]) => {
+        return this.customQueryService.delete(
+          space.links.self + '/queries/' + action.payload.id
+        )
+        .pipe(
+          map(() => {
+            return new CustomQueryActions.DeleteSuccess(action.payload);
+          }),
+          catchError(err => this.errHandler.handleError<Action>(
+            err, 'There was some problem deleting custom query.', new CustomQueryActions.DeleteError()
+          ))
+        );
       })
-      .catch(() => {
-        try {
-          this.notifications.message({
-            message: `There was some problem in deleting custom query`,
-            type: NotificationType.DANGER
-          } as Notification);
-        } catch (e) {
-          console.log('There was some problem in deleting custom query');
-        }
-        return Observable.of(new CustomQueryActions.DeleteError());
-      });
-    });
+    );
 
 }
