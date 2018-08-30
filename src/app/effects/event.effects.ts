@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
-import { Actions, Effect } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
-import { Notification, Notifications, NotificationType } from 'ngx-base';
+import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Observable } from 'rxjs';
+import { catchError, map, switchMap } from 'rxjs/operators';
 import { EventMapper, EventService, EventUI } from '../models/event.model';
-import { AppState } from '../states/app.state';
 import * as EventActions from './../actions/event.action';
 import { WorkItemService } from './../services/work-item.service';
+import { ErrorHandler } from './work-item-utils';
 
 export type Action = EventActions.All;
 
@@ -17,12 +16,11 @@ export class EventEffects {
   constructor(
     private actions$: Actions,
     private workItemService: WorkItemService,
-    private store: Store<AppState>,
-    private notifications: Notifications
+    private errHandler: ErrorHandler
   ) {
   }
 
-  resolveEvents(events, state) {
+  resolveEvents(events) {
     return events.map((event: EventService) => {
       let eventUI = this.eventMapper.toUIModel(event);
       if (eventUI.newValueRelationships && eventUI.oldValueRelationships) {
@@ -49,33 +47,22 @@ export class EventEffects {
   }
 
   @Effect() getWorkItemEvents$: Observable<Action> = this.actions$
-    .ofType<EventActions.Get>(EventActions.GET)
-    .withLatestFrom(this.store.select('planner'))
-    .map(([action, state]) => {
-      return {
-        payload: action.payload,
-        state: state
-      };
-    })
-    .switchMap((cp) => {
-      return this.workItemService.getEvents(cp.payload)
-        .map((resp) => {
-          let events =  resp.filter(event => event !== null).reverse();
-          return this.resolveEvents(events, cp.state);
-        })
-        .map((events: EventUI[]) => {
-          return new EventActions.GetSuccess(events);
-        })
-        .catch((e) => {
-          try {
-            this.notifications.message({
-              message: `Problem loading Events.`,
-              type: NotificationType.DANGER
-            } as Notification);
-          } catch (e) {
-            console.log('Problem loading Events.');
-          }
-          return Observable.of(new EventActions.GetError());
-        });
-    });
+    .pipe(
+      ofType<EventActions.Get>(EventActions.GET),
+      switchMap((p) => {
+        return this.workItemService.getEvents(p.payload)
+          .pipe(
+            map((resp) => {
+              let events =  resp.filter(event => event !== null).reverse();
+              return this.resolveEvents(events);
+            }),
+            map((events: EventUI[]) => {
+              return new EventActions.GetSuccess(events);
+            }),
+            catchError(err => this.errHandler.handleError(
+              err,  `Problem loading Events.`, new EventActions.GetError()
+            ))
+          );
+      })
+    );
 }
