@@ -1,99 +1,95 @@
 import { Injectable } from '@angular/core';
-import { Actions, Effect } from '@ngrx/effects';
+import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
-import { Notification, Notifications, NotificationType } from 'ngx-base';
 import { Observable } from 'rxjs';
-import { AppState } from './../states/app.state';
 
 import * as IterationActions from '.././actions/iteration.actions';
 import { IterationService } from '.././services/iteration.service';
-import { UpdateWorkitemIteration } from '../actions/work-item.actions';
-import { IterationMapper, IterationUI } from '../models/iteration.model';
+import { IterationMapper } from '../models/iteration.model';
 
+import { catchError, map, switchMap } from 'rxjs/operators';
 import { cleanObject, normalizeArray } from '../models/common.model';
 import { SpaceQuery } from '../models/space';
+import { ErrorHandler, filterTypeWithSpace } from './work-item-utils';
 
 
 @Injectable()
 export class IterationEffects {
   constructor(private actions$: Actions,
-               private iterationService: IterationService,
-               private notifications: Notifications,
-               private spaceQuery: SpaceQuery) {}
+    private iterationService: IterationService,
+    private spaceQuery: SpaceQuery,
+    private errHandler: ErrorHandler
+  ) {}
 
   @Effect() getIterations$: Observable<Action> = this.actions$
-    .ofType(IterationActions.GET)
-    .withLatestFrom(this.spaceQuery.getCurrentSpace)
-    .switchMap(([action, space]) => {
-      return this.iterationService.getIterations(
-        space.relationships.iterations.links.related
-      )
-      .map(iterations => {
-        const itMapper = new IterationMapper();
-        return iterations.map(it => itMapper.toUIModel(it));
+    .pipe(
+      filterTypeWithSpace(IterationActions.Get, this.spaceQuery.getCurrentSpace),
+      switchMap(([action, space]) => {
+        return this.iterationService.getIterations(
+          space.relationships.iterations.links.related
+        )
+        .pipe(
+          map(iterations => {
+            const itMapper = new IterationMapper();
+            return iterations.map(it => itMapper.toUIModel(it));
+          }),
+          map(iterations => (new IterationActions.GetSuccess(normalizeArray(iterations)))),
+          catchError(err => this.errHandler.handleError(
+            err, 'Problem in Fetching Iterations', new IterationActions.GetError()
+          ))
+        );
       })
-      .map(iterations => (new IterationActions.GetSuccess(normalizeArray(iterations))))
-      .catch(() => Observable.of(new IterationActions.GetError()));
-    });
+    );
 
   @Effect() addIteration$: Observable<Action> = this.actions$
-    .ofType<IterationActions.Add>(IterationActions.ADD)
-    .withLatestFrom(this.spaceQuery.getCurrentSpace)
-    .switchMap(([action, space]) => {
-      const itMapper = new IterationMapper();
-      const iteration = itMapper.toServiceModel(action.payload.iteration);
-      cleanObject(iteration, ['id']);
-      const url = action.payload.parent ?
-        action.payload.parent.link :
-        space.relationships.iterations.links.related;
-      return this.iterationService.createIteration(url, iteration)
-      .map(iteration => {
-        return itMapper.toUIModel(iteration);
+    .pipe(
+      filterTypeWithSpace(IterationActions.GET, this.spaceQuery.getCurrentSpace),
+      switchMap(([action, space]) => {
+        const itMapper = new IterationMapper();
+        const iteration = itMapper.toServiceModel(action.payload.iteration);
+        cleanObject(iteration, ['id']);
+        const url = action.payload.parent ?
+          action.payload.parent.link :
+          space.relationships.iterations.links.related;
+        return this.iterationService.createIteration(url, iteration)
+        .pipe(
+          map(iteration => {
+            return itMapper.toUIModel(iteration);
+          }),
+          map(iteration => {
+            return new IterationActions.AddSuccess({
+              iteration: iteration,
+              parent: action.payload.parent ? action.payload.parent : null
+            });
+          }),
+          catchError(err => this.errHandler.handleError(
+            err, 'Problem in adding Iterations', new IterationActions.AddError()
+          ))
+        );
       })
-      .map(iteration => {
-        return new IterationActions.AddSuccess({
-          iteration: iteration,
-          parent: action.payload.parent ? action.payload.parent : null
-        });
-      })
-      .catch(() => {
-        try {
-          this.notifications.message({
-            message: `There was some problem adding the iteration.`,
-            type: NotificationType.DANGER
-          } as Notification);
-        } catch (e) {
-          console.log('There was some problem adding the iteration..');
-        }
-        return Observable.of(new IterationActions.AddError());
-      });
-    });
+    );
 
   @Effect() updateIteration$: Observable<Action> = this.actions$
-    .ofType(IterationActions.UPDATE)
-    .switchMap((action: IterationActions.Update) => {
-      const itMapper = new IterationMapper();
-      const iteration = itMapper.toServiceModel(action.payload);
-      return this.iterationService.updateIteration(iteration)
-        .map(iteration => {
-          return itMapper.toUIModel(iteration);
-        })
-        .map(iteration => {
-          return [
-            new IterationActions.UpdateSuccess(iteration)
-          ];
-        })
-        .switchMap(res => res)
-        .catch(() => {
-          try {
-            this.notifications.message({
-              message: `There was some problem updating the iteration.`,
-              type: NotificationType.DANGER
-            } as Notification);
-          } catch (e) {
-            console.log('Error displaying notification.');
-          }
-          return Observable.of(new IterationActions.UpdateError());
-        });
-    });
+    .pipe(
+      ofType(IterationActions.UPDATE),
+      switchMap((action: IterationActions.Update) => {
+        const itMapper = new IterationMapper();
+        const iteration = itMapper.toServiceModel(action.payload);
+        return this.iterationService.updateIteration(iteration)
+          .pipe(
+            map(iteration => {
+              return itMapper.toUIModel(iteration);
+            }),
+            map(iteration => {
+              return [
+                new IterationActions.UpdateSuccess(iteration)
+              ];
+            }),
+            switchMap(res => res),
+            catchError(err => this.errHandler.handleError<Action>(
+              err, `There was some problem updating the iteration.`, new IterationActions.UpdateError()
+            ))
+          );
+      })
+    );
 }
