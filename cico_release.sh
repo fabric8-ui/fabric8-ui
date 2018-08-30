@@ -16,9 +16,11 @@ function main() {
     # Build and Release Planner (It will update the tag on github and push fabric8-planner to npmjs.org)
     npm run semantic-release
 
-    create_merge_PR
 }
 
+#
+#   This function no longer works.
+#
 # This function raises a PR against fabric8-npm-dependencies
 function create_merge_PR {
     # Fetch latest tags
