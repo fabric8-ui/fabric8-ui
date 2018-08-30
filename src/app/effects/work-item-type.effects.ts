@@ -1,56 +1,46 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
-import {
-  Notification,
-  Notifications,
-  NotificationType
-} from 'ngx-base';
 import { Observable } from 'rxjs';
-import * as WIStateActoins from './../actions/work-item-state.actions';
+import { catchError, map, switchMap } from 'rxjs/operators';
+import { SpaceQuery } from '../models/space';
+import * as WIStateActions from './../actions/work-item-state.actions';
 import * as WorkItemTypeActions from './../actions/work-item-type.actions';
 import {
   WorkItemTypeMapper,
   WorkItemTypeService
 } from './../models/work-item-type';
 import { WorkItemService } from './../services/work-item.service';
-import { AppState } from './../states/app.state';
+import { ErrorHandler, filterTypeWithSpace } from './work-item-utils';
 
-export type Action = WorkItemTypeActions.All;
+export type Action = WorkItemTypeActions.All | WIStateActions.All;
 
 @Injectable()
 export class WorkItemTypeEffects {
   constructor(
     private actions$: Actions,
     private workItemService: WorkItemService,
-    private store: Store<AppState>,
-    private notifications: Notifications
+    private spaceQuery: SpaceQuery,
+    private errHandler: ErrorHandler
   ) {}
 
   @Effect() getWorkItemTypes$: Observable<Action> = this.actions$
-    .ofType(WorkItemTypeActions.GET)
-    .withLatestFrom(this.store.select('planner').select('space'))
-    .switchMap(([action, space]) => {
-      return this.workItemService.getWorkItemTypes(
-        space.relationships.workitemtypes.links.related
-      )
-      .map(types => types.filter(t => t.attributes['can-construct']))
-      .map((types: WorkItemTypeService[]) => {
-        const witm = new WorkItemTypeMapper();
-        const wiTypes = types.map(t => witm.toUIModel(t));
-        this.store.dispatch(new WIStateActoins.GetSuccess(types));
-        return new WorkItemTypeActions.GetSuccess(wiTypes);
+    .pipe(
+      filterTypeWithSpace(WorkItemTypeActions.GET, this.spaceQuery.getCurrentSpace),
+      switchMap(([action, space]) => {
+        return this.workItemService.getWorkItemTypes(
+          space.relationships.workitemtypes.links.related
+        )
+        .pipe(
+          map(types => types.filter(t => t.attributes['can-construct'])),
+          switchMap((types: WorkItemTypeService[]) => {
+            const witm = new WorkItemTypeMapper();
+            const wiTypes = types.map(t => witm.toUIModel(t));
+            return [new WorkItemTypeActions.GetSuccess(wiTypes), new WIStateActions.GetSuccess(types)];
+          }),
+          catchError(err =>  this.errHandler.handleError(
+            err, `Problem in fetching workitem type.`, new WorkItemTypeActions.GetError()
+          ))
+        );
       })
-      .catch(e => {
-        try {
-          this.notifications.message({
-            message: `Problem in fetching workitem type.`,
-            type: NotificationType.DANGER
-          } as Notification);
-        } catch (e) {
-          console.log('Problem in fetching work item type');
-        }
-        return Observable.of(new WorkItemTypeActions.GetError());
-      });
-    });
+    );
 }
