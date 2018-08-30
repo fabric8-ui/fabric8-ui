@@ -13,20 +13,18 @@ import { Observable } from 'rxjs/Observable';
 import { AreaUI } from './../../models/area.model';
 import { LabelQuery, LabelUI } from './../../models/label.model';
 import { UserQuery, UserUI } from './../../models/user';
-import { WorkItemTypeQuery, WorkItemTypeUI } from './../../models/work-item-type';
+import { WorkItemTypeQuery } from './../../models/work-item-type';
 import { UrlService } from './../../services/url.service';
 import { InlineInputComponent } from './../../widgets/inlineinput/inlineinput.component';
 
 // ngrx stuff
 import { Store } from '@ngrx/store';
+import { combineLatest } from 'rxjs/observable/combineLatest';
+import { filter, map, switchMap } from 'rxjs/operators';
 import { CommonSelectorUI } from '../../models/common.model';
 import * as DetailWorkItemActions from './../../actions/detail-work-item.actions';
-import * as GroupTypeActions from './../../actions/group-type.actions';
-import * as IterationActions from './../../actions/iteration.actions';
-import * as LabelActions from './../../actions/label.actions';
-import * as SpaceActions from './../../actions/space.actions';
-import * as WorkItemTypeActions from './../../actions/work-item-type.actions';
 import * as WorkItemActions from './../../actions/work-item.actions';
+import { SpaceQuery } from './../../models/space';
 import { WorkItemQuery, WorkItemUI } from './../../models/work-item';
 import { WorkItemService } from './../../services/work-item.service';
 import { AppState } from './../../states/app.state';
@@ -42,11 +40,7 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
   @ViewChild('inlineInput') inlineInput: InlineInputComponent;
   @ViewChild('descMarkdown') descMarkdown: MarkdownComponent;
 
-  private spaceSource = this.store
-    .select('planner')
-    .select('space')
-    .do(s => {if (!s) { this.store.dispatch(new SpaceActions.Get()); }})
-    .filter(s => !!s);
+  private spaceSource = this.spaceQuery.getCurrentSpace.pipe(filter(s => !!s));
 
   public labelSource = this.labelQuery.getLables();
   public areaSource: Observable<CommonSelectorUI[]>;
@@ -61,7 +55,7 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
 
   private collaboratorSource = this.userQuery.getCollaborators();
 
-  private combinedSources = Observable.combineLatest(
+  private combinedSources = combineLatest(
     this.labelSource,
     this.collaboratorSource,
     this.workItemTypeQuery.getWorkItemTypes()
@@ -121,7 +115,8 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
     private userQuery: UserQuery,
     private labelQuery: LabelQuery,
     private workItemQuery: WorkItemQuery,
-    private workItemTypeQuery: WorkItemTypeQuery
+    private workItemTypeQuery: WorkItemTypeQuery,
+    private spaceQuery: SpaceQuery
   ) {
 
   }
@@ -172,19 +167,21 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
 
     this.workItemSubscriber =
       this.spaceSource
-      .switchMap(s => {
-        return this.combinedSources;
-      })
-      .switchMap(([labels, collabs, type]) => {
-        this.collaborators = collabs.filter(c => !c.currentUser);
-        this.loggedInUser = collabs.find(c => c.currentUser);
-        this.labels = labels.sort((l1, l2) => (l1.name.toLowerCase() > l2.name.toLowerCase() ? 1 : 0));
-        this.store.dispatch(new DetailWorkItemActions.GetWorkItem({
-          number: wiNumber
-        }));
-        return this.workItemQuery.getWorkItem(wiNumber);
-      })
-      .filter(w => w !== null)
+      .pipe(
+        switchMap(s => {
+          return this.combinedSources;
+        }),
+        switchMap(([labels, collabs, type]) => {
+          this.collaborators = collabs.filter(c => !c.currentUser);
+          this.loggedInUser = collabs.find(c => c.currentUser);
+          this.labels = labels.sort((l1, l2) => (l1.name.toLowerCase() > l2.name.toLowerCase() ? 1 : 0));
+          this.store.dispatch(new DetailWorkItemActions.GetWorkItem({
+            number: wiNumber
+          }));
+          return this.workItemQuery.getWorkItem(wiNumber);
+        }),
+        filter(w => w !== null)
+      )
       .subscribe(workItem => {
         if ((this.detailContext === 'preview')
         && this.descMarkdown && this.workItem.id !== workItem.id) {
@@ -231,9 +228,11 @@ export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChec
 
   getSelectedItems(itemSource: Observable<CommonSelectorUI[]>)
     : Observable<CommonSelectorUI[]> {
-    return itemSource.map(items => {
-      return items.filter(i => i.selected);
-    });
+    return itemSource.pipe(
+      map(items => {
+        return items.filter(i => i.selected);
+      })
+    );
   }
 
   closeDetail() {

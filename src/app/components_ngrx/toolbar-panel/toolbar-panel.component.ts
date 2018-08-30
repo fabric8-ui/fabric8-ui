@@ -154,12 +154,6 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
     console.log('[ToolbarPanelComponent] Running in context: ' + this.context);
     this.loggedIn = this.auth.isLoggedIn();
     this.initiateDataSources();
-    // we want to get notified on space changes.
-    this.spaceSubscription = this.spaceData
-      .subscribe((space: Space) => {
-        console.log('[ToolbarPanelComponent] New Space selected: ' + space.attributes.name);
-        this.store.dispatch(new FilterActions.Get());
-      });
     //on the board view - do not show state filter as the lanes are based on state
     this.allowedFilterKeys = [
       'assignee', 'creator', 'area', 'label',
@@ -209,6 +203,7 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
 
     this.eventListeners.push(
       this.filterData
+        .delay(1000)
         .subscribe((filters) => this.setFilterTypes(filters))
     );
 

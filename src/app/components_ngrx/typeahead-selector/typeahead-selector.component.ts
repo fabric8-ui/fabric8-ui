@@ -4,6 +4,9 @@ import {
   Output, ViewChild
 } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { combineLatest } from 'rxjs/observable/combineLatest';
+import { of as observableOf } from 'rxjs/observable/of';
+import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
 import {
   SelectDropdownComponent
 } from './../../widgets/select-dropdown/select-dropdown.component';
@@ -62,7 +65,8 @@ export class TypeaheadSelectorComponent implements OnInit {
   private searchTermObs: BehaviorSubject<string> = new BehaviorSubject<string>('');
   private selectedItemsBs: BehaviorSubject<TypeaheadDropdownItem[]> =
     new BehaviorSubject<TypeaheadDropdownItem[]>([]);
-  private selectedItemsObs = this.selectedItemsBs.asObservable().filter(i => Array.isArray(i));
+  private selectedItemsObs = this.selectedItemsBs.asObservable()
+    .pipe(filter(i => Array.isArray(i)));
 
   // this is only used for storing the data temporarily
   // not for visualization
@@ -78,25 +82,28 @@ export class TypeaheadSelectorComponent implements OnInit {
 
   menuItems: Observable<TypeaheadDropdownItem[]> =
     this.searchTermObs.asObservable()
-    .do(term => this.searchValue = term)
-    .switchMap((term) => {
-      if (typeof(this.dataSource) === 'function'
-        && term !== '') {
-        return Observable.combineLatest(
-            this.dataSource(term),
-            this.selectedItemsObs
-          )
-          .map(([items, selectedItems]) => this.updateSelection(items, selectedItems))
-          .do(v => this.searching = false)
-          .catch(err => {
-            this.searching = false;
-            return Observable.of([]);
-          });
-      } else {
-        return Observable.of([]);
-      }
-    });
-
+    .pipe(
+      tap(term => this.searchValue = term),
+      switchMap((term) => {
+        if (typeof(this.dataSource) === 'function'
+          && term !== '') {
+          return combineLatest(
+              this.dataSource(term),
+              this.selectedItemsObs
+            )
+            .pipe(
+              map(([items, selectedItems]) => this.updateSelection(items, selectedItems)),
+              tap(v => this.searching = false),
+              catchError(err => {
+                this.searching = false;
+                return Observable.of([]);
+              })
+            );
+        } else {
+          return observableOf([]);
+        }
+      })
+    );
 
   ngOnInit() {
   }

@@ -16,6 +16,8 @@ import {
 } from 'ngx-login-client';
 import { EmptyStateConfig } from 'patternfly-ng/empty-state';
 import { Observable } from 'rxjs/Observable';
+import { combineLatest } from 'rxjs/observable/combineLatest';
+import { filter, switchMap, tap } from 'rxjs/operators';
 import { WorkItemTypeQuery, WorkItemTypeUI } from '../../models/work-item-type';
 import { IterationQuery, IterationUI } from './../../models/iteration.model';
 import { CookieService } from './../../services/cookie.service';
@@ -31,10 +33,8 @@ import { Store } from '@ngrx/store';
 import { SpaceQuery } from '../../models/space';
 import * as AreaActions from './../../actions/area.actions';
 import * as CollaboratorActions from './../../actions/collaborator.actions';
-import * as SpaceActions from './../../actions/space.actions';
 import * as WorkItemActions from './../../actions/work-item.actions';
 import { AreaQuery } from './../../models/area.model';
-import { cleanObject } from './../../models/common.model';
 import { GroupTypeQuery } from './../../models/group-types.model';
 import { LabelQuery } from './../../models/label.model';
 import { UserQuery } from './../../models/user';
@@ -51,37 +51,40 @@ import { WorkItemPreviewPanelComponent } from './../work-item-preview-panel/work
 })
 
 export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked {
-  private uiLockedAll: boolean = false;
-  private sidePanelOpen: boolean = true;
+  public uiLockedAll: boolean = false;
+  public sidePanelOpen: boolean = true;
+  public quickAddWorkItemTypes: WorkItemTypeUI[] = [];
+  public loggedIn: boolean = true;
+  public columns: any[] = [];
+  public workItems: WorkItemUI[] = [];
+  public contentItemHeight: number = 50;
+  public selectedRows: any = [];
+  public showTreeUI: boolean = false;
+  public emptyStateConfig: any = {};
+  public uiLockedList: boolean = false;
+  public uiLockedSidebar: boolean = false;
+  public selectedIterationSource: Observable<IterationUI> =
+    this.iterationQuery.getSelectedIteration().pipe(
+      filter(i => i !== null)
+    );
+
   private workItemTypeSource = this.workItemTypeQuery.getWorkItemTypesWithChildren();
-  private spaceSource = this.spaceQuery.getCurrentSpace.filter(s => !!s);
-  private areaSource = this.areaQuery.getAreas()
-    .filter(a => !!a.length);
+  private spaceSource = this.spaceQuery.getCurrentSpace.pipe(filter(s => !!s));
+  private areaSource = this.areaQuery.getAreas().pipe(
+    filter(a => !!a.length)
+  );
   private labelSource = this.labelQuery.getLables();
-  private iterationSource = this.iterationQuery.getIterations()
-    .filter(i => !!i.length);
-  private selectedIterationSource = this.iterationQuery.getSelectedIteration()
-    .filter(i => i !== null);
+  private iterationSource = this.iterationQuery.getIterations().pipe(
+    filter(i => !!i.length)
+  );
   private collaboratorSource = this.userQuery.getCollaborators();
   private workItemSource = this.workItemQuery.getWorkItems();
-  private routeSource = this.route.queryParams
-    .filter(p => p.hasOwnProperty('q'));
-  private quickAddWorkItemTypes: WorkItemTypeUI[] = [];
-  private allWorkItemTypes: WorkItemTypeUI[] = [];
-  private selectedIteration: IterationUI = null;
-  private loggedIn: boolean = true;
+  private routeSource = this.route.queryParams.pipe(
+    filter(p => p.hasOwnProperty('q'))
+  );
   private eventListeners: any[] = [];
-  private columns: any[] = [];
-  private isTableConfigOpen: boolean = false;
-  private workItems: WorkItemUI[] = [];
-  private contentItemHeight: number = 50;
-  private selectedRows: any = [];
   private detailExpandedRows: any = [];
   private showTree: boolean = false;
-  private showTreeUI: boolean = false;
-  private emptyStateConfig: any = {};
-  private uiLockedList: boolean = false;
-  private uiLockedSidebar: boolean = false;
   private hdrHeight: number = 0;
   private toolbarHt: number = 0;
   private quickaddHt: number = 0;
@@ -123,22 +126,24 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
 
     this.eventListeners.push(
       this.spaceSource
-      .do(() => {
-        this.store.dispatch(new CollaboratorActions.Get());
-        this.store.dispatch(new AreaActions.Get());
-        this.uiLockedSidebar = true;
-        this.uiLockedList = true;
-      })
-      .switchMap(s => {
-        return Observable.combineLatest(
-          this.workItemTypeSource,
-          this.areaSource,
-          this.iterationSource.take(1),
-          this.labelSource.take(1),
-          this.collaboratorSource.take(1),
-          this.routeSource
-        );
-      })
+      .pipe(
+        tap(() => {
+          this.store.dispatch(new CollaboratorActions.Get());
+          this.store.dispatch(new AreaActions.Get());
+          this.uiLockedSidebar = true;
+          this.uiLockedList = true;
+        }),
+        switchMap(s => {
+          return combineLatest(
+            this.workItemTypeSource,
+            this.areaSource,
+            this.iterationSource.take(1),
+            this.labelSource.take(1),
+            this.collaboratorSource.take(1),
+            this.routeSource
+          );
+        })
+      )
       .subscribe(([
         workItemTypeSource,
         areaSource,
@@ -206,7 +211,7 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
     // Listen for the url change
     this.eventListeners.push(
       this.router.events
-        .filter(event => event instanceof NavigationStart)
+        .pipe(filter(event => event instanceof NavigationStart))
         .subscribe(
         (event: any) => {
           if (event.url.indexOf('?q') === -1 &&
@@ -310,7 +315,6 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
         this.workItemTypeSource,
         this.groupTypeQuery.getGroupTypes
       ).subscribe(([workItemTypes, groupTypes]) => {
-        this.allWorkItemTypes = workItemTypes;
         const selectedGroupType = groupTypes.find(gt => gt.selected);
         if (selectedGroupType) {
           this.quickAddWorkItemTypes = selectedGroupType.typeList.map(type => {

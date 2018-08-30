@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { createEntityAdapter } from '@ngrx/entity';
 import { createFeatureSelector, createSelector, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
+import { combineLatest } from 'rxjs/Observable/combineLatest';
+import { map, startWith } from 'rxjs/operators';
 import { LabelService as LabelDataService } from './../services/label.service';
 import { AppState, PlannerState } from './../states/app.state';
 import {
@@ -157,12 +159,14 @@ export class LabelQuery {
 
   getLabelObservablesByIds(ids: string[]): Observable<LabelUI[]> {
     if (!ids.length) { return Observable.of([]); }
-    return Observable.combineLatest(ids.map(id => this.getLabelObservableById(id)))
-      // If the label is not available in the state
-      // it comes as undefined so we filter them out
-      .map(labels => labels.filter(l => !!l))
-      // In case the combine operation is stuck for any single
-      // observable inside, we start the stream with an empty array
-      .startWith([]);
+    return combineLatest(ids.map(id => this.getLabelObservableById(id))) // TODO RxJS 6 combineLatest should come from rxjs/operators
+      .pipe(
+        // If the label is not available in the state
+        // it comes as undefined so we filter them out
+        map(labels => labels.filter(l => !!l)),
+        // In case the combine operation is stuck for any single
+        // observable inside, we start the stream with an empty array
+        startWith([])
+      );
   }
 }

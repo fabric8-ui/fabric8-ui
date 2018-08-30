@@ -11,6 +11,8 @@ import { TruncateModule } from 'ng2-truncate';
 import { TooltipModule } from 'ngx-bootstrap';
 import { ModalModule } from 'ngx-modal';
 import { InfotipModule } from '../infotip/infotip.module';
+import { GroupTypeQuery } from './../../models/group-types.model';
+import { SpaceQuery } from './../../models/space';
 import { GroupTypesService } from './../../services/group-types.service';
 import { IterationModule } from './../iterations-panel/iterations-panel.module';
 import { GroupTypesComponent } from './group-types-panel.component';
@@ -31,6 +33,10 @@ import { GroupTypesComponent } from './group-types-panel.component';
     GroupTypesComponent
   ],
   exports: [GroupTypesComponent],
-  providers: [GroupTypesService]
+  providers: [
+    GroupTypesService,
+    SpaceQuery,
+    GroupTypeQuery
+  ]
 })
 export class GroupTypesModule { }

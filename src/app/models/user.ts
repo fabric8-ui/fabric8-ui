@@ -5,8 +5,9 @@ import {
   Profile, User,
   UserService as UserServiceClass
 } from 'ngx-login-client';
-import { ConnectableObservable } from 'rxjs';
-import { Observable } from 'rxjs/Observable';
+import { ConnectableObservable, Observable } from 'rxjs';
+import { combineLatest } from 'rxjs/Observable/combineLatest';
+import { filter, startWith, switchMap, tap } from 'rxjs/operators';
 import { Get as GetUserAction } from './../actions/user.actions';
 import { AppState, PlannerState } from './../states/app.state';
 import {
@@ -112,36 +113,41 @@ export class UserQuery {
   getUserObservableById(id: string): Observable<UserUI> {
     return this.userSource.select(users => users[id])
       // If the desired user doesn't exist then fetch it
-      .do(user => {
-        if (!user) {
-          this.store.dispatch(new GetUserAction(id));
-        }
-      })
-      // filter the pipe based on availability of the user
-      .filter(user => !!user);
+      .pipe(
+        tap(user => {
+          if (!user) {
+            this.store.dispatch(new GetUserAction(id));
+          }
+        }),
+        filter(user => !!user) // filter the pipe based on availability of the user
+      );
   }
 
   getUserObservablesByIds(ids: string[] = []): Observable<UserUI[]> {
     if (!ids.length) { return Observable.of([]); }
-    return Observable.combineLatest(ids.map(id => this.getUserObservableById(id)))
+    return combineLatest(ids.map(id => this.getUserObservableById(id)))
+    .pipe(
       // When a user is not there in the collaborator list
       // it fetches that particular user from API service
       // meanwhile the combine observables returns null if async pipe is used
       // We should return empty array instead
-      .startWith([]);
+      startWith([])
+    );
   }
 
   getCollaborators(): Observable<UserUI[]> {
     return this.collaboratorSource
-      .filter(c => !!c.length)
-      .switchMap(collaborators => {
-        return this.userService.loggedInUser
-          .map(u => {
-            return collaborators.map(c => {
-              return {...c, currentUser: u ? c.id === u.id : false};
+      .pipe(
+        filter(c => !!c.length),
+        switchMap(collaborators => {
+          return this.userService.loggedInUser
+            .map(u => {
+              return collaborators.map(c => {
+                return {...c, currentUser: u ? c.id === u.id : false};
+              });
             });
-          });
-      });
+        })
+      );
   }
 
   /**

@@ -56,6 +56,7 @@ import { IterationQuery } from '../../models/iteration.model';
 import { WorkItemTypeQuery } from '../../models/work-item-type';
 import { CommentQuery } from './../../models/comment';
 import { LabelQuery } from './../../models/label.model';
+import { SpaceQuery } from './../../models/space';
 import { WorkItemQuery } from './../../models/work-item';
 import { ClickOutModule } from './../../widgets/clickout/clickout.module';
 import { UserAvatarModule } from './../../widgets/user-avatar/user-avatar.module';
@@ -116,6 +117,7 @@ import { UserAvatarModule } from './../../widgets/user-avatar/user-avatar.module
     UserQuery,
     UserMapper,
     UrlService,
+    SpaceQuery,
     BsDropdownConfig,
     AuthenticationService,
     TooltipConfig,

@@ -3,6 +3,7 @@ import { Store } from '@ngrx/store';
 import { cloneDeep } from 'lodash';
 import { User, UserService } from 'ngx-login-client';
 import { Observable } from 'rxjs/Observable';
+import { map, switchMap } from 'rxjs/operators';
 
 import {
   Add as AddCommentAction,
@@ -164,23 +165,25 @@ export class CommentQuery {
 
   getCommentsWithCreators(): Observable<CommentUI[]> {
     return this.commentSource
-      .map(comments => {
-        return comments.map(comment => {
-          return {
-            ...comment,
-            creator: this.userQuery.getUserObservableById(comment.creatorId)
-          };
-        });
-      })
-      .switchMap(comments => {
-        return this.userService.loggedInUser
-          .map(user => user ? user : {id: '0'})
-          .map(user => {
-            return comments.map(c => {
-              return {...c, allowEdit: c.creatorId === user.id};
-            });
+      .pipe(
+        map(comments => {
+          return comments.map(comment => {
+            return {
+              ...comment,
+              creator: this.userQuery.getUserObservableById(comment.creatorId)
+            };
           });
-      });
+        }),
+        switchMap(comments => {
+          return this.userService.loggedInUser
+            .map(user => user ? user : {id: '0'})
+            .map(user => {
+              return comments.map(c => {
+                return {...c, allowEdit: c.creatorId === user.id};
+              });
+            });
+        })
+      );
   }
 
   getCommentsWithChildren(): Observable<CommentUI[]> {

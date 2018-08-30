@@ -1,4 +1,4 @@
-import { Observable } from 'rxjs/Observable';
+import { combineLatest } from 'rxjs/observable/combineLatest';
 
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -6,13 +6,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Spaces } from 'ngx-fabric8-wit';
 import { AuthenticationService } from 'ngx-login-client';
 
-import { GroupTypeUI } from '../../models/group-types.model';
+import { GroupTypeQuery, GroupTypeUI } from '../../models/group-types.model';
 import { WorkItemType } from '../../models/work-item-type';
 import { FilterService } from '../../services/filter.service';
-import { GroupTypesService } from '../../services/group-types.service';
 
 // ngrx stuff
 import { Store } from '@ngrx/store';
+import { SpaceQuery } from '../../models/space';
 import * as GroupTypeActions from './../../actions/group-type.actions';
 import { AppState } from './../../states/app.state';
 
@@ -31,9 +31,6 @@ export class GroupTypesComponent implements OnInit, OnDestroy {
   .select('planner')
   .select('infotips');
   private groupTypes: GroupTypeUI[];
-  private selectedgroupType: GroupTypeUI;
-  private allowedChildWits: WorkItemType;
-  private spaceId;
   private eventListeners: any[] = [];
   private startedCheckingURL: boolean = false;
   private showTree: string = '';
@@ -42,7 +39,8 @@ export class GroupTypesComponent implements OnInit, OnDestroy {
   constructor(
     private auth: AuthenticationService,
     private filterService: FilterService,
-    private groupTypesService: GroupTypesService,
+    private groupTypeQuery: GroupTypeQuery,
+    private spaceQuery: SpaceQuery,
     private route: ActivatedRoute,
     private router: Router,
     private spaces: Spaces,
@@ -50,22 +48,17 @@ export class GroupTypesComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    const groupTypesData = this.store
-      .select('planner')
-      .select('groupTypes')
-      .filter((types: GroupTypeUI[]) => !!types.length);
-    const spaceData = this.store
-      .select('planner')
-      .select('space')
+    const groupTypesData = this.groupTypeQuery.getGroupTypes;
+    const spaceData = this.spaceQuery.getCurrentSpace
       .filter(space => space !== null);
 
     this.eventListeners.push(
-      Observable.combineLatest(
+      combineLatest(
         groupTypesData,
         spaceData
-      ).subscribe(([types, space]) => {
+      )
+      .subscribe(([types, space]) => {
         this.groupTypes = types as GroupTypeUI[];
-        this.spaceId = space.id;
         if (!this.startedCheckingURL) {
           this.checkURL();
         }
