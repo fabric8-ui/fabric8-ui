@@ -1,12 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
-import {
-  Notification,
-  Notifications,
-  NotificationType
-} from 'ngx-base';
 import { Observable } from 'rxjs';
+import { catchError, map, switchMap } from 'rxjs/operators';
+import { SpaceQuery } from '../models/space';
 import * as GroupTypeActions from './../actions/group-type.actions';
 import {
   GroupTypeMapper,
@@ -15,7 +11,7 @@ import {
 import {
   GroupTypesService as GTService
 } from './../services/group-types.service';
-import { AppState } from './../states/app.state';
+import { ErrorHandler, filterTypeWithSpace } from './work-item-utils';
 
 export type Action = GroupTypeActions.All;
 
@@ -24,33 +20,28 @@ export class GroupTypeEffects {
   constructor(
     private actions$: Actions,
     private groupTypeService: GTService,
-    private notifications: Notifications,
-    private store: Store<AppState>
+    private spaceQuery: SpaceQuery,
+    private errHandler: ErrorHandler
   ) {}
 
   @Effect() getGroupTypes$: Observable<Action> = this.actions$
-    .ofType(GroupTypeActions.GET)
-    .withLatestFrom(this.store.select('planner').select('space'))
-    .switchMap(([action, space]) => {
-      return this.groupTypeService.getGroupTypes(
-          space.relationships.workitemtypegroups.links.related
-        )
-        .map((types: GroupTypeService[]) => {
-          const gtm = new GroupTypeMapper();
-          return new GroupTypeActions.GetSuccess(
-            types.map(t => gtm.toUIModel(t))
+    .pipe(
+      filterTypeWithSpace(GroupTypeActions.GET, this.spaceQuery.getCurrentSpace),
+      switchMap(([action, space]) => {
+        return this.groupTypeService.getGroupTypes(
+            space.relationships.workitemtypegroups.links.related
+          )
+          .pipe(
+            map((types: GroupTypeService[]) => {
+              const gtm = new GroupTypeMapper();
+              return new GroupTypeActions.GetSuccess(
+                types.map(t => gtm.toUIModel(t))
+              );
+            }),
+            catchError(err => this.errHandler.handleError(
+              err, `Problem in fetching grouptypes.`, new GroupTypeActions.GetError()
+            ))
           );
-        })
-        .catch(e => {
-          try {
-            this.notifications.message({
-              message: `Problem in fetching grouptypes.`,
-              type: NotificationType.DANGER
-            } as Notification);
-          } catch (e) {
-            console.log('Problem in fetching grouptypes.');
-          }
-          return Observable.of(new GroupTypeActions.GetError());
-        });
-    });
+      })
+    );
 }
