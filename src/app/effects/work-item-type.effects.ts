@@ -37,7 +37,7 @@ export class WorkItemTypeEffects {
             const wiTypes = types.map(t => witm.toUIModel(t));
             return [new WorkItemTypeActions.GetSuccess(wiTypes), new WIStateActions.GetSuccess(types)];
           }),
-          catchError(err =>  this.errHandler.handleError(
+          catchError(err =>  this.errHandler.handleError<Action>(
             err, `Problem in fetching workitem type.`, new WorkItemTypeActions.GetError()
           ))
         );

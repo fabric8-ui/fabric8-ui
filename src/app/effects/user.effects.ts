@@ -45,7 +45,7 @@ export class UserEffects {
             })
           );
       }),
-      catchError(err => this.errHandler.handleError(
+      catchError(err => this.errHandler.handleError<UserAction>(
         err, `Problem in user details`, new UserActions.GetError()
       ))
     );
