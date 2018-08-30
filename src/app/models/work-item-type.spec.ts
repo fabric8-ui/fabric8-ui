@@ -15,7 +15,6 @@ describe('WorkItemTypeMapper', () => {
         name: '',
         icon: '',
         version: 0,
-        description: '',
         childTypes: [
           {id: 'bbf35418-04b6-426c-a60b-7f80beb0b624', type: 'workitemtypes'},
           {id: '26787039-b68f-4e28-8814-c2f93be1ef4e', type: 'workitemtypes'}
@@ -30,7 +29,7 @@ describe('WorkItemTypeMapper', () => {
             }
           }
         },
-        infotip: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+        description: 'no info-tip',
         dynamicfields: [],
         type: 'workitemtypes'
     } as WorkItemTypeUI;
@@ -41,7 +40,6 @@ describe('WorkItemTypeMapper', () => {
       attributes: {
           name: '',
           version: 0,
-          description: '',
           icon: '',
           fields: {
             'system.area': {

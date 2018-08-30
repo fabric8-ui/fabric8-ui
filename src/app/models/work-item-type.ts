@@ -38,9 +38,6 @@ export class WorkItemType extends modelService {
       guidedChildTypes?: {
         data?: WorkItemType[]
       },
-      infoTip?: {
-        data?: string;
-      },
       space?: Space
     };
 }
@@ -87,9 +84,6 @@ export class WorkItemTypeMapper implements Mapper<WorkItemTypeService, WorkItemT
         fromPath: ['attributes', 'version'],
         toPath: ['version']
       }, {
-        fromPath: ['attributes', 'description'],
-        toPath: ['description']
-      }, {
         fromPath: ['relationships', 'guidedChildTypes', 'data'],
         toPath: ['childTypes'],
         toFunction: (item: WorkItemTypeService) => {
@@ -106,14 +100,9 @@ export class WorkItemTypeMapper implements Mapper<WorkItemTypeService, WorkItemT
         toPath: ['type'],
         toValue: 'workitemtypes'
       }, {
-        fromPath: ['relationships', 'infotip', 'data'],
-        toPath: ['infotip'],
-        toFunction: function(value) {
-          if (value === null) {
-            return 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
-          }
-          return value;
-        }
+        fromPath: ['attributes', 'description'],
+        toPath: ['description'],
+        toFunction: (value) => value || 'no info-tip'
     }];
 
     uiToServiceMapTree: MapTree = [{
@@ -128,9 +117,6 @@ export class WorkItemTypeMapper implements Mapper<WorkItemTypeService, WorkItemT
       }, {
         toPath: ['attributes', 'version'],
         fromPath: ['version']
-      }, {
-        toPath: ['attributes', 'description'],
-        fromPath: ['description']
       }, {
         toPath: ['type'],
         toValue: 'workitemtypes'
