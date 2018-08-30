@@ -51,6 +51,7 @@ import { SpaceQuery } from './../../models/space';
 import { UserQuery } from './../../models/user';
 import { WorkItemQuery } from './../../models/work-item';
 
+import { ErrorHandler } from '../../effects/work-item-utils';
 import { FilterColumnModule } from '../../pipes/column-filter.module';
 import { TableConfigModule } from './../table-config/table-config.module';
 
@@ -77,7 +78,8 @@ let providers = [
     SpaceQuery,
     GroupTypeQuery,
     WorkItemTypeQuery,
-    SpaceQuery
+    SpaceQuery,
+    ErrorHandler
   ];
 
 @NgModule({

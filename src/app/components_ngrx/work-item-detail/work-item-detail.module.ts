@@ -50,6 +50,7 @@ import { EventReducer } from '../../reducers/event.reducer';
 import { UrlService } from '../../services/url.service';
 import { LabelSelectorModule } from '../label-selector/label-selector.module';
 
+import { ErrorHandler } from '../../effects/work-item-utils';
 import { AreaQuery } from '../../models/area.model';
 import { IterationQuery } from '../../models/iteration.model';
 import { WorkItemTypeQuery } from '../../models/work-item-type';
@@ -121,7 +122,8 @@ import { UserAvatarModule } from './../../widgets/user-avatar/user-avatar.module
     IterationQuery,
     WorkItemQuery,
     AreaQuery,
-    WorkItemTypeQuery
+    WorkItemTypeQuery,
+    ErrorHandler
   ],
   declarations: [
     WorkItemDetailComponent,

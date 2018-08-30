@@ -26,6 +26,7 @@ import { PlannerBoardComponent } from './planner-board.component';
 
 // Data Querries
 import { DragulaModule, DragulaService } from 'ng2-dragula';
+import { ErrorHandler } from '../../effects/work-item-utils';
 import { AreaQuery } from '../../models/area.model';
 import { BoardQuery, BoardUIQuery, ColumnWorkItemQuery } from '../../models/board.model';
 import { GroupTypeQuery } from '../../models/group-types.model';
@@ -53,7 +54,8 @@ import { F8SortByPipeModule } from './../../pipes/sort-by.module';
     GroupTypeQuery,
     BoardQuery,
     BoardUIQuery,
-    ColumnWorkItemQuery
+    ColumnWorkItemQuery,
+    ErrorHandler
   ],
   imports: [
     CommonModule,

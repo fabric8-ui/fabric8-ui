@@ -16,6 +16,7 @@ import { PlannerQueryRoutingModule } from './planner-query-routing.module';
 import { PlannerQueryComponent } from './planner-query.component';
 
 import { FeatureFlagResolver, FeatureTogglesService } from 'ngx-feature-flag';
+import { ErrorHandler } from '../../effects/work-item-utils';
 import { WorkItemTypeQuery } from '../../models/work-item-type';
 import { togglesApiUrlProvider } from '../../shared/toggles-api.provider';
 
@@ -43,7 +44,8 @@ import { togglesApiUrlProvider } from '../../shared/toggles-api.provider';
     FeatureFlagResolver,
     FeatureTogglesService,
     togglesApiUrlProvider,
-    WorkItemTypeQuery
+    WorkItemTypeQuery,
+    ErrorHandler
   ]
 })
 export class PlannerQueryModule { }
