@@ -1,16 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
-import {
-  Notification,
-  Notifications,
-  NotificationType
-} from 'ngx-base';
 import { Observable } from 'rxjs';
+import { catchError, map, switchMap } from 'rxjs/operators';
+import { SpaceQuery } from '../models/space';
 import * as LabelActions from './../actions/label.actions';
 import { LabelMapper } from './../models/label.model';
 import { LabelService } from './../services/label.service';
-import { AppState } from './../states/app.state';
+import { ErrorHandler, filterTypeWithSpace } from './work-item-utils';
 
 export type Action = LabelActions.All;
 
@@ -19,43 +15,41 @@ export class LabelEffects {
   constructor(
     private actions$: Actions,
     private labelService: LabelService,
-    private store: Store<AppState>,
-    private notifications: Notifications
+    private spaceQuery: SpaceQuery,
+    private errHandler: ErrorHandler
   ) {}
 
   @Effect() getLabels$: Observable<Action> = this.actions$
-    .ofType(LabelActions.GET)
-    .withLatestFrom(this.store.select('planner').select('space'))
-    .switchMap(([action, space]) => {
-      return this.labelService.getLabels(space.links.self + '/labels')
-      .map(labels => {
-         const lMapper = new LabelMapper();
-         return labels.map(l => lMapper.toUIModel(l));
+    .pipe(
+      filterTypeWithSpace(LabelActions.Get, this.spaceQuery.getCurrentSpace),
+      switchMap(([action, space]) => {
+        return this.labelService.getLabels(space.links.self + '/labels')
+          .pipe(
+            map(labels => {
+              const lMapper = new LabelMapper();
+              return labels.map(l => lMapper.toUIModel(l));
+            }),
+            map(labels => new LabelActions.GetSuccess(labels)),
+            catchError(err => Observable.of(new LabelActions.GetError()))
+          );
       })
-      .map(labels => new LabelActions.GetSuccess(labels))
-      .catch(() => Observable.of(new LabelActions.GetError()));
-    });
+    );
 
   @Effect() createLabel$: Observable<Action> = this.actions$
-    .ofType<LabelActions.Add>(LabelActions.ADD)
-    .withLatestFrom(this.store.select('planner').select('space'))
-    .switchMap(([action, space])  => {
-      return this.labelService.createLabel(action.payload, space.links.self + '/labels')
-        .map(label => {
-          const lMapper = new LabelMapper();
-          let labelUI = lMapper.toUIModel(label);
-          return new LabelActions.AddSuccess(labelUI);
-        })
-        .catch(e => {
-          try {
-            this.notifications.message({
-              message: `There was some problem in adding the label.`,
-              type: NotificationType.DANGER
-            } as Notification);
-          } catch (e) {
-            console.log('There was some problem in adding the label.');
-          }
-          return Observable.of(new LabelActions.AddError());
-        });
-    });
+    .pipe(
+      filterTypeWithSpace(LabelActions.ADD, this.spaceQuery.getCurrentSpace),
+      switchMap(([action, space])  => {
+        return this.labelService.createLabel(action.payload, space.links.self + '/labels')
+          .pipe(
+            map(label => {
+              const lMapper = new LabelMapper();
+              let labelUI = lMapper.toUIModel(label);
+              return new LabelActions.AddSuccess(labelUI);
+            }),
+            catchError(err => this.errHandler.handleError<Action>(
+              err, `There was some problem in adding the label.`, new LabelActions.AddError()
+            ))
+          );
+      })
+    );
 }
