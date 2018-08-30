@@ -83,7 +83,7 @@ export class DetailWorkItemEffects {
               const wi = this.resolveWorkItems([data], state);
               return new DetailWorkItemActions.GetWorkItemSuccess(wi[0]);
             }),
-            catchError(err => this.errHandler.handleError(
+            catchError(err => this.errHandler.handleError<Action>(
               err, 'Problem in getting work item.', new DetailWorkItemActions.GetWorkItemError()
             ))
           );

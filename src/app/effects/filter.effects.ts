@@ -30,7 +30,7 @@ export class FilterEffects {
           map((types: FilterModel[]) => {
             return new FilterActions.GetSuccess(types);
           }),
-          catchError(err => this.errHandler.handleError(
+          catchError(err => this.errHandler.handleError<Action>(
             err, 'Problem in fetching filters.', new FilterActions.GetError()
           ))
         );

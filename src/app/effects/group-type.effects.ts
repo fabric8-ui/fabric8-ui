@@ -38,7 +38,7 @@ export class GroupTypeEffects {
                 types.map(t => gtm.toUIModel(t))
               );
             }),
-            catchError(err => this.errHandler.handleError(
+            catchError(err => this.errHandler.handleError<Action>(
               err, `Problem in fetching grouptypes.`, new GroupTypeActions.GetError()
             ))
           );

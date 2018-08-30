@@ -59,7 +59,7 @@ export class EventEffects {
             map((events: EventUI[]) => {
               return new EventActions.GetSuccess(events);
             }),
-            catchError(err => this.errHandler.handleError(
+            catchError(err => this.errHandler.handleError<Action>(
               err,  `Problem loading Events.`, new EventActions.GetError()
             ))
           );

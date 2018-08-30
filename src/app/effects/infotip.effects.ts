@@ -23,7 +23,7 @@ export class InfotipEffects {
         return this.infotipService.getInfotips()
           .pipe(
             map(payload => new InfotipActions.GetSuccess(payload)),
-            catchError(err => this.errHandler.handleError(
+            catchError(err => this.errHandler.handleError<Action>(
               err, 'Problem in fetching InfoTips', new InfotipActions.GetError()
             ))
           );
