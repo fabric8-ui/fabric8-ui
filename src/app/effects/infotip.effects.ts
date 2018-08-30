@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Actions, Effect } from '@ngrx/effects';
-import * as InfotipActions from './../actions/infotip.actions';
-
+import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Observable } from 'rxjs';
+import { catchError, map, switchMap } from 'rxjs/operators';
+import * as InfotipActions from './../actions/infotip.actions';
 import { InfotipService } from './../services/infotip.service';
-
+import { ErrorHandler } from './work-item-utils';
 
 export type Action = InfotipActions.All;
 
@@ -12,16 +12,21 @@ export type Action = InfotipActions.All;
 export class InfotipEffects {
   constructor(
     private actions$: Actions,
-    private infotipService: InfotipService
+    private infotipService: InfotipService,
+    private errHandler: ErrorHandler
   ) {}
 
   @Effect() getInfotips$: Observable<Action> = this.actions$
-    .ofType<InfotipActions.Get>(InfotipActions.GET)
-    .switchMap(action => {
-      return this.infotipService.getInfotips()
-      .map(payload => {return new InfotipActions.GetSuccess(payload); })
-      .catch(() => { return Observable.of(new InfotipActions.GetError()); });
-    }
-  );
-
+    .pipe(
+      ofType<InfotipActions.Get>(InfotipActions.GET),
+      switchMap(action => {
+        return this.infotipService.getInfotips()
+          .pipe(
+            map(payload => new InfotipActions.GetSuccess(payload)),
+            catchError(err => this.errHandler.handleError(
+              err, 'Problem in fetching InfoTips', new InfotipActions.GetError()
+            ))
+          );
+      })
+    );
 }
