@@ -1,10 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import {
-  Notification,
-  Notifications,
-  NotificationType
-} from 'ngx-base';
 import { Spaces } from 'ngx-fabric8-wit';
 import { Observable } from 'rxjs';
 import * as SpaceActions from './../actions/space.actions';
@@ -32,7 +27,6 @@ export class SpaceEffects {
   constructor(
     private actions$: Actions,
     private spaces: Spaces,
-    private notifications: Notifications,
     private errHandler: ErrorHandler
   ) {}
 
