@@ -43,7 +43,7 @@ export class IterationEffects {
 
   @Effect() addIteration$: Observable<Action> = this.actions$
     .pipe(
-      filterTypeWithSpace(IterationActions.GET, this.spaceQuery.getCurrentSpace),
+      filterTypeWithSpace(IterationActions.ADD, this.spaceQuery.getCurrentSpace),
       switchMap(([action, space]) => {
         const itMapper = new IterationMapper();
         const iteration = itMapper.toServiceModel(action.payload.iteration);
