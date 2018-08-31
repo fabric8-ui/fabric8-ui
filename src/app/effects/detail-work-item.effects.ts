@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import * as DetailWorkItemActions from './../actions/detail-work-item.actions';
@@ -54,7 +54,7 @@ export class DetailWorkItemEffects {
 
   @Effect() getWorkItem$: Observable<Action> = this.actions$
     .pipe(
-      filterTypeWithSpace(DetailWorkItemActions.GET_WORKITEM, this.store.select('planner')),
+      filterTypeWithSpace(DetailWorkItemActions.GET_WORKITEM, this.store.pipe(select('planner'))),
       map(([action, state]) => {
         return {
           payload: action.payload,

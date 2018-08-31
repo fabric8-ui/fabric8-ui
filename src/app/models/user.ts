@@ -6,7 +6,7 @@ import {
   UserService as UserServiceClass
 } from 'ngx-login-client';
 import { ConnectableObservable, Observable } from 'rxjs';
-import { combineLatest } from 'rxjs/Observable/combineLatest';
+import { combineLatest } from 'rxjs/observable/combineLatest';
 import { filter, startWith, switchMap, tap } from 'rxjs/operators';
 import { Get as GetUserAction } from './../actions/user.actions';
 import { AppState, PlannerState } from './../states/app.state';

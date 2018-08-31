@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Actions, Effect } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { Notification, Notifications, NotificationType } from 'ngx-base';
 import { Observable } from 'rxjs';
 import { catchError, map, mergeMap, switchMap } from 'rxjs/operators';
@@ -57,7 +57,7 @@ export class WorkItemEffects {
 
   @Effect() addWorkItems$ = this.actions$
     .pipe(
-      util.filterTypeWithSpace(WorkItemActions.Add, this.store.select('planner')),
+      util.filterTypeWithSpace(WorkItemActions.Add, this.store.pipe(select('planner'))),
       map(([action, state]) => {
         return {
           payload: action.payload,
@@ -134,7 +134,7 @@ export class WorkItemEffects {
 
   @Effect() getWorkItems$: Observable<Action> = this.actions$
     .pipe(
-      util.filterTypeWithSpace(WorkItemActions.GET, this.store.select('planner')),
+      util.filterTypeWithSpace(WorkItemActions.GET, this.store.pipe(select('planner'))),
       map(([action, state]) => {
         return {
           payload: action.payload,
@@ -181,7 +181,7 @@ export class WorkItemEffects {
 
     @Effect() getWorkItemChildren$: Observable<Action> = this.actions$
       .pipe(
-        util.filterTypeWithSpace(WorkItemActions.GET_CHILDREN, this.store.select('planner')),
+        util.filterTypeWithSpace(WorkItemActions.GET_CHILDREN, this.store.pipe(select('planner'))),
         map(([action, state]) => {
           return {
             payload: action.payload,
@@ -220,7 +220,7 @@ export class WorkItemEffects {
 
     @Effect() updateWorkItem$: Observable<Action> = this.actions$
       .pipe(
-        util.filterTypeWithSpace(WorkItemActions.UPDATE, this.store.select('planner')),
+        util.filterTypeWithSpace(WorkItemActions.UPDATE, this.store.pipe(select('planner'))),
         map(([action, state]) => {
           return {
             payload: action.payload,
@@ -275,7 +275,7 @@ export class WorkItemEffects {
 
     @Effect() Reorder: Observable<Action> = this.actions$
       .pipe(
-        util.filterTypeWithSpace(WorkItemActions.REORDER, this.store.select('planner')),
+        util.filterTypeWithSpace(WorkItemActions.REORDER, this.store.pipe(select('planner'))),
         map(([action, state]) => {
           return {
             payload: action.payload,
@@ -307,7 +307,7 @@ export class WorkItemEffects {
 
     @Effect() updateWorkItemFromBoard: Observable<Action> = this.actions$
     .pipe(
-      util.filterTypeWithSpace(ColumnWorkItemActions.UPDATE, this.store.select('planner')),
+      util.filterTypeWithSpace(ColumnWorkItemActions.UPDATE, this.store.pipe(select('planner'))),
       map(([action, state]) => {
         return {
           payload: action.payload,
@@ -360,7 +360,7 @@ export class WorkItemEffects {
 
     @Effect() getWorkItemChildrenForQuery$: Observable<Action> = this.actions$
       .pipe(
-        util.filterTypeWithSpace(WorkItemActions.GET_WORKITEM_CHILDREN_FOR_Query, this.store.select('planner')),
+        util.filterTypeWithSpace(WorkItemActions.GET_WORKITEM_CHILDREN_FOR_Query, this.store.pipe(select('planner'))),
         map(([action, state]) => {
           return {
             payload: action.payload,

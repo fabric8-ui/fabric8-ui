@@ -5,7 +5,7 @@ import { sortBy } from 'lodash';
 import { cloneDeep, isEqual } from 'lodash';
 import { EmptyStateConfig } from 'patternfly-ng';
 import { Observable } from 'rxjs';
-import { combineLatest } from 'rxjs/Observable/combineLatest';
+import { combineLatest } from 'rxjs/observable/combineLatest';
 import { filter, startWith, switchMap, tap } from 'rxjs/operators';
 import { SpaceQuery } from '../../models/space';
 import { WorkItemQuery, WorkItemUI } from '../../models/work-item';
