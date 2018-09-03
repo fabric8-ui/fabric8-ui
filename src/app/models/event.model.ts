@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { UserService } from 'ngx-login-client';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { AppState } from './../states/app.state';
 import { AreaModel, AreaQuery, AreaUI } from './area.model';
 import {
@@ -175,64 +176,66 @@ export class EventQuery {
 
   getEventsWithModifier(): Observable<EventUI[]> {
     return this.eventSource
-      .map(events => {
-        return events.map(event => {
-          switch (event.type) {
-            case 'iterations':
-              return {
-                ...event,
-                modifier: this.userQuery.getUserObservableById(event.modifierId),
-                newValueRelationshipsObs: event.newValueRelationships.map(item => {
-                  return this.iterationQuery.getIterationObservableById(item.id);
-                }),
-                oldValueRelationshipsObs: event.oldValueRelationships.map(item => {
-                  return this.iterationQuery.getIterationObservableById(item.id);
-                })
-              };
-            case 'areas':
-              return {
-                ...event,
-                modifier: this.userQuery.getUserObservableById(event.modifierId),
-                newValueRelationshipsObs: event.newValueRelationships.map(item => {
-                  return this.areaQuery.getAreaObservableById(item.id);
-                }),
-                oldValueRelationshipsObs: event.oldValueRelationships.map(item => {
-                  return this.areaQuery.getAreaObservableById(item.id);
-                })
-              };
-            case 'users':
-              return {
-                ...event,
-                modifier: this.userQuery.getUserObservableById(event.modifierId),
-                newValueRelationshipsObs: event.newValueRelationships.map(item => {
-                  return this.userQuery.getUserObservableById(item.id);
-                }),
-                oldValueRelationshipsObs: event.oldValueRelationships.map(item => {
-                  return this.userQuery.getUserObservableById(item.id);
-                })
-              };
+      .pipe(
+        map(events => {
+          return events.map(event => {
+            switch (event.type) {
+              case 'iterations':
+                return {
+                  ...event,
+                  modifier: this.userQuery.getUserObservableById(event.modifierId),
+                  newValueRelationshipsObs: event.newValueRelationships.map(item => {
+                    return this.iterationQuery.getIterationObservableById(item.id);
+                  }),
+                  oldValueRelationshipsObs: event.oldValueRelationships.map(item => {
+                    return this.iterationQuery.getIterationObservableById(item.id);
+                  })
+                };
+              case 'areas':
+                return {
+                  ...event,
+                  modifier: this.userQuery.getUserObservableById(event.modifierId),
+                  newValueRelationshipsObs: event.newValueRelationships.map(item => {
+                    return this.areaQuery.getAreaObservableById(item.id);
+                  }),
+                  oldValueRelationshipsObs: event.oldValueRelationships.map(item => {
+                    return this.areaQuery.getAreaObservableById(item.id);
+                  })
+                };
+              case 'users':
+                return {
+                  ...event,
+                  modifier: this.userQuery.getUserObservableById(event.modifierId),
+                  newValueRelationshipsObs: event.newValueRelationships.map(item => {
+                    return this.userQuery.getUserObservableById(item.id);
+                  }),
+                  oldValueRelationshipsObs: event.oldValueRelationships.map(item => {
+                    return this.userQuery.getUserObservableById(item.id);
+                  })
+                };
 
-            case 'labels':
-              return {
-                ...event,
-                modifier: this.userQuery.getUserObservableById(event.modifierId),
-                newValueRelationshipsObs:
-                  this.labelQuery.getLabelObservablesByIds(
-                    event.newValueRelationships.map(i => i.id)
-                  ),
-                oldValueRelationshipsObs:
-                  this.labelQuery.getLabelObservablesByIds(
-                    event.oldValueRelationships.map(i => i.id)
-                  )
-              };
+              case 'labels':
+                return {
+                  ...event,
+                  modifier: this.userQuery.getUserObservableById(event.modifierId),
+                  newValueRelationshipsObs:
+                    this.labelQuery.getLabelObservablesByIds(
+                      event.newValueRelationships.map(i => i.id)
+                    ),
+                  oldValueRelationshipsObs:
+                    this.labelQuery.getLabelObservablesByIds(
+                      event.oldValueRelationships.map(i => i.id)
+                    )
+                };
 
-            default:
-              return {
-                ...event,
-                modifier: this.userQuery.getUserObservableById(event.modifierId)
-              };
-          }
-        });
-      });
+              default:
+                return {
+                  ...event,
+                  modifier: this.userQuery.getUserObservableById(event.modifierId)
+                };
+            }
+          });
+        })
+    );
   }
 }

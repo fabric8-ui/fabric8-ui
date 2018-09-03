@@ -11,9 +11,10 @@ import { Dictionary } from '@ngrx/entity/src/models';
 // Else you get this error
 // Exported variable 'workItemSelector' has or is using name 'MemoizedSelector'
 // from external module "@ngrx/store/src/selector" but cannot be named.
-import { createSelector, MemoizedSelector, Store } from '@ngrx/store';
+import { createSelector, MemoizedSelector, select, Store } from '@ngrx/store';
 import { Space } from 'ngx-fabric8-wit';
 import { Observable } from 'rxjs';
+import { filter, map, startWith } from 'rxjs/operators';
 import { AppState } from '../states/app.state';
 import {
   Mapper,
@@ -245,27 +246,30 @@ export class WorkItemTypeQuery {
     }
   );
 
-  workItemTypeSource = this.store.select(this.getAllWorkItemTypesSelector);
-  workItemTypeEntities = this.store.select(getWorkItemTypeEntitiesSelector);
+  workItemTypeSource = this.store.pipe(select(this.getAllWorkItemTypesSelector));
+  workItemTypeEntities = this.store.pipe(select(getWorkItemTypeEntitiesSelector));
 
   /**
    * return observable of all workItemTypes
    * without their child types
    */
   getWorkItemTypes(): Observable<WorkItemTypeUI[]> {
-    return this.workItemTypeSource.filter(w => !!w.length);
+    return this.workItemTypeSource.pipe(filter(w => !!w.length));
   }
 
   getWorkItemTypesWithChildren(): Observable<WorkItemTypeUI[]> {
-    return this.store.select(this.getWorkItemTypesWithChildrenSelector)
-      .filter(t => !!t.length);
+    return this.store.pipe(
+      select(this.getWorkItemTypesWithChildrenSelector),
+      filter(t => !!t.length));
   }
 
   getWorkItemTypeWithChildrenById(id: string): Observable<WorkItemTypeUI> {
-    return this.store.select(this.getWorkItemTypesWithChildrenSelector)
-      .map(types => {
+    return this.store.pipe(
+      select(this.getWorkItemTypesWithChildrenSelector),
+      map(types => {
         return types.filter(type => type.id === id)[0];
-      });
+      })
+    );
   }
 
   getWorkItemTypeById(id: string): Observable<WorkItemTypeUI> {

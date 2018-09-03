@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 
 import { AppState } from './../states/app.state';
 import {
@@ -52,19 +53,22 @@ export class WorkItemLinkTypeQuery {
   ) {}
 
   get getLinkTypes(): Observable<LinkTypeUI[]> {
-    return this.store.select(workItemDetailSelector)
-      .select(state => state.linkType)
-      .filter(lt => !!lt.length);
+    return this.store.pipe(
+      select(workItemDetailSelector),
+      select(state => state.linkType),
+      filter(lt => !!lt.length));
   }
 
   get getLinkTypesForDropdown() {
     return this.getLinkTypes
-    .map(types => {
+    .pipe(
+      map(types => {
       // The common-dropdown component needs the data in a specific format
       // Each item should have `key` and `value` property
-      return types
-        .map(t => {return {...t, value: t.name, key: t.name}; })
-        .sort((t1, t2) => t1.value.localeCompare(t2.value));
-    });
+        return types
+          .map(t => {return {...t, value: t.name, key: t.name}; })
+          .sort((t1, t2) => t1.value.localeCompare(t2.value));
+      })
+    );
   }
 }

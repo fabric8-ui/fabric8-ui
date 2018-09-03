@@ -4,8 +4,9 @@ import { Injectable } from '@angular/core';
 // Else you get this error
 // Exported variable 'plannerSelector' has or is using name 'MemoizedSelector'
 // from external module "@ngrx/store/src/selector" but cannot be named.
-import { createFeatureSelector, createSelector, MemoizedSelector, Store } from '@ngrx/store';
+import { createFeatureSelector, createSelector, MemoizedSelector, select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { filter, map, switchMap, tap } from 'rxjs/operators';
 import * as WorkItemActions from './../actions/work-item.actions';
 import { FilterService } from './../services/filter.service';
 import { BoardViewState } from './../states/app.state';
@@ -137,9 +138,10 @@ export class BoardQuery {
         private filterService: FilterService) {}
 
   getBoardById(id: string, iterationID: string = ''): Observable<BoardModelUI> {
-    return this.boardSource.select(id)
-      .filter(board => !!board)
-      .do((board) => {
+    return this.boardSource.pipe(
+      select(boards => boards[id]),
+      filter(board => !!board),
+      tap((board) => {
         const boardQuery = this.filterService.queryBuilder(
           'board.id', this.filterService.equal_notation, board.id
         );
@@ -159,8 +161,8 @@ export class BoardQuery {
           filters: finalQuery,
           isShowTree: false
         }));
-      })
-      .map(board => {
+      }),
+      map(board => {
         return {
           ...board,
           columns: board.columns
@@ -171,7 +173,8 @@ export class BoardQuery {
               };
             })
         };
-      });
+      })
+    );
   }
 }
 
@@ -182,7 +185,7 @@ export class ColumnWorkItemQuery {
     (state) => state ? state.columnWorkItem : {}
   );
 
-  private columnWorkitemSource = this.store.select(this.columnWorkitems);
+  private columnWorkitemSource = this.store.pipe(select(this.columnWorkitems));
 
   constructor(
     private store: Store<AppState>,
@@ -190,9 +193,11 @@ export class ColumnWorkItemQuery {
   ) {}
 
   getWorkItemsByColumnId(id: string): Observable<WorkItemUI[]> {
-    return this.columnWorkitemSource.select(state => state[id])
-      .map(items => items || [])
-      .switchMap(ids => this.workItemQuery.getWorkItemsByIds(ids));
+    return this.columnWorkitemSource.pipe(
+      select(state => state[id]),
+      map(items => items || []),
+      switchMap(ids => this.workItemQuery.getWorkItemsByIds(ids))
+    );
   }
 }
 
@@ -205,8 +210,8 @@ export class BoardUIQuery {
   constructor(private store: Store<AppState>) {}
 
   get boardLocked(): Observable<boolean> {
-    return this.store.select(this.boardUiSelector)
-      .select(state => state.lockBoard)
-      .filter(l => !!l);
+    return this.store.pipe(select(this.boardUiSelector),
+      select(state => state.lockBoard),
+      filter(l => !!l));
   }
 }

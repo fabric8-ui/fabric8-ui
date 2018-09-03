@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { createEntityAdapter } from '@ngrx/entity';
-import { createFeatureSelector, createSelector, Store } from '@ngrx/store';
+import { createFeatureSelector, createSelector, select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs/Observable';
 import { combineLatest } from 'rxjs/observable/combineLatest';
 import { map, startWith } from 'rxjs/operators';
@@ -145,16 +145,16 @@ export class LabelQuery {
     selectEntities
   );
 
-  getLables(): Store<LabelUI[]> {
-    return this.store.select(this.getAllLabelsSelector);
+  getLables(): Observable<LabelUI[]> {
+    return this.store.pipe(select(this.getAllLabelsSelector));
   }
 
-  getLabelObservableById(number: string): Store<LabelUI> {
+  getLabelObservableById(number: string): Observable<LabelUI> {
     const labelSelector = createSelector(
       this.getLabelEntities,
       state => state[number]
     );
-    return this.store.select(labelSelector);
+    return this.store.pipe(select(labelSelector));
   }
 
   getLabelObservablesByIds(ids: string[]): Observable<LabelUI[]> {

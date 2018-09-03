@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { createFeatureSelector, createSelector, Store } from '@ngrx/store';
+import { createFeatureSelector, createSelector, select, Store } from '@ngrx/store';
 import { isEmpty } from 'lodash';
 import {
   Profile, User,
@@ -95,7 +95,7 @@ export class UserQuery {
     this.plannerSelector,
     (state) => state.users
   );
-  private userSource = this.store.select(this.userSelector);
+  private userSource = this.store.pipe(select(this.userSelector));
 
   private collaboratorIdsSelector = createSelector(
     this.plannerSelector,
@@ -108,12 +108,13 @@ export class UserQuery {
     (users, collabs) => isEmpty(users) ? [] : collabs.map(c => users[c])
   );
 
-  private collaboratorSource = this.store.select(this.collaboratorSelector);
+  private collaboratorSource = this.store.pipe(select(this.collaboratorSelector));
 
   getUserObservableById(id: string): Observable<UserUI> {
-    return this.userSource.select(users => users[id])
+    return this.userSource
       // If the desired user doesn't exist then fetch it
       .pipe(
+        select(users => users[id]),
         tap(user => {
           if (!user) {
             this.store.dispatch(new GetUserAction(id));
@@ -155,7 +156,7 @@ export class UserQuery {
    * array of all the collaborators IDs and loggedIn user IDs
    */
   get getCollaboratorIds() {
-    return this.store.select(this.collaboratorIdsSelector);
+    return this.store.pipe(select(this.collaboratorIdsSelector));
   }
 
   /**

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { createFeatureSelector, createSelector, Store } from '@ngrx/store';
+import { createFeatureSelector, createSelector, select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import * as IterationActions from './../actions/iteration.actions';
 import  {IterationService as Service } from './../services/iteration.service';
 import { AppState, PlannerState } from './../states/app.state';
@@ -218,58 +219,66 @@ export class IterationQuery {
     this.plannerSelector,
     (state) => state.iterations
   );
-  private iterationSource = this.store.select(this.iterationSelector);
+  private iterationSource = this.store.pipe(select(this.iterationSelector));
 
   constructor(private store: Store<AppState>,
     private iterationService: Service) {}
 
   getIterations(): Observable<IterationUI[]> {
-    return this.iterationSource.map(iterations => {
-      return Object.keys(iterations).map(id => iterations[id]);
-    });
+    return this.iterationSource.pipe(
+      map(iterations => {
+        return Object.keys(iterations).map(id => iterations[id]);
+      })
+    );
   }
 
   getIterationObservableById(id: string): Observable<IterationUI> {
-    return this.iterationSource.select(state => state[id]);
+    return this.iterationSource.pipe(select(state => state[id]));
   }
 
   getSelectedIteration(): Observable<IterationUI> {
     return this.getIterations()
-      .map((iterations: IterationUI[]) => {
-        return iterations.filter(it => it.selected);
-      })
-      .map(iterations => {
-        if (iterations.length === 1) {
-          return iterations[0];
-        } return null;
-      });
+      .pipe(
+        map((iterations: IterationUI[]) => {
+          return iterations.filter(it => it.selected);
+        }),
+        map(iterations => {
+          if (iterations.length === 1) {
+            return iterations[0];
+          } return null;
+        })
+      );
   }
 
   getIterationsWithChildren(): Observable<IterationUI[]> {
     return this.getIterations()
-      .map(iterations => {
-        for (let i = 0; i < iterations.length; i++) {
-          iterations[i].children = iterations.filter(it => it.parentId === iterations[i].id);
-        }
-        let allIterations = iterations.filter((i: IterationUI) => {
-          return !this.iterationService.isRootIteration(i.parentPath);
-        });
-        return allIterations;
-      });
+      .pipe(
+        map(iterations => {
+          for (let i = 0; i < iterations.length; i++) {
+            iterations[i].children = iterations.filter(it => it.parentId === iterations[i].id);
+          }
+          let allIterations = iterations.filter((i: IterationUI) => {
+            return !this.iterationService.isRootIteration(i.parentPath);
+          });
+          return allIterations;
+        })
+      );
   }
 
   getIterationForTree(): Observable<IterationUI[]> {
-    return this.getIterationsWithChildren().
+    return this.getIterationsWithChildren().pipe(
       map((iterations: IterationUI[]) => {
         return this.iterationService.getTopLevelIterations(iterations);
-      });
+      })
+    );
   }
 
   getActiveIterations(): Observable<IterationUI[]> {
-    return this.getIterations()
-      .map((iterations: IterationUI[]) => {
+    return this.getIterations().pipe(
+      map((iterations: IterationUI[]) => {
         return iterations.filter((iteration: IterationUI) => iteration.isActive);
-    });
+      })
+    );
   }
 
   deselectAllIteration() {

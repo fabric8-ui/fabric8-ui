@@ -3,8 +3,9 @@ import { Injectable } from '@angular/core';
 // Else you get this error
 // Exported variable 'groupTypeSelector' has or is using name 'MemoizedSelector'
 // from external module "@ngrx/store/src/selector" but cannot be named.
-import { createSelector, MemoizedSelector, Store } from '@ngrx/store';
+import { createSelector, MemoizedSelector, select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { filter, map } from 'rxjs/operators';
 
 import { AppState } from './../states/app.state';
 import {
@@ -166,10 +167,12 @@ export const groupTypeSelector = createSelector(
 export class GroupTypeQuery {
   constructor(private store: Store<AppState>) {}
   get getGroupTypes(): Observable<GroupTypeUI[]> {
-    return this.store.select(groupTypeSelector)
-      .filter(g => g.length > 0);
+    return this.store.pipe(
+      select(groupTypeSelector),
+      filter(g => g.length > 0)
+    );
   }
   get getFirstGroupType(): Observable<GroupTypeUI> {
-    return this.getGroupTypes.map(g => g[0]);
+    return this.getGroupTypes.pipe(map(g => g[0]));
   }
 }
