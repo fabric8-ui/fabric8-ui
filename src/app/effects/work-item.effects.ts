@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Actions, Effect } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
-import { Notification, Notifications, NotificationType } from 'ngx-base';
 import { Observable } from 'rxjs';
 import { catchError, map, mergeMap, switchMap } from 'rxjs/operators';
 import { cleanObject } from '../models/common.model';
@@ -10,7 +9,7 @@ import { FilterService } from '../services/filter.service';
 import * as BoardUIActions from './../actions/board-ui.actions';
 import * as ColumnWorkItemActions from './../actions/column-workitem.action';
 import * as WorkItemActions from './../actions/work-item.actions';
-import { WorkItem, WorkItemMapper, WorkItemService, WorkItemUI } from './../models/work-item';
+import { WorkItemMapper, WorkItemService, WorkItemUI } from './../models/work-item';
 import { WorkItemService as WIService } from './../services/work-item.service';
 import { AppState } from './../states/app.state';
 import * as util from './work-item-utils';
@@ -26,7 +25,6 @@ export class WorkItemEffects {
     private actions$: Actions,
     private workItemService: WIService,
     private store: Store<AppState>,
-    private notifications: Notifications,
     private router: Router,
     private route: ActivatedRoute,
     private filterService: FilterService,
@@ -57,7 +55,7 @@ export class WorkItemEffects {
 
   @Effect() addWorkItems$ = this.actions$
     .pipe(
-      util.filterTypeWithSpace(WorkItemActions.Add, this.store.pipe(select('planner'))),
+      util.filterTypeWithSpace(WorkItemActions.ADD, this.store.pipe(select('planner'))),
       map(([action, state]) => {
         return {
           payload: action.payload,

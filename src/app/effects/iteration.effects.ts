@@ -23,7 +23,7 @@ export class IterationEffects {
 
   @Effect() getIterations$: Observable<Action> = this.actions$
     .pipe(
-      filterTypeWithSpace(IterationActions.Get, this.spaceQuery.getCurrentSpace),
+      filterTypeWithSpace(IterationActions.GET, this.spaceQuery.getCurrentSpace),
       switchMap(([action, space]) => {
         return this.iterationService.getIterations(
           space.relationships.iterations.links.related

@@ -3,15 +3,16 @@ import { ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { Notification, Notifications, NotificationType } from 'ngx-base';
 import { Observable, pipe } from 'rxjs';
-import { catchError, withLatestFrom } from 'rxjs/operators';
+import { withLatestFrom } from 'rxjs/operators';
 import { WorkItemUI } from '../models/work-item';
 import { FilterService } from '../services/filter.service';
 import { WorkItemService } from '../services/work-item.service';
 
 
-export const filterTypeWithSpace = (x, y) => pipe(
+export const filterTypeWithSpace = (x: string, y) => pipe(
   ofType(x),
-  withLatestFrom(y));
+  withLatestFrom(y)
+);
 
 @Injectable()
 export class ErrorHandler {

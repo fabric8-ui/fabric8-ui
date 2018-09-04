@@ -21,7 +21,7 @@ export class LabelEffects {
 
   @Effect() getLabels$: Observable<Action> = this.actions$
     .pipe(
-      filterTypeWithSpace(LabelActions.Get, this.spaceQuery.getCurrentSpace),
+      filterTypeWithSpace(LabelActions.GET, this.spaceQuery.getCurrentSpace),
       switchMap(([action, space]) => {
         return this.labelService.getLabels(space.links.self + '/labels')
           .pipe(

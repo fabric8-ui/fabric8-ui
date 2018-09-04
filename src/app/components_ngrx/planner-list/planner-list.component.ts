@@ -17,7 +17,7 @@ import {
 import { EmptyStateConfig } from 'patternfly-ng/empty-state';
 import { Observable } from 'rxjs/Observable';
 import { combineLatest } from 'rxjs/observable/combineLatest';
-import { filter, switchMap, tap } from 'rxjs/operators';
+import { filter, switchMap, take, tap } from 'rxjs/operators';
 import { WorkItemTypeQuery, WorkItemTypeUI } from '../../models/work-item-type';
 import { IterationQuery, IterationUI } from './../../models/iteration.model';
 import { CookieService } from './../../services/cookie.service';
@@ -137,9 +137,9 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
           return combineLatest(
             this.workItemTypeSource,
             this.areaSource,
-            this.iterationSource.take(1),
-            this.labelSource.take(1),
-            this.collaboratorSource.take(1),
+            this.iterationSource.pipe(take(1)),
+            this.labelSource.pipe(take(1)),
+            this.collaboratorSource.pipe(take(1)),
             this.routeSource
           );
         })
