@@ -215,7 +215,7 @@ export class WorkItemQuickPreview extends ui.BaseElement {
     }
   }
 
-  async addLink(linkType: string, searchWorkItem: string, workItem: string) {
+  async addLink(linkType: string, workItem: string) {
     await this.linksDiv.untilTextIsPresent('Links');
     // Open link section in detail page
     await this.linksToggleButton.clickWhenReady();
@@ -226,7 +226,7 @@ export class WorkItemQuickPreview extends ui.BaseElement {
 
     // Open search work item dropdown
     await this.linkSearchDropdown.clickWhenReady();
-    await this.searchWorkItem.enterText(searchWorkItem);
+    await this.searchWorkItem.enterText(workItem);
     // Needs further investigation, test throws Stale Element without sleep
     await browser.sleep(2000);
     await this.workItemList.untilCount(1);
@@ -235,8 +235,7 @@ export class WorkItemQuickPreview extends ui.BaseElement {
     // Create link
     await this.linkButton.untilTextIsPresent('Create Link');
     await this.linkButton.clickWhenReady();
-    // Needs further investigation, test throws Stale Element without sleep
-    await browser.sleep(2000);
+    await this.linklistItem.untilTextIsPresent(workItem);
   }
 
   async removeLink(workItem: string) {
@@ -387,6 +386,7 @@ export class WorkItemQuickPreview extends ui.BaseElement {
     await this.stateDropdown.clickWhenReady();
     await this.stateDropdown.select(state);
     await this.loadingAnimation.untilCount(0);
+    await this.stateDropdown.untilTextIsPresent(state);
   }
 
   async changeTypeTo(type: string) {

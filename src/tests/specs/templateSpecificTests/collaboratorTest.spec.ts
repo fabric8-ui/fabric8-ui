@@ -1,6 +1,6 @@
 import { browser } from 'protractor';
-import { PlannerPage } from '../page_objects/planner';
-import * as support from '../support';
+import { PlannerPage } from '../../page_objects/planner';
+import * as support from '../../support';
 
 
 describe('Planner Collaborator Tests:', () => {
@@ -30,7 +30,7 @@ describe('Planner Collaborator Tests:', () => {
   });
 
   beforeEach(async () => {
-    await planner.workItemList.ready();
+    await planner.ready();
     await planner.workItemList.overlay.untilHidden();
   });
 

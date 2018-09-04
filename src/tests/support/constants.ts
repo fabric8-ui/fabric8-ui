@@ -37,8 +37,8 @@ export class Constants {
       'user1': process.env.USER_FULLNAME,
        // Required since we need 2 users. Do not remove
       'user2': process.env.USER_FULLNAME,
-      'Workitem_Title_3': 'Workitem_Title_3',
-      'Workitem_Title_4': 'Workitem_Title_4',
+      'Workitem_Title_3': '2 - Workitem_Title_3',
+      'Workitem_Title_4': '3 - Workitem_Title_4',
       'workItemTypeFilter' : 'workitemtype: Scenario',
       'workitem': { title : 'new detail workItem', type: 'Scenario'},
       'user_avatar': 'https://www.gravatar.com/avatar/f56b4884b4041f14b13d919008fd7d44.jpg&s=25'
@@ -63,8 +63,6 @@ export class Constants {
       'newIteration1': 'new Iteration 1',
       'parentIteration': '/' + process.env.SPACE_NAME_SCRUM + '/Iteration_2',
       'rootIteration': '/' + process.env.SPACE_NAME_SCRUM,
-      'searchWorkItem3': '3 - Workitem_Title_3',
-      'searchWorkItem4': '4 - Workitem_Title_4',
       'stateOpen': 'Open',
       'stateNew': 'New',
       'stateClosed': 'Closed',
@@ -74,8 +72,8 @@ export class Constants {
       'typeIssue': 'Defect',
       // Required since we need 2 users. Do not remove
       'user2': process.env.USER_FULLNAME,
-      'Workitem_Title_4': 'Workitem_Title_4',
-      'Workitem_Title_3': 'Workitem_Title_3',
+      'Workitem_Title_4': '4 - Workitem_Title_4',
+      'Workitem_Title_3': '3 - Workitem_Title_3',
       'workitem': { title : 'new detail workItem', type: 'Task'},
       'workItemTypeFilter' : 'workitemtype: Defect',
       'user_avatar': 'https://www.gravatar.com/avatar/f56b4884b4041f14b13d919008fd7d44.jpg&s=25'

@@ -58,7 +58,7 @@ describe('Quick preview tests: ', () => {
       linkType = 'blocks';
     await planner.createWorkItem(workitemname);
     await planner.workItemList.clickWorkItem(workitemname.title);
-    await planner.quickPreview.addLink(linkType, testData.searchWorkItem4, testData.Workitem_Title_4);
+    await planner.quickPreview.addLink(linkType, testData.Workitem_Title_4);
     await planner.quickPreview.linklistItem.untilTextIsPresent(testData.Workitem_Title_4);
     expect(await planner.quickPreview.getLinkedItems()).toContain(testData.Workitem_Title_4);
   });
