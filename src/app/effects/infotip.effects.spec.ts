@@ -2,12 +2,14 @@ import { TestBed } from '@angular/core/testing';
 import { provideMockActions } from '@ngrx/effects/testing';
 import { cold, hot } from 'jasmine-marbles';
 
+import { Notifications } from 'ngx-base';
 import { Observable } from 'rxjs';
 import { Action } from 'rxjs/scheduler/Action';
 import * as Actions from '../actions/infotip.actions';
 import { InfotipService } from '../services/infotip.service';
 import { InfotipState } from '../states/infotip.state';
 import { InfotipEffects } from './infotip.effects';
+import { ErrorHandler } from './work-item-utils';
 
 describe('InfotipEffects', () => {
   let effects: InfotipEffects;
@@ -25,7 +27,9 @@ describe('InfotipEffects', () => {
         {
           provide: InfotipService,
           useValue: jasmine.createSpyObj('infotipService', ['getInfotips'])
-        }
+        },
+        ErrorHandler,
+        Notifications
       ]
     });
 
