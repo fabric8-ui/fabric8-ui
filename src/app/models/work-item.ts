@@ -1,12 +1,6 @@
 import { Injectable } from '@angular/core';
 import { createEntityAdapter, EntityState } from '@ngrx/entity';
 
-// Dictionary is needed even if it's not being used in this file
-// Else you get this error
-// Exported variable 'workItemEntities' has or is using name 'Dictionary'
-// from external module "@ngrx/entity/src/models" but cannot be named.
-import { Dictionary } from '@ngrx/entity/src/models';
-
 // MemoizedSelector is needed even if it's not being used in this file
 // Else you get this error
 // Exported variable 'workItemSelector' has or is using name 'MemoizedSelector'
@@ -46,7 +40,6 @@ import { Link } from './link';
 import { plannerSelector } from './space';
 import { UserQuery, UserService, UserUI } from './user';
 import {
-  getWorkItemTypeEntitiesSelector,
   WorkItemType,
   WorkItemTypeMapper,
   WorkItemTypeQuery,
@@ -521,7 +514,8 @@ export const workItemSelector = createSelector(
   // state => state.workItems
   state => state ? state.workItems : {entities: {}, ids: []}
 );
-export const workItemEntities = createSelector(
+// should never be exported
+const workItemEntities = createSelector(
   workItemSelector,
   selectEntities
 );

@@ -1,12 +1,6 @@
 import { Injectable } from '@angular/core';
 import { createEntityAdapter, EntityState } from '@ngrx/entity';
 
-// Dictionary is needed even if it's not being used in this file
-// Else you get this error
-// Exported variable 'workItemEntities' has or is using name 'Dictionary'
-// from external module "@ngrx/entity/src/models" but cannot be named.
-import { Dictionary } from '@ngrx/entity/src/models';
-
 // MemoizedSelector is needed even if it's not being used in this file
 // Else you get this error
 // Exported variable 'workItemSelector' has or is using name 'MemoizedSelector'
@@ -211,14 +205,16 @@ export interface WorkItemTypeStateModel extends EntityState<WorkItemTypeUI> {}
 
 const workItemTypeAdapter = createEntityAdapter<WorkItemTypeUI>();
 
-export const { selectIds, selectEntities, selectAll, selectTotal } = workItemTypeAdapter.getSelectors();
+// Do not export it
+const { selectIds, selectEntities, selectAll, selectTotal } = workItemTypeAdapter.getSelectors();
 
 export const workItemTypeSelector = createSelector(
   plannerSelector,
   state => state ? state.workItemTypes : {ids: [], entities: {}}
 );
 
-export const getWorkItemTypeEntitiesSelector = createSelector(
+// Do not export it
+const getWorkItemTypeEntitiesSelector = createSelector(
   workItemTypeSelector,
   selectEntities
 );
@@ -245,9 +241,9 @@ export class WorkItemTypeQuery {
       });
     }
   );
-
+  // It always should be private
+  private workItemTypeEntities = this.store.pipe(select(getWorkItemTypeEntitiesSelector));
   workItemTypeSource = this.store.pipe(select(this.getAllWorkItemTypesSelector));
-  workItemTypeEntities = this.store.pipe(select(getWorkItemTypeEntitiesSelector));
 
   /**
    * return observable of all workItemTypes
