@@ -102,6 +102,7 @@ describe('Detail View test: ', () => {
     await planner.detailPage.addLink(linkType, testData.Workitem_Title_4);
     expect(await planner.detailPage.getLinkedItems()).toContain(testData.Workitem_Title_4);
     await planner.detailPage.removeLink(testData.Workitem_Title_4);
+    await planner.workItemList.overlay.untilHidden();
     await planner.detailPage.linkCount.untilTextIsPresent('0');
     expect(await planner.detailPage.linkCount.getTextWhenReady()).toBe('0');
   });
