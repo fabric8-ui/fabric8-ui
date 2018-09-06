@@ -5,7 +5,7 @@ import { WorkItemListEntry } from './workitem-list-entry';
 import { WorkItemQuickAdd } from './workitem-quickadd';
 
 export class WorkItemList extends BaseElement {
-  overlay = new BaseElement(this.$('div.lock-overlay-list'));
+  overlay = new BaseElement(this.$('div.lock-overlay-list'), 'overlay');
   datatableHeaderdiv = new ui.BaseElement(this.$('.datatable-header'), 'datatable header div');
   datatableHeaderCell = new ui.BaseElementArray(this.$$('datatable-header-cell'), 'datatable header cell');
   datatableHeaderCellLabel = new ui.BaseElementArray(this.$$('datatable-header-cell-label'));

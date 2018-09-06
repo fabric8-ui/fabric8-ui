@@ -239,7 +239,9 @@ export class WorkItemQuickPreview extends ui.BaseElement {
   }
 
   async removeLink(workItem: string) {
-    await new ui.BaseElement(this.element(by.xpath("//li[contains(@class,'f8-link__list-item')][.//span[contains(text(), '" + workItem + "')]]")).$('.pficon-close')).clickWhenReady();
+    await new ui.BaseElement(
+      this.element(by.xpath("//li[contains(@class,'f8-link__list-item')][.//span[contains(text(), '" + workItem + "')]]")).
+      $('.pficon-close'), 'remove link button').clickWhenReady();
   }
 
   async createNewLabel(label: string, isPressEnter: boolean = false) {

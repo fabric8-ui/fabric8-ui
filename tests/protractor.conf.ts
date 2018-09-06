@@ -61,7 +61,7 @@ let conf: Config = {
       },
     {
       'browserName': 'chrome',
-      exclude: ['specs/templateSpecificTests/sddTemplate.spec.js', 'specs/templateSpecificTests/collaboratorTest.spec.js'],
+      exclude: ['specs/templateSpecificTests/sddTemplate.spec.js', 'specs/collaboratorTest.spec.js'],
       chromeOptions: {
         args: process.env.HEADLESS_MODE === 'true' ? ['--no-sandbox', '--headless'] : ['--no-sandbox']
       },
