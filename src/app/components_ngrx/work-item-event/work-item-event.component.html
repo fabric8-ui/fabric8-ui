@@ -31,10 +31,10 @@
           [innerHTML]=intermediateText>
         </span>
         <i class="margin-h-3"
-          *ngFor="let item of event.newValueRelationshipsObs"> '{{ (item | async).name }}' </i>
+          *ngFor="let item of event.newValueRelationshipsObs"> '{{ (item | async)?.name }}' </i>
         <ng-container *ngIf="toText && textType === 'assignee'">{{ toText }}
           <i  class="margin-h-3"
-            *ngFor="let item of event.oldValueRelationshipsObs"> '{{ (item | async).name }}'</i>
+            *ngFor="let item of event.oldValueRelationshipsObs"> '{{ (item | async)?.name }}'</i>
         </ng-container>
         <ng-container *ngIf="event.oldValueRelationshipsObs[0] | async as it">
           <ng-container *ngIf="toText && textType === 'relationship' && it.parentPath !== '/'">
@@ -49,7 +49,7 @@
         *ngIf="textType === 'label'" >
         <span class="padding-left-5" [innerHTML]=intermediateText></span>
         <f8-label class="margin-h-5"
-          *ngIf='(event.newValueRelationshipsObs | async).length > 0'
+          *ngIf='(event.newValueRelationshipsObs | async)?.length > 0'
           [labels]='event.newValueRelationshipsObs | async'
           [allowDelete]="false"
           [context]="'detail'">
