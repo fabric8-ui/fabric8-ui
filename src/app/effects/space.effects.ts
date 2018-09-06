@@ -4,7 +4,7 @@ import { Spaces } from 'ngx-fabric8-wit';
 import { Observable } from 'rxjs';
 import * as SpaceActions from './../actions/space.actions';
 
-import { catchError, distinctUntilChanged, filter, map, switchMap } from 'rxjs/operators';
+import { catchError, delay, distinctUntilChanged, filter, map, switchMap, tap } from 'rxjs/operators';
 import * as AreaActions from './../actions/area.actions';
 import * as BoardActions from  './../actions/board.actions';
 import * as CollaboratorActions from './../actions/collaborator.actions';
@@ -22,7 +22,7 @@ export type Action = SpaceActions.All;
 
 @Injectable()
 export class SpaceEffects {
-  private oldSpaceId: string | null = null;
+  private attempt: number = 0;
 
   constructor(
     private actions$: Actions,
@@ -34,6 +34,7 @@ export class SpaceEffects {
     .pipe(
       ofType(SpaceActions.GET),
       switchMap(action => this.spaces.current),
+      filter(space => !!space),
       switchMap(space => Observable.of(new SpaceActions.GetSuccess(space))),
       catchError(err => this.errHandler.handleError(err, `Problem in getting space`, new SpaceActions.GetError()))
     );
@@ -43,8 +44,15 @@ export class SpaceEffects {
       ofType(SpaceActions.GET_SUCCESS),
       map(v => v as any),
       filter(v => !!v && !!v.payload),
-      distinctUntilChanged(),
-      switchMap(() => Observable.from([
+      delay(this.attempt * 5000),
+      tap(() => this.attempt++),
+      distinctUntilChanged((x, y) => {
+        if (x && y) {
+          return x.payload.id === y.payload.id;
+        }
+        return false;
+      }),
+      switchMap(() => [
         new CollaboratorActions.Get(),
         new AreaActions.Get(),
         new FilterActions.Get(),
@@ -56,6 +64,6 @@ export class SpaceEffects {
         new CustomQueryActions.Get(),
         new InfotipActions.Get(),
         new BoardActions.Get()
-      ]))
+      ])
     );
 }

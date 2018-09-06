@@ -7,7 +7,7 @@ import { Injectable } from '@angular/core';
 import { createFeatureSelector, createSelector, MemoizedSelector, select, Store } from '@ngrx/store';
 import { Space } from 'ngx-fabric8-wit';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { filter, tap } from 'rxjs/operators';
 import * as SpaceActions from './../actions/space.actions';
 import { AppState, PlannerState } from './../states/app.state';
 
@@ -25,7 +25,10 @@ export class SpaceQuery {
     constructor(private store: Store<AppState>) {}
 
     get getCurrentSpace(): Observable<Space> {
-        return this.store.pipe(select(spaceSelector),
-            tap(s => {if (!s) { this.store.dispatch(new SpaceActions.Get()); }}));
+        return this.store.pipe(
+            select(spaceSelector),
+            tap(s => {if (!s) { this.store.dispatch(new SpaceActions.Get()); }}),
+            filter(s => !!s)
+        );
     }
 }

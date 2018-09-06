@@ -18,8 +18,11 @@ export class HttpClientService {
       return headers;
     }
     (<any> Object).entries(options).forEach(([key, value]) => {
-      headers.set(key, value);
+      headers = headers.append(key, value);
     });
+    // this header is added to identify that it's a planner request to
+    // the auth interceptoe. This header is removed in the interceptor
+    headers = headers.append('planner-req', 'planner-req');
     return headers;
   }
 
@@ -74,7 +77,7 @@ export class HttpClientService {
   public delete(url: string): Observable<any> {
     console.log('DELETE request initiated');
     console.log('URL - ', url);
-    return this.http.delete(url, {responseType: 'text' })
+    return this.http.delete(url, {responseType: 'text', headers: this.setHeaders({})})
       .pipe(
         retryWhen(attempts => this.requestRetryLogic(attempts))
       );
