@@ -1,6 +1,5 @@
 import { $, ElementFinder } from 'protractor';
 import * as ui from '../../ui';
-import { BaseElementArray } from './../base.element';
 import { WorkItem } from './index';
 
 export class WorkItemInlineQuickAdd extends ui.BaseElement {

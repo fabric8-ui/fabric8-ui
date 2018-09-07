@@ -1,7 +1,6 @@
 import { browser, ExpectedConditions } from 'protractor';
 import * as mixins from '../mixins';
 import * as support from '../support';
-import { DEFAULT_WAIT } from '../support';
 
 export enum PageOpenMode {
   AlreadyOpened,

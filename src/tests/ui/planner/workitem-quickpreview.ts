@@ -1,7 +1,6 @@
 import { $, $$, browser, by, ElementFinder, Key } from 'protractor';
 import * as support from './../../support';
 import * as ui from './../../ui';
-import { Clickable } from './../base.element';
 
 
 export class WorkItemQuickPreview extends ui.BaseElement {

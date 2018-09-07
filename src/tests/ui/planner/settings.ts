@@ -1,6 +1,5 @@
 import { ElementFinder } from 'protractor';
 import * as ui from '../../ui';
-import { WorkItem } from './index';
 
 export class Settings extends ui.BaseElement {
   settingsDropdownDiv = new ui.BaseElement(this.$('.f8-table-config__settings-dropdown'), 'settings div');

@@ -1,7 +1,6 @@
 import { $, browser, by, element, ExpectedConditions as until } from 'protractor';
 import * as support from '../support';
 import { BaseElement, Clickable } from '../ui';
-
 import { BasePage } from './base.page';
 
 export abstract class AppPage extends BasePage {

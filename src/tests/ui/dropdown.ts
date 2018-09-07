@@ -1,5 +1,4 @@
-import { $, by, ElementFinder } from 'protractor';
-import * as support from '../support';
+import { by, ElementFinder } from 'protractor';
 import { BaseElement, Clickable } from './base.element';
 
 class DropdownItem extends BaseElement {
