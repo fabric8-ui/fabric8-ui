@@ -2,9 +2,8 @@
   "name": "ngx-widgets",
   "version": "0.0.0-development",
   "description": "A collection of Angular components and other useful things to be shared.",
-  "main": "bundles/ngx-widgets.umd.js",
-  "module": "index.js",
-  "typings": "index.d.ts",
+  "module": "src/app/index.js",
+  "typings": "src/app/index.d.ts",
   "scripts": {
     "build": "npm-run-all --serial lint:less lint:ts build:aot build:bundle",
     "build:aot": "npm run rimraf -- build build-aot && gulp build-aot",

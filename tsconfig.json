@@ -28,7 +28,7 @@
       "@angular/router": ["node_modules/@angular/router"],
       "rxjs/*": ["node_modules/rxjs/*"]
     },
-    "rootDir": "build/src/app",
+    "rootDir": "build",
     "skipLibCheck": true,
     "sourceMap": true,
     "strictNullChecks": false,

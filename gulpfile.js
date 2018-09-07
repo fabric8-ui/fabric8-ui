@@ -83,19 +83,6 @@ function minifyTemplate(file) {
   }
 }
 
-// Build LESS
-function transpileLESS(src) {
-  return gulp.src(src)
-    .pipe(sourcemaps.init())
-    .pipe(lessCompiler({
-      paths: [ path.join(__dirname, 'less', 'includes') ]
-    }))
-    .pipe(sourcemaps.write())
-    .pipe(gulp.dest(function (file) {
-      return __dirname + file.base.slice(__dirname.length);
-    }));
-}
-
 // Build and minify LESS separately
 function transpileMinifyLESS(src) {
   return gulp.src(src)
@@ -104,12 +91,11 @@ function transpileMinifyLESS(src) {
       paths: [ path.join(__dirname, 'less', 'includes') ]
     }))
     .pipe(cssmin().on('error', function(err) {
-      console.log(err);
+      console.error(err);
     }))
-    .pipe(rename({suffix: '.min'}))
     .pipe(sourcemaps.write())
     .pipe(gulp.dest(function (file) {
-      return __dirname + file.base.slice(__dirname.length);
+      return libraryDist + file.base.slice(__dirname.length);
     }));
 }
 
@@ -117,42 +103,10 @@ function transpileMinifyLESS(src) {
  * LESS
  */
 
-// Copy asset LESS to dist/less and replace relative paths for flattened directory
-function copyAssetsLess() {
-  return gulp.src(['./src/assets/stylesheets/*.less'])
-    .pipe(replace(/\.\.\/.\.\/.\.\//g, function () {
-      return '../../../../';
-    }))
-    .pipe(replace(/@import '\.\.\/\.\.\/.*\//g, function () {
-      return '@import \'';
-    }))
-    .pipe(rename({dirname: ''}))
-    .pipe(gulp.dest(libraryDist + '/dist/less'));
-}
-
-// Copy component LESS to dist/less in a flattened directory
-function copyLess() {
-  return gulp.src(['./src/app/**/*.less'].concat(globalExcludes))
-    .pipe(rename({dirname: ''}))
-    .pipe(gulp.dest(libraryDist + '/dist/less'));
-}
-
-/**
- * CSS
- */
-
-// Copy CSS to dist/css
-function copyCss() {
-  return gulp.src(['./src/assets/stylesheets/*.css'], {base: './src/assets/stylesheets'})
-    .pipe(gulp.dest(function (file) {
-      return libraryDist + '/dist/css' + file.base.slice(__dirname.length); // save directly to dist
-    }));
-}
-
 // Stylelint
 function lintCss() {
   return gulp
-    .src(['./src/assets/stylesheets/*.less', './src/app/**/*.less'])
+    .src([appSrc + '/**/*.less'])
     .pipe(stylelint({
       failAfterError: true,
       reporters: [
@@ -162,13 +116,21 @@ function lintCss() {
 }
 
 // Less compilation and minifiction
-function minCss() {
-  return transpileMinifyLESS(appSrc + '/assets/stylesheets/*.less');
+function transpileLess() {
+  return transpileMinifyLESS(appSrc + '/**/*.less');
 }
 
-// Less compilation
-function transpileLess() {
-  return transpileLESS(appSrc + '/assets/stylesheets/*.less');
+// update templates styleUrls
+function postTranspile() {
+  return gulp.src(['dist/**/*.js'])
+    .pipe(replace(/templateUrl:\s/g, "template: require("))
+    .pipe(replace(/\.html',/g, ".html'),"))
+    .pipe(replace(/\.html'/g, ".html')"))
+    .pipe(replace(/styleUrls: \[/g, "styles: [require("))
+    .pipe(replace(/\.less']/g, ".css').toString()]"))
+    .pipe(gulp.dest(function (file) {
+      return file.base; // because of Angular's encapsulation, it's natural to save the css where the less-file was
+    }));
 }
 
 /**
@@ -177,7 +139,7 @@ function transpileLess() {
 
 // Inline HTML templates in component classes
 function inlineTemplate() {
-  return gulp.src(['./src/app/**/*.ts'].concat(globalExcludes), {base: './'})
+  return gulp.src([appSrc + '/app/**/*.ts'].concat(globalExcludes), {base: './'})
     .pipe(replace(/templateUrl.*\'/g, function (matched) {
       let fileName = matched.match(/\/.*html/g).toString();
       let dirName = this.file.relative.substring(0, this.file.relative.lastIndexOf('/'));
@@ -223,18 +185,17 @@ function transpileAot() {
 
 // Watch source
 function watch() {
-  gulp.watch([appSrc + '/app/**/*.ts', '!' + appSrc + '/app/**/*.spec.ts']).on('change', function (e) {
-    console.log('TypeScript file ' + e.path + ' has been changed. Compiling.');
+  gulp.watch([appSrc + '/app/**/*.ts', '!' + appSrc + '/app/**/*.spec.ts']).on('change', function (path) {
+    console.log('TypeScript file ' + path + ' has been changed. Compiling.');
+    gulp.series(inlineTemplate, transpile, updateWatchDist)();
   });
-  gulp.watch([appSrc + '/app/**/*.less']).on('change', function (e) {
-    console.log(e.path + ' has been changed. Updating.');
-    transpileLESS(e.path);
-    updateWatchDist();
+  gulp.watch([appSrc + '/app/**/*.less', appSrc + '/assets/**/*.less']).on('change', function (path) {
+    console.log(path + ' has been changed. Updating.');
+    gulp.series(() => transpileMinifyLESS(path), updateWatchDist)();
   });
-  gulp.watch([appSrc + '/app/**/*.html']).on('change', function (e) {
-    console.log(e.path + ' has been changed. Updating.');
-    copyToDist(e.path);
-    updateWatchDist();
+  gulp.watch([appSrc + '/app/**/*.html']).on('change', function (path) {
+    console.log(path + ' has been changed. Updating.');
+    gulp.series(inlineTemplate, transpile, updateWatchDist)();
   });
 }
 
@@ -249,21 +210,19 @@ function updateWatchDist() {
 /**
  * Tasks
  */
-
-const buildLessSeries = gulp.series(copyAssetsLess, copyLess);
-const buildCssSeries = gulp.series(lintCss, transpileLess, minCss, copyCss);
-const buildAotSeries = gulp.series(inlineTemplate, transpileAot);
+const buildCssSeries = gulp.series(lintCss, transpileLess);
+const buildAotSeries = gulp.series(inlineTemplate, transpileAot, postTranspile);
+const transpileSeries = gulp.series(inlineTemplate, transpile, postTranspile);
 const copyExamplesSeries = gulp.series(copyExamples);
 const copyPkgFilesSeries = gulp.series(copyPkgFiles);
 
-const buildSeries = gulp.series(inlineTemplate, transpile, buildCssSeries, buildLessSeries, copyPkgFilesSeries);
+const buildSeries = gulp.series(transpileSeries, buildCssSeries, copyPkgFilesSeries);
 const updateWatchDistSeries = gulp.series(buildSeries, updateWatchDist);
 const watchSeries = gulp.series(updateWatchDistSeries, watch);
 
 gulp.task('build', buildSeries);
 gulp.task('build-aot', buildAotSeries);
 gulp.task('build-css', buildCssSeries);
-gulp.task('build-less', buildLessSeries);
 gulp.task('copy-examples', copyExamplesSeries);
 gulp.task('copy-pkg-files', copyPkgFilesSeries);
 gulp.task('watch', watchSeries);
