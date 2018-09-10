@@ -24,8 +24,11 @@
       (click)="onPreview($event, row)"></p>
   </div>
   <div class="dib text-right wi-detail-icon">
-    <span *ngIf="context ==='query' && row.hasChildren"
-      class="fa fa-angle-right margin-left-10 bold padding-v-5 pointer"
+    <span *ngIf="context ==='query'"
+      class="fa fa-angle-right margin-left-10 padding-v-5"
+      [class.bold]="row.hasChildren"
+      [class.pointer]="row.hasChildren"
+      [class.click-disable]="!row.hasChildren"
       (click)="onExploration(row)"></span>
       <span *ngIf="context ==='query' && !row.hasChildren"
       class="fa fa-angle-right margin-left-10 icon__disabled padding-v-5 pointer"

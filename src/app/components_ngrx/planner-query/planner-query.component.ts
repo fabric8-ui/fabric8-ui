@@ -45,14 +45,6 @@ export class PlannerQueryComponent implements OnInit, OnDestroy, AfterViewChecke
             filters: filters,
             isShowTree: false
           }));
-        } else if (query.hasOwnProperty('parentId')) {
-          this.disableInput = true;
-          this.searchQuery = 'Children of ' + query.parentId;
-          this.currentQuery = query.parentId;
-
-          // FIXME: This is temporary untill we have support for parent.id/number in search endpoint
-          const payload = space.links.self.split('spaces')[0] + 'workitems/' + query.parentId + '/children';
-          this.store.dispatch(new WorkItemActions.GetWorkItemChildrenForQuery(payload));
         }
         if (query.hasOwnProperty('prevq')) {
           this.breadcrumbs = JSON.parse(query.prevq);
@@ -143,11 +135,22 @@ export class PlannerQueryComponent implements OnInit, OnDestroy, AfterViewChecke
 
   fetchWorkItemForQuery(event: KeyboardEvent, query: string) {
     let keycode = event.keyCode ? event.keyCode : event.which;
+    let queryParams = cloneDeep(this.route.snapshot.queryParams);
     if (keycode === 13 && query !== '') {
-      this.router.navigate([], {
-        relativeTo: this.route,
-        queryParams: { q : query}
-      });
+      if (queryParams.hasOwnProperty('prevq')) {
+        this.router.navigate([], {
+          relativeTo: this.route,
+          queryParams: {
+             q : query,
+             prevq: queryParams.prevq
+            }
+        });
+      } else {
+        this.router.navigate([], {
+          relativeTo: this.route,
+          queryParams: { q : query}
+        });
+    }
     } else if (keycode === 8 && (event.ctrlKey || event.metaKey)) {
       this.searchQuery = '';
     }
@@ -157,33 +160,22 @@ export class PlannerQueryComponent implements OnInit, OnDestroy, AfterViewChecke
     let queryParams = cloneDeep(this.route.snapshot.queryParams);
     let previousQuery;
     if (queryParams.hasOwnProperty('prevq')) {
-      if (queryParams.hasOwnProperty('parentId')) {
+      if (queryParams.hasOwnProperty('q')) {
         previousQuery = {
           prevq: [
             ...JSON.parse(queryParams.prevq),
-            {
-              parentId: queryParams.parentId
-            }
-          ]
-        };
-      } else if (queryParams.hasOwnProperty('q')) {
-        previousQuery = {
-          prevq: [
-            ...JSON.parse(queryParams.prevq),
-            {
-              q: queryParams.q
-            }
+            {q: queryParams.q}
           ]
         };
       }
     } else {
       previousQuery = {prevq: [queryParams]};
     }
+
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: {
-        parentId: workItem.id
-        ,
+        q: 'parent.number : ' + workItem.number,
         prevq: JSON.stringify(previousQuery.prevq)
       }
     });

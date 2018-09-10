@@ -39,6 +39,8 @@ export class WorkItemCellComponent {
     }
 
     onExploration(workItem: WorkItemUI) {
-      this.onChildExploration.emit(workItem);
+      if (workItem.hasChildren) {
+        this.onChildExploration.emit(workItem);
+      }
     }
 }

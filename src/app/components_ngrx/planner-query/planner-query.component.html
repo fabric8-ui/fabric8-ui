@@ -27,12 +27,12 @@
 				placeholder="Enter your Query...">
 		<span class="f8-query__input-hint">Press Enter to Search....</span>
 		<div>
-			<ng-container *ngFor="let breadcrumb of breadcrumbs">
-			>&nbsp;<span class="pointer breadcrumbs"
-							(click)="navigateToQuery(breadcrumb)">
-				<ng-container *ngIf="breadcrumb.q">Query</ng-container>
-				<ng-container *ngIf="breadcrumb.parentId">{{ breadcrumb.parentId }}</ng-container>
-				</span>
+			<ng-container *ngFor="let breadcrumb of breadcrumbs; let i=index;">
+			>&nbsp;
+			<span class="pointer breadcrumbs"
+				(click)="navigateToQuery(breadcrumb)">
+				Query - {{ i }}
+			</span>
 			</ng-container>&nbsp;>&nbsp;<span class="current-query">{{ currentQuery }}</span>
 		</div>
 	</div>

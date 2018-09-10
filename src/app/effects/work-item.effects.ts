@@ -355,32 +355,4 @@ export class WorkItemEffects {
             );
       })
     );
-
-    @Effect() getWorkItemChildrenForQuery$: Observable<Action> = this.actions$
-      .pipe(
-        util.filterTypeWithSpace(WorkItemActions.GET_WORKITEM_CHILDREN_FOR_Query, this.store.pipe(select('planner'))),
-        map(([action, state]) => {
-          return {
-            payload: action.payload,
-            state: state
-          };
-        }),
-        switchMap(wp => {
-          return this.workItemService
-            .getChildren(wp.payload)
-            .pipe(
-              map((data: WorkItemService[]) => {
-                return this.resolveWorkItems(data, wp.state);
-              }),
-              map((workItems: WorkItemUI[]) => {
-                return new WorkItemActions.GetSuccess(
-                  workItems
-                );
-              }),
-              catchError(err => this.errHandler.handleError<Action>(
-                err, `Problem in loading children.`, new WorkItemActions.UpdateError()
-              ))
-            );
-        })
-      );
 }

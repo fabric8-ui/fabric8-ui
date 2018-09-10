@@ -80,7 +80,7 @@ export class WorkItemService {
   getWorkItems(pageSize: number = 20, filters: object): Observable<{workItems: WorkItem[], nextLink: string, totalCount?: number | null, included?: WorkItem[] | null, ancestorIDs?: Array<string>}> {
     let url = '';
     this.workItemUrl = this.baseApiUrl + 'search';
-    url = this.workItemUrl + '?page[limit]=' + pageSize + '&' + Object.keys(filters).map(k => 'filter[' + k + ']=' + JSON.stringify(filters[k])).join('&');
+    url = this.workItemUrl + '?page[limit]=' + pageSize + '&' + Object.keys(filters).map(k => 'filter[' + k + ']=' + encodeURIComponent(JSON.stringify(filters[k]))).join('&');
     return this.httpClientService
       .get<{
         data: WorkItem[],
