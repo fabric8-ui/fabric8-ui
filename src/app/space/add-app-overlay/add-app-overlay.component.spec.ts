@@ -1,5 +1,5 @@
 import { ErrorHandler } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
@@ -225,9 +225,13 @@ describe('AddAppOverlayComponent', () => {
   });
 
   describe('component', () => {
+    let element: HTMLElement;
+    let btnElem;
     beforeEach(() => {
       fixture = TestBed.createComponent(AddAppOverlayComponent);
       component = fixture.componentInstance;
+      element = fixture.debugElement.nativeElement;
+      btnElem = element.querySelector('.code-imports--step_toolbar > button');
       fixture.detectChanges();
     });
 
@@ -236,8 +240,6 @@ describe('AddAppOverlayComponent', () => {
     });
 
     it('continue button is disabled on load', () => {
-      const element: HTMLElement = fixture.debugElement.nativeElement;
-      let btnElem = element.querySelector('.code-imports--step_toolbar > button');
       expect(btnElem.hasAttribute('disabled')).toBeTruthy();
     });
 
@@ -318,6 +320,31 @@ describe('AddAppOverlayComponent', () => {
       });
     });
 
+    it('continue button should be disabled on navigation in progress', async(() => {
+      expect(btnElem.hasAttribute('disabled')).toBeTruthy();
+      component.navigationInProgress = false;
+      component.projectName = 'project-aug-16-2018';
+      component.selectedFlow = 'createapp';
+      component.validateProjectName();
+      component.navigationInProgress = true;
+      fixture.detectChanges();
+      fixture.whenStable().then(() => {
+        expect(btnElem.hasAttribute('disabled')).toBeTruthy();
+      });
+    }));
+
+    it('continue button should be enable on navigation is not in progress', async(() => {
+      expect(btnElem.hasAttribute('disabled')).toBeTruthy();
+      component.navigationInProgress = false;
+      component.projectName = 'project-aug-16-2018-1';
+      component.selectedFlow = 'createapp';
+      component.validateProjectName();
+      component.isProjectNameAvailable = true;
+      fixture.detectChanges();
+      fixture.whenStable().then(() => {
+        expect(btnElem.hasAttribute('disabled')).toBeFalsy();
+      });
+    }));
   });
 
 });
