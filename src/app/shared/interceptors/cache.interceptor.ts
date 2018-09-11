@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
 
 import {
-  HttpHandler, HttpInterceptor,
-  HttpRequest, HttpResponse
+  HttpEvent,
+  HttpHandler,
+  HttpInterceptor,
+  HttpRequest,
+  HttpResponse
 } from '@angular/common/http';
 
 import { AsyncSubject, Observable, Scheduler } from 'rxjs';
@@ -19,22 +22,22 @@ import { RequestCache } from '../request-cache.service';
 export class CacheInterceptor implements HttpInterceptor {
   constructor(private cache: RequestCache) {}
 
-  intercept(req: HttpRequest<any>, next: HttpHandler) {
+  intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     // continue if not cachable.
     if (!isCachable(req)) {
       return next.handle(req);
     }
 
-    const cachedResponse = this.cache.get(req);
-
     return Observable.create(observer => {
-      if (cachedResponse) {
-        return cachedResponse.subscribeOn(Scheduler.async).subscribe(observer);
+      let asyncResponse = this.cache.get(req);
+
+      if (!asyncResponse) {
+        asyncResponse = new AsyncSubject<HttpResponse<any>>();
+        this.cache.set(req, asyncResponse);
+        next.handle(req).subscribe(asyncResponse);
       }
 
-      const asyncResponse = new AsyncSubject<HttpResponse<any>>();
-      this.cache.set(req, asyncResponse);
-      return next.handle(req).subscribe(asyncResponse);
+      return asyncResponse.subscribeOn(Scheduler.async).subscribe(observer);
     });
   }
 }
