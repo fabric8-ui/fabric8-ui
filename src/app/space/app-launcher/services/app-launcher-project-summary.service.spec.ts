@@ -1,9 +1,7 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpModule, Response, ResponseOptions, XHRBackend } from '@angular/http';
-import { MockBackend } from '@angular/http/testing';
 
 import {
-  AuthHelperService, Config, HelperService, Summary, TokenProvider
+  AuthHelperService, Config, HelperService, Summary
 } from 'ngx-launcher';
 
 import { ContextService } from '../../../shared/context.service';
@@ -11,32 +9,21 @@ import { FABRIC8_FORGE_API_URL } from '../../../shared/runtime-console/fabric8-u
 import { NewForgeConfig } from '../shared/new-forge.config';
 import { AppLauncherProjectSummaryService } from './app-launcher-project-summary.service';
 
+import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
+import { AUTH_API_URL, AuthenticationService } from 'ngx-login-client';
+import { createMock } from 'testing/mock';
+import { context1, context2 } from '../../../shared/context.service.mock';
 
-function initTestBed() {
-  TestBed.configureTestingModule({
-    imports: [HttpModule],
-    providers: [
-      AppLauncherProjectSummaryService,
-      AuthHelperService,
-      HelperService,
-      TokenProvider,
-      {provide: ContextService, useValue: {}},
-      {provide: Config, useClass: NewForgeConfig},
-      {provide: FABRIC8_FORGE_API_URL, useValue: 'url-here'},
-      {
-        provide: XHRBackend, useClass: MockBackend
-      }
-    ]
-  });
-}
+import { Context } from 'ngx-fabric8-wit';
+import { Observable } from 'rxjs';
 
 describe('Service: AppLauncherProjectSummaryService', () => {
-  let appLauncherProjectSummaryService: AppLauncherProjectSummaryService;
-  let mockService: MockBackend;
+  let service: AppLauncherProjectSummaryService;
+  let controller: HttpTestingController;
 
   let summaryData = {
     dependencyCheck: null,
-    gitHubDetails: null,
+    gitHubDetails: {login: 'some-user'},
     mission: null,
     organization: null,
     pipeline: null,
@@ -44,31 +31,49 @@ describe('Service: AppLauncherProjectSummaryService', () => {
     targetEnvironment: null
   } as Summary;
 
+  class mockContextService {
+    get current(): Observable<Context> { return Observable.of(context1); }
+  }
+
   beforeEach(() => {
-    initTestBed();
-    appLauncherProjectSummaryService = TestBed.get(AppLauncherProjectSummaryService);
-    mockService = TestBed.get(XHRBackend);
+    const mockAuthenticationService: jasmine.SpyObj<AuthenticationService> = createMock(AuthenticationService);
+    mockAuthenticationService.getToken.and.returnValue('mock-token');
+    const mockHelperService: jasmine.SpyObj<HelperService> = createMock(HelperService);
+    mockHelperService.getBackendUrl.and.returnValue('http://example.com/');
+    mockHelperService.getOrigin.and.returnValue('osio');
+
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      providers: [
+        AppLauncherProjectSummaryService,
+        AuthHelperService,
+        { provide: HelperService, useValue: mockHelperService },
+        { provide: AuthenticationService, useValue: mockAuthenticationService },
+        { provide: ContextService, useClass: mockContextService },
+        { provide: Config, useClass: NewForgeConfig },
+        { provide: FABRIC8_FORGE_API_URL, useValue: 'http://example.com' },
+        { provide: AUTH_API_URL, useValue: 'http://auth.example.com' }
+      ]
+    });
+    service = TestBed.get(AppLauncherProjectSummaryService);
+    controller = TestBed.get(HttpTestingController);
   });
 
-  // FIXME presumably can't mock all the http interactions with one response
-  xit('Should return uuid', (done: DoneFn) => {
-    mockService.connections.subscribe((connection: any) => {
-      connection.mockRespond(new Response(
-        new ResponseOptions({
-          body: JSON.stringify({
-            'uuid': 'e6daff35-5d93-4c38-965a-6a975cf80be1',
-            'uuid_link': '/status/e6daff35-5d93-4c38-965a-6a975cf80be1'
-          }),
-          status: 200
-        })
-      ));
+  it('Should return uuid', (done: DoneFn) => {
+    service.setup(summaryData, 3).subscribe((val: any) => {
+      expect(val).toBeDefined();
+      expect(val.uuid).toEqual('e6daff35-5d93-4c38-965a-6a975cf80be1');
+      done();
+    });
 
-      appLauncherProjectSummaryService.setup(summaryData, 3).subscribe((val: any) => {
-        expect(val).toBeDefined();
-        expect(val.uuid).toEqual('e6daff35-5d93-4c38-965a-6a975cf80be1');
-        done();
-      });
+    const req: TestRequest = controller.expectOne('http://example.com/osio/import');
+    expect(req.request.method).toBe('POST');
+    expect(req.request.headers.get('Authorization')).toEqual('Bearer mock-token');
+    req.flush({
+      'uuid': 'e6daff35-5d93-4c38-965a-6a975cf80be1',
+      'uuid_link': '/status/e6daff35-5d93-4c38-965a-6a975cf80be1'
     });
   });
 
 });
+

@@ -1,27 +1,33 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import { Headers, Http, RequestOptions, Response } from '@angular/http';
-
 import {
     DependencyEditorService,
     HelperService,
-    TokenProvider,
     URLProvider
 } from 'ngx-launcher';
+
+import { AuthenticationService } from 'ngx-login-client';
+
+import {
+  HttpClient, HttpErrorResponse,
+  HttpHeaders, HttpResponse
+} from '@angular/common/http';
 
 @Injectable()
 export class AppLauncherDependencyEditorService implements DependencyEditorService {
 
+  private headers: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
   private END_POINT: string = '';
   private API_BASE: string = 'booster-catalog/';
   private ORIGIN: string = '';
-  private ANALYTICS_END_POINT: string = '';
+  public ANALYTICS_END_POINT: string = '';
+
 
   constructor(
-    private http: Http,
+    private http: HttpClient,
+    private auth: AuthenticationService,
     private helperService: HelperService,
-    private tokenProvider: TokenProvider,
     private urlProvider: URLProvider
   ) {
     if (this.helperService) {
@@ -31,36 +37,26 @@ export class AppLauncherDependencyEditorService implements DependencyEditorServi
     if (this.urlProvider) {
       this.ANALYTICS_END_POINT = this.urlProvider.getRecommenderAPIUrl();
     }
-  }
-
-  private get options(): Observable<RequestOptions> {
-    let headers = new Headers();
-    headers.append('X-App', this.ORIGIN);
-    return Observable.fromPromise(this.tokenProvider.token.then((token) => {
-      headers.append('Authorization', 'Bearer ' + token);
-      return new RequestOptions({
-          headers: headers
-      });
-    }));
+    if (this.auth.getToken() != null) {
+      this.headers = this.headers.set('Authorization', `Bearer ${this.auth.getToken()}`);
+    }
   }
 
   getCoreDependencies(runtimeId: string): Observable<any> {
+    if (this.ORIGIN) {
+      this.headers = this.headers.set('X-App', this.ORIGIN);
+    }
     if (runtimeId) {
       let coreDependenciesEndPoint: string = this.ANALYTICS_END_POINT + `/api/v1/get-core-dependencies/${runtimeId}`;
-      return this.options.flatMap((option) => {
-        option.headers.delete('X-App');
-        return this.http.get(coreDependenciesEndPoint, option)
-                    .map(response => response.json() as any)
-                    .catch(this.handleError);
-      });
+      return this.http.get(coreDependenciesEndPoint, { headers: this.headers }).catch(this.handleError);
     }
     return Observable.empty();
   }
 
-  private handleError(error: Response | any) {
+  private handleError(error: HttpErrorResponse | any) {
     let errMsg: string;
-    if (error instanceof Response) {
-      const body = error.json() || '';
+    if (error instanceof HttpResponse) {
+      const body = error.body || '';
       const err = body.error || JSON.stringify(body);
       errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
     } else {

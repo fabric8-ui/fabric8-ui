@@ -33,7 +33,7 @@ export class ProfileService {
     private notifications: Notifications,
     @Inject(AUTH_API_URL) apiUrl: string
   ) {
-    if (this.auth.getToken() != undefined) {
+    if (this.auth.getToken() != null) {
       this.headers = this.headers.set('Authorization', `Bearer ${this.auth.getToken()}`);
     }
     this.profileUrl = apiUrl + 'users';

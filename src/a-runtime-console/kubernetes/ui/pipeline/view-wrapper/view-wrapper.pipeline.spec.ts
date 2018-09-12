@@ -1,56 +1,32 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
-import { BaseRequestOptions, Http, RequestOptions } from '@angular/http';
-import { MockBackend } from '@angular/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { MomentModule } from 'angular2-moment';
-import { RestangularModule } from 'ngx-restangular';
-import { ModalModule } from 'ngx-modal';
-import { Fabric8CommonModule } from '../../../../common/common.module';
-import { KubernetesStoreModule } from '../../../kubernetes.store.module';
-import { BuildConfigDialogsModule } from '../../buildconfig/delete-dialog/buildconfig.dialogs.module';
-import { PipelineViewToolbarComponent } from '../view-toolbar/view-toolbar.pipeline.component';
-import { PipelineViewComponent } from '../view/view.pipeline.component';
-import { TestAppModule } from './../../../../app.test.module';
-import { StageTimePipe } from './../build-stage-view/stage-time.pipe';
 import { PipelineViewWrapperComponent } from './view-wrapper.pipeline.component';
+
+import { NO_ERRORS_SCHEMA } from '@angular/core';
+import { BuildConfigStore } from '../../../store/buildconfig.store';
+
+import { Observable } from 'rxjs';
 
 describe('PipelineViewWrapperComponent', () => {
   let pipeline: PipelineViewWrapperComponent;
   let fixture: ComponentFixture<PipelineViewWrapperComponent>;
 
   beforeEach(async(() => {
-    TestBed
-      .configureTestingModule({
-        imports: [
-          Fabric8CommonModule,
-          FormsModule,
-          MomentModule,
-          ModalModule,
-          RouterTestingModule.withRoutes([]),
-          RestangularModule.forRoot(),
-          KubernetesStoreModule,
-          BuildConfigDialogsModule,
-          TestAppModule
-        ],
-        declarations: [
-          PipelineViewWrapperComponent,
-          PipelineViewToolbarComponent,
-          PipelineViewComponent,
-          StageTimePipe
-        ],
-        providers: [
-          MockBackend,
-          { provide: RequestOptions, useClass: BaseRequestOptions },
-          {
-            provide: Http, useFactory: (backend, options) => {
-              return new Http(backend, options);
-            }, deps: [MockBackend, RequestOptions]
-          }
-        ]
-      })
-      .compileComponents();
+    let mockBuildConfigStore: any = jasmine.createSpy('BuildConfigService');
+    mockBuildConfigStore.resource = Observable.of({});
+    TestBed.configureTestingModule({
+      imports: [
+        RouterTestingModule.withRoutes([])
+      ],
+      declarations: [
+        PipelineViewWrapperComponent
+      ],
+      providers: [
+        { provide: BuildConfigStore, useValue: mockBuildConfigStore }
+      ],
+      schemas: [ NO_ERRORS_SCHEMA ]
+    });
   }));
 
   beforeEach(() => {

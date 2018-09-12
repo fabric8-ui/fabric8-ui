@@ -1,7 +1,5 @@
 /* tslint:disable:no-unused-variable */
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { Fabric8CommonModule } from '../../../../common/common.module';
 import { PipelinesListToolbarComponent } from './list-toolbar.pipeline.component';
 
 describe('PipelinesListToolbarComponent', () => {
@@ -10,13 +8,8 @@ describe('PipelinesListToolbarComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule.withRoutes([]),
-        Fabric8CommonModule
-      ],
       declarations: [PipelinesListToolbarComponent]
-    })
-      .compileComponents();
+    });
   }));
 
   beforeEach(() => {

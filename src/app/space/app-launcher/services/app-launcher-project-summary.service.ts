@@ -1,40 +1,45 @@
 import { Injectable } from '@angular/core';
-import {
-  Headers,
-  Http,
-  RequestOptions,
-  Response
-} from '@angular/http';
-
 import _ from 'lodash';
 import { Observable } from 'rxjs';
 
 import {
   HelperService,
   ProjectSummaryService,
-  Summary,
-  TokenProvider
+  Summary
 } from 'ngx-launcher';
 
 import { ContextService } from '../../../shared/context.service';
+
+import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
+import { AuthenticationService } from 'ngx-login-client';
 
 @Injectable()
 export class AppLauncherProjectSummaryService implements ProjectSummaryService {
 
   // TODO: remove the hardcodes
+  private headers: HttpHeaders = new HttpHeaders({
+    'Content-Type': 'application/x-www-form-urlencoded',
+    'X-Git-Provider': 'GitHub'
+  });
   private END_POINT: string = '';
   private API_BASE_CREATE: string = 'osio/launch';
   private API_BASE_IMPORT: string = 'osio/import';
   private ORIGIN: string = '';
 
   constructor(
-    private http: Http,
+    private http: HttpClient,
     private context: ContextService,
     private helperService: HelperService,
-    private tokenProvider: TokenProvider
+    private auth: AuthenticationService
   ) {
     this.END_POINT = this.helperService.getBackendUrl();
     this.ORIGIN = this.helperService.getOrigin();
+    if (this.auth.getToken() != null) {
+      this.headers = this.headers.set('Authorization', `Bearer ${this.auth.getToken()}`);
+    }
+    if (this.ORIGIN) {
+      this.headers = this.headers.set('X-App', this.ORIGIN);
+    }
   }
 
   /**
@@ -47,47 +52,23 @@ export class AppLauncherProjectSummaryService implements ProjectSummaryService {
    * @returns Observable
    */
   setup(summary: Summary, retry?: number): Observable<any> {
+    this.headers = this.headers.set('X-Execution-Step-Index', String(retry || 0));
+
     return this.context.current.flatMap(c => {
       let summaryEndPoint = this.END_POINT + (summary.mission ? this.API_BASE_CREATE : this.API_BASE_IMPORT);
       let payload = this.getPayload(summary, c.space ? c.space.id : '', c.name);
-      return this.options(retry).flatMap((option) => {
-        return this.http.post(summaryEndPoint, payload, option)
-          .map(response => {
-            if (response) {
-              return response.json();
-            }
-          })
-          .catch(this.handleError);
+      console.log('URL - ', summaryEndPoint);
+      return this.http
+        .post(summaryEndPoint, payload, { headers: this.headers })
+        .catch(this.handleError);
       });
-    });
   }
 
-  private options(retry?: number): Observable<RequestOptions> {
-    let headers = new Headers();
-    headers.append('X-App', this.ORIGIN);
-    headers.append('X-Git-Provider', 'GitHub');
-    headers.append('X-Execution-Step-Index', String(retry || 0));
-    headers.append('Content-Type', 'application/x-www-form-urlencoded');
-    if (this.tokenProvider) {
-      return Observable.fromPromise(this.tokenProvider.token.then((token) => {
-        headers.append('Authorization', 'Bearer ' + token);
-        return new RequestOptions({
-          headers: headers
-        });
-      }));
-    } else {
-      return Observable.of(
-        new RequestOptions({
-          headers: headers
-        }));
-    }
-  }
-
-  private handleError(error: Response | any) {
+  private handleError(error: HttpErrorResponse | any) {
     let errMsg: string = '';
-    if (error instanceof Response) {
+    if (error instanceof HttpResponse) {
       if (error.status !== 401) {
-        const body = error.json() || '';
+        const body = error.body || '';
         const err = body.error || JSON.stringify(body);
         errMsg = `${error.status} - ${error.statusText || ''} ${err}`;
       }

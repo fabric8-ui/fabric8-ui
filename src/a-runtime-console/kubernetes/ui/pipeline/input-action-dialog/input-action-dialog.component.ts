@@ -1,5 +1,4 @@
 import { Component, Inject, Input, OnDestroy, ViewChild } from '@angular/core';
-import { Headers, Http, RequestOptions } from '@angular/http';
 import { AuthenticationService } from 'ngx-login-client';
 import { Observable, Subscription } from 'rxjs';
 
@@ -8,6 +7,8 @@ import { FABRIC8_FORGE_API_URL } from '../../../../../app/shared/runtime-console
 import { Build, PendingInputAction } from '../../../model/build.model';
 import { PipelineStage } from '../../../model/pipelinestage.model';
 import { pathJoin } from '../../../model/utils';
+
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'input-action-dialog',
@@ -25,7 +26,7 @@ export class InputActionDialog implements OnDestroy {
   private _jenkinsTimerSubscription: Subscription;
   private jenkinsStatus: any;
 
-  constructor(private http: Http,
+  constructor(private http: HttpClient,
               private authService: AuthenticationService,
               private jenkinsService: JenkinsService,
               @Inject(FABRIC8_FORGE_API_URL) private forgeApiUrl: string
@@ -73,13 +74,9 @@ export class InputActionDialog implements OnDestroy {
         console.log('Warning no jenkinsNamespace on the Build!');
       } else {
         url = pathJoin(forgeUrl, '/api/openshift/services/jenkins/', jenkinsNamespace, url);
-        let token = this.authService.getToken();
-        let options = new RequestOptions();
-        let headers = new Headers();
-        headers.set('Authorization', 'Bearer ' + token);
-        options.headers = headers;
+        const headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.authService.getToken() });
         let body = null;
-        this.http.post(url, body, options).subscribe(() => {});
+        this.http.post(url, body, { headers }).subscribe(() => {});
       }
     }
     this.close();

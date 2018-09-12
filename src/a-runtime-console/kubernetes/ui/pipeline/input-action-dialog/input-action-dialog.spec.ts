@@ -2,8 +2,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FormsModule } from '@angular/forms';
-import { BaseRequestOptions, Http, HttpModule, RequestOptions } from '@angular/http';
-import { MockBackend } from '@angular/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MomentModule } from 'angular2-moment';
 import { ModalModule } from 'ngx-modal';
@@ -15,6 +13,8 @@ import { FABRIC8_FORGE_API_URL } from '../../../../../app/shared/runtime-console
 import { FABRIC8_JENKINS_API_URL } from '../../../../../app/shared/runtime-console/fabric8-ui-jenkins-api';
 
 import { InputActionDialog } from './input-action-dialog.component';
+
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('InputActionDialog', () => {
   let component: InputActionDialog;
@@ -43,6 +43,7 @@ describe('InputActionDialog', () => {
 
     TestBed.configureTestingModule({
       imports: [
+        HttpClientTestingModule,
         FormsModule,
         ModalModule,
         MomentModule,
@@ -52,31 +53,23 @@ describe('InputActionDialog', () => {
         InputActionDialog
       ],
       providers: [
-        BaseRequestOptions,
-            MockBackend,
-            {
-              provide: Http,
-              useFactory: (backend: MockBackend,
-                           options: BaseRequestOptions) => new Http(backend, options),
-              deps: [MockBackend, BaseRequestOptions]
-            },
-            {
-              provide: AUTH_API_URL,
-              useValue: 'https://auth.fabric8.io/api/'
-            },
-            {
-                provide: AuthenticationService,
-                useValue: fakeAuthService
-            },
-            {
-              provide: FABRIC8_FORGE_API_URL, useValue: 'http://fabric8.forge.api.url/'
-            },
-            {
-              provide: FABRIC8_JENKINS_API_URL, useValue: 'http://fabric8.jenkins.api.url/'
-            },
-            {
-              provide: JenkinsService, useValue: mockJenkinsService
-            }
+        {
+          provide: AUTH_API_URL,
+          useValue: 'https://auth.fabric8.io/api/'
+        },
+        {
+            provide: AuthenticationService,
+            useValue: fakeAuthService
+        },
+        {
+          provide: FABRIC8_FORGE_API_URL, useValue: 'http://fabric8.forge.api.url/'
+        },
+        {
+          provide: FABRIC8_JENKINS_API_URL, useValue: 'http://fabric8.jenkins.api.url/'
+        },
+        {
+          provide: JenkinsService, useValue: mockJenkinsService
+        }
        ]
     })
       .compileComponents();

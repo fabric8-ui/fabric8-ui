@@ -2,8 +2,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { FormsModule } from '@angular/forms';
-import { BaseRequestOptions, Http } from '@angular/http';
-import { MockBackend } from '@angular/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MomentModule } from 'angular2-moment';
 import { StackDetailsModule } from 'fabric8-stack-analysis-ui';
@@ -19,6 +17,8 @@ import { BuildStatusIconComponent } from './../../../components/build-status-ico
 import { PipelineStatusComponent } from './../../../components/pipeline-status/pipeline-status.component';
 import { BuildStageViewComponent } from './build-stage-view.component';
 import { StageTimePipe } from './stage-time.pipe';
+
+import { HttpClientTestingModule } from '@angular/common/http/testing';
 
 describe('BuildStageViewComponent', () => {
   let component: BuildStageViewComponent;
@@ -113,6 +113,7 @@ describe('BuildStageViewComponent', () => {
 
     TestBed.configureTestingModule({
       imports: [
+        HttpClientTestingModule,
         FormsModule,
         ModalModule,
         MomentModule,
@@ -127,31 +128,23 @@ describe('BuildStageViewComponent', () => {
         StageTimePipe
       ],
       providers: [
-        BaseRequestOptions,
-            MockBackend,
-            {
-              provide: Http,
-              useFactory: (backend: MockBackend,
-                           options: BaseRequestOptions) => new Http(backend, options),
-              deps: [MockBackend, BaseRequestOptions]
-            },
-            {
-              provide: AUTH_API_URL,
-              useValue: 'https://auth.fabric8.io/api/'
-            },
-            {
-                provide: AuthenticationService,
-                useValue: fakeAuthService
-            },
-            {
-              provide: FABRIC8_FORGE_API_URL, useValue: 'http://fabric8.forge.api.url/'
-            },
-            {
-              provide: FABRIC8_JENKINS_API_URL, useValue: 'http://fabric8.jenkins.api.url/'
-            },
-            {
-              provide: JenkinsService, useValue: mockJenkinsService
-            }
+        {
+          provide: AUTH_API_URL,
+          useValue: 'https://auth.fabric8.io/api/'
+        },
+        {
+            provide: AuthenticationService,
+            useValue: fakeAuthService
+        },
+        {
+          provide: FABRIC8_FORGE_API_URL, useValue: 'http://fabric8.forge.api.url/'
+        },
+        {
+          provide: FABRIC8_JENKINS_API_URL, useValue: 'http://fabric8.jenkins.api.url/'
+        },
+        {
+          provide: JenkinsService, useValue: mockJenkinsService
+        }
        ]
     })
       .compileComponents();

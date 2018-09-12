@@ -1,5 +1,4 @@
 import { ErrorHandler, Injectable } from '@angular/core';
-import { Http } from '@angular/http';
 
 import { BehaviorSubject, Observable } from 'rxjs';
 
@@ -11,6 +10,8 @@ import {
 import { User, UserService } from 'ngx-login-client';
 
 import { NotificationsService } from '../../../app/shared/notifications.service';
+
+import { HttpClient, HttpErrorResponse, HttpResponse } from '@angular/common/http';
 
 export class OAuthConfig {
   public authorizeUri: string;
@@ -84,7 +85,7 @@ export function currentOAuthConfig() {
 export class OAuthConfigStore {
 
   constructor(
-    private readonly http: Http,
+    private readonly http: HttpClient,
     private readonly userService: UserService,
     private readonly logger: Logger,
     private readonly errorHandler: ErrorHandler,
@@ -119,7 +120,7 @@ export class OAuthConfigStore {
   private load() {
     let configUri = '/_config/oauth.json';
     this.http.get(configUri)
-      .catch((error: Response) => {
+      .catch((error: HttpErrorResponse) => {
         this.errorHandler.handleError(error);
         this.logger.error(error);
         this.notifications.message({
@@ -132,8 +133,8 @@ export class OAuthConfigStore {
         return Observable.empty();
       })
       .subscribe(
-        (res: Response) => {
-          let data = res.json();
+        (res: HttpResponse<any>) => {
+          let data = res;
           for (let key in data) {
             let value = data[key];
             if (value === 'undefined') {

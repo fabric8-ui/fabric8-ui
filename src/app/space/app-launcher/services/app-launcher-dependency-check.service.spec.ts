@@ -1,6 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpModule, Response, ResponseOptions, XHRBackend } from '@angular/http';
-import { MockBackend } from '@angular/http/testing';
 import { Observable } from 'rxjs/Observable';
 
 import { Context } from 'ngx-fabric8-wit';
@@ -26,12 +24,8 @@ let mockDeploymentApiService: any = {
 
 function initTestBed() {
   TestBed.configureTestingModule({
-    imports: [HttpModule],
     providers: [
         AppLauncherDependencyCheckService,
-        {
-            provide: XHRBackend, useClass: MockBackend
-        },
         { provide: ContextService, useClass: mockContextService },
         { provide: DeploymentApiService, useValue: mockDeploymentApiService }
     ]
@@ -58,8 +52,7 @@ class mockContextService {
 }
 
 describe('Service: AppLauncherDependencyCheckService', () => {
-  let appLauncherDependencyCheckService: AppLauncherDependencyCheckService;
-  let mockService: MockBackend;
+  let service: AppLauncherDependencyCheckService;
   let dependencyCheck = {
     mavenArtifact: 'booster-mission-runtime',
     groupId: 'io.openshift.booster',
@@ -70,22 +63,13 @@ describe('Service: AppLauncherDependencyCheckService', () => {
 
   beforeEach(() => {
     initTestBed();
-    appLauncherDependencyCheckService = TestBed.get(AppLauncherDependencyCheckService);
-    mockService = TestBed.get(XHRBackend);
+    service = TestBed.get(AppLauncherDependencyCheckService);
   });
 
   it('Get project dependencies', (done: DoneFn) => {
-    mockService.connections.subscribe((connection: any) => {
-        connection.mockRespond(new Response(
-          new ResponseOptions({
-            body: JSON.stringify(dependencyCheck),
-            status: 200
-          })
-        ));
-    });
-    appLauncherDependencyCheckService.getDependencyCheck().subscribe((val) => {
-        expect(val).toEqual(dependencyCheck);
-        done();
+    service.getDependencyCheck().subscribe((val) => {
+      expect(val).toEqual(dependencyCheck);
+      done();
     });
   });
 

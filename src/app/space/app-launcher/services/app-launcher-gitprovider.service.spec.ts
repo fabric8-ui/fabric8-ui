@@ -1,114 +1,107 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpModule, Response, ResponseOptions, XHRBackend } from '@angular/http';
-import { MockBackend, MockConnection } from '@angular/http/testing';
 
 import {
-  AuthHelperService, Config, GitHubDetails, HelperService, TokenProvider
+  Config, GitHubDetails, HelperService, URLProvider
 } from 'ngx-launcher';
 
 import { FABRIC8_FORGE_API_URL } from '../../../shared/runtime-console/fabric8-ui-forge-api';
 import { NewForgeConfig } from '../shared/new-forge.config';
 import { AppLauncherGitproviderService } from './app-launcher-gitprovider.service';
 
+import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
+import { AUTH_API_URL, AuthenticationService } from 'ngx-login-client';
+import { createMock } from 'testing/mock';
 
-function initTestBed() {
-  TestBed.configureTestingModule({
-    imports: [HttpModule],
-    providers: [
-      AppLauncherGitproviderService,
-      AuthHelperService,
-      HelperService,
-      TokenProvider,
-      {provide: Config, useClass: NewForgeConfig},
-      {provide: FABRIC8_FORGE_API_URL, useValue: 'url-here'},
-      {
-        provide: XHRBackend, useClass: MockBackend
-      }
-    ]
-  });
-}
 
 describe('Service: AppLauncherGitproviderService', () => {
 
-  let appLauncherGitproviderService: AppLauncherGitproviderService;
-  let mockService: MockBackend;
+  let service: AppLauncherGitproviderService;
+  let controller: HttpTestingController;
+  let user = {
+    login: 'some-user',
+    avatarUrl: 'avatar-url'
+  };
   let gitHubDetails = {
     authenticated: true,
     avatar: 'avatar-url',
-    login: 'login',
-    organizations: []
+    login: 'some-user',
+    organizations: ['fabric8-ui', 'some-user'],
+    organization: 'some-user'
   } as GitHubDetails;
-  let orgs = ['fabric-ui'];
-  let repos = ['fabric-ui', 'fabric-uxd'];
+  let orgs = ['fabric8-ui'];
+  let repos = ['fabric8-ui', 'fabric-uxd'];
 
   beforeEach(() => {
-    initTestBed();
-    appLauncherGitproviderService = TestBed.get(AppLauncherGitproviderService);
-    mockService = TestBed.get(XHRBackend);
+    const mockAuthenticationService: jasmine.SpyObj<AuthenticationService> = createMock(AuthenticationService);
+    mockAuthenticationService.getToken.and.returnValue('mock-token');
+    const mockHelperService: jasmine.SpyObj<HelperService> = createMock(HelperService);
+    mockHelperService.getBackendUrl.and.returnValue('http://example.com/');
+    mockHelperService.getOrigin.and.returnValue('osio');
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
+      providers: [
+        AppLauncherGitproviderService,
+        { provide: HelperService, useValue: mockHelperService },
+        { provide: AuthenticationService, useValue: mockAuthenticationService },
+        { provide: Config, useClass: NewForgeConfig},
+        { provide: FABRIC8_FORGE_API_URL, useValue: 'http://example.com' },
+        { provide: AUTH_API_URL, useValue: 'http://auth.example.com' }
+      ]
+    });
+    service = TestBed.get(AppLauncherGitproviderService);
+    controller = TestBed.get(HttpTestingController);
   });
 
-  // FIXME does two http calls so we can't return the same data for both cases
-  xit('Get GitHubDetails', (done: DoneFn) => {
-    mockService.connections.subscribe((connection: MockConnection) => {
-      connection.mockRespond(new Response(
-        new ResponseOptions({
-          body: JSON.stringify(gitHubDetails),
-          status: 200
-        })
-      ));
-    });
-
-    appLauncherGitproviderService.getGitHubDetails().subscribe((val) => {
+  it('should get GitHubDetails', (done: DoneFn) => {
+    service.getGitHubDetails().subscribe((val) => {
       expect(val).toEqual(gitHubDetails);
       done();
     });
+
+    const req1: TestRequest = controller.expectOne('http://example.com/services/git/user');
+    expect(req1.request.method).toBe('GET');
+    expect(req1.request.headers.get('Authorization')).toEqual('Bearer mock-token');
+    req1.flush(user);
+    const req2: TestRequest = controller.expectOne('http://example.com/services/git/organizations');
+    expect(req2.request.method).toBe('GET');
+    expect(req2.request.headers.get('Authorization')).toEqual('Bearer mock-token');
+    req2.flush(orgs);
+
   });
 
-  it('Get UserOrgs', (done: DoneFn) => {
-    mockService.connections.subscribe((connection: MockConnection) => {
-      connection.mockRespond(new Response(
-        new ResponseOptions({
-          body: JSON.stringify(orgs),
-          status: 200
-        })
-      ));
-    });
-    appLauncherGitproviderService.getUserOrgs(gitHubDetails.login).subscribe((val) => {
+  it('should get user orgs', (done: DoneFn) => {
+    service.getUserOrgs(user.login).subscribe((val) => {
       expect(val).toEqual(orgs);
       done();
     });
+
+    const req: TestRequest = controller.expectOne('http://example.com/services/git/organizations');
+    expect(req.request.method).toBe('GET');
+    expect(req.request.headers.get('Authorization')).toEqual('Bearer mock-token');
+    req.flush(orgs);
   });
 
-  it('Check if GitHubRepo exists', (done: DoneFn) => {
-    mockService.connections.subscribe((connection: MockConnection) => {
-      connection.mockRespond(new Response(
-        new ResponseOptions({
-          body: JSON.stringify(['fabric-ui/test-repo']),
-          status: 200
-        })
-      ));
-    });
-
-    appLauncherGitproviderService.isGitHubRepo('fabric-ui', 'test-repo').subscribe((val) => {
+  it('should check if GitHubRepo exists', (done: DoneFn) => {
+    service.isGitHubRepo('fabric8-ui', 'test-repo').subscribe((val) => {
       expect(val).toBeTruthy();
       done();
     });
+    const req: TestRequest = controller.expectOne('http://example.com/services/git/repositories/?organization=fabric8-ui');
+    expect(req.request.method).toBe('GET');
+    expect(req.request.headers.get('Authorization')).toEqual('Bearer mock-token');
+    req.flush(['fabric8-ui/test-repo']);
   });
 
-  it('Get gitHub repos for selected organisation', (done: DoneFn) => {
-    mockService.connections.subscribe((connection: MockConnection) => {
-      connection.mockRespond(new Response(
-        new ResponseOptions({
-          body: JSON.stringify(repos),
-          status: 200
-        })
-      ));
-    });
-
-    appLauncherGitproviderService.getGitHubRepoList(orgs[0]).subscribe((val) => {
+  it('should get gitHub repos for selected organisation', (done: DoneFn) => {
+    service.getGitHubRepoList(orgs[0]).subscribe((val) => {
       expect(val).toEqual(repos);
       done();
     });
+
+    const req: TestRequest = controller.expectOne('http://example.com/services/git/repositories?organization=fabric8-ui');
+    expect(req.request.method).toBe('GET');
+    expect(req.request.headers.get('Authorization')).toEqual('Bearer mock-token');
+    req.flush(repos);
   });
 
 });

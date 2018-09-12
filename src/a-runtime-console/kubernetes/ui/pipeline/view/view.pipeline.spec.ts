@@ -1,18 +1,10 @@
 /* tslint:disable:no-unused-variable */
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
-import { BaseRequestOptions, Http, RequestOptions } from '@angular/http';
-import { MockBackend } from '@angular/http/testing';
-import { RouterTestingModule } from '@angular/router/testing';
 import { MomentModule } from 'angular2-moment';
-import { RestangularModule } from 'ngx-restangular';
-import { ModalModule } from 'ngx-modal';
-import { Fabric8CommonModule } from '../../../../common/common.module';
-import { KubernetesStoreModule } from '../../../kubernetes.store.module';
-import { BuildConfigDialogsModule } from '../../buildconfig/delete-dialog/buildconfig.dialogs.module';
-import { TestAppModule } from './../../../../app.test.module';
-import { StageTimePipe } from './../build-stage-view/stage-time.pipe';
 import { PipelineViewComponent } from './view.pipeline.component';
+
+import { Fabric8CommonModule } from '../../../../common/common.module';
 
 describe('PipelineViewComponent', () => {
   let pipeline: PipelineViewComponent;
@@ -20,33 +12,15 @@ describe('PipelineViewComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-        imports: [
-          RouterTestingModule.withRoutes([]),
-          Fabric8CommonModule,
-          FormsModule,
-          MomentModule,
-          ModalModule,
-          RestangularModule.forRoot(),
-          KubernetesStoreModule,
-          BuildConfigDialogsModule,
-          TestAppModule
-        ],
-        declarations: [
-          PipelineViewComponent,
-          StageTimePipe
-        ],
-      providers: [
-        MockBackend,
-        { provide: RequestOptions, useClass: BaseRequestOptions },
-        {
-          provide: Http, useFactory: (backend, options) => {
-            return new Http(backend, options);
-          }, deps: [MockBackend, RequestOptions]
-        }
-      ]
-      }
-    )
-      .compileComponents();
+      imports: [
+        MomentModule,
+        Fabric8CommonModule
+      ],
+      declarations: [
+        PipelineViewComponent
+      ],
+      schemas: [ NO_ERRORS_SCHEMA ]
+    });
   }));
 
   beforeEach(() => {

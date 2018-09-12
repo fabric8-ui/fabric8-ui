@@ -1,8 +1,9 @@
 /* tslint:disable:no-unused-variable */
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { Fabric8CommonModule } from '../../../../common/common.module';
 import { PipelinesHistoryToolbarComponent } from './history-toolbar.pipeline.component';
+
 
 describe('PipelinesHistoryToolbarComponent', () => {
   let component: PipelinesHistoryToolbarComponent;
@@ -11,12 +12,11 @@ describe('PipelinesHistoryToolbarComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        RouterTestingModule.withRoutes([]),
-        Fabric8CommonModule
+        RouterTestingModule.withRoutes([])
       ],
-      declarations: [PipelinesHistoryToolbarComponent]
-    })
-      .compileComponents();
+      declarations: [PipelinesHistoryToolbarComponent],
+      schemas: [ NO_ERRORS_SCHEMA ]
+    });
   }));
 
   beforeEach(() => {

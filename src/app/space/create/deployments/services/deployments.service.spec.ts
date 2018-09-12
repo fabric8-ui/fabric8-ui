@@ -1,12 +1,6 @@
 import { ErrorHandler } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
-import {
-  Response,
-  ResponseOptions,
-  ResponseType
-} from '@angular/http';
-
 import { createMock } from 'testing/mock';
 
 import {
@@ -37,6 +31,8 @@ import {
   TIMER_TOKEN,
   TIMESERIES_SAMPLES_TOKEN
 } from './deployments.service';
+
+import { HttpErrorResponse } from '@angular/common/http';
 
 type TestContext = {
   service: DeploymentsService;
@@ -1537,11 +1533,10 @@ describe('DeploymentsService', () => {
   describe('getApplications', () => {
     function testApplicationsError(status: number, expectedMessage: Notification) {
       const apiSvc: jasmine.SpyObj<DeploymentApiService> = TestBed.get(DeploymentApiService);
-      const error: Response & Error = new Response(new ResponseOptions({
-        type: ResponseType.Error,
-        body: JSON.stringify('Mock HTTP Error'),
+      const error: HttpErrorResponse = new HttpErrorResponse({
+        statusText: 'Mock HTTP Error',
         status: status
-      })) as Response & Error;
+      });
 
       const vs = new VirtualTimeScheduler(VirtualAction);
 
@@ -1611,11 +1606,10 @@ describe('DeploymentsService', () => {
   describe('getEnvironments', () => {
     function testEnvironmentsError(status: number, expectedMessage: Notification) {
       const apiSvc: jasmine.SpyObj<DeploymentApiService> = TestBed.get(DeploymentApiService);
-      const error: Response & Error = new Response(new ResponseOptions({
-        type: ResponseType.Error,
-        body: JSON.stringify('Mock HTTP Error'),
+      const error: HttpErrorResponse = new HttpErrorResponse({
+        statusText: JSON.stringify('Mock HTTP Error'),
         status: status
-      })) as Response & Error;
+      });
 
       const vs = new VirtualTimeScheduler(VirtualAction);
 
@@ -1745,11 +1739,10 @@ describe('DeploymentsService', () => {
 
     function testGetTimeSeriesError(status: number, expectedMessage: Notification) {
       setupErrorTests();
-      const error: Response & Error = new Response(new ResponseOptions({
-        type: ResponseType.Error,
-        body: JSON.stringify('Mock HTTP Error'),
+      const error: HttpErrorResponse = new HttpErrorResponse({
+        statusText: JSON.stringify('Mock HTTP Error'),
         status: status
-      })) as Response & Error;
+      });
 
       const vs = new VirtualTimeScheduler(VirtualAction);
       const apiSvc: jasmine.SpyObj<DeploymentApiService> = TestBed.get(DeploymentApiService);
@@ -1777,11 +1770,10 @@ describe('DeploymentsService', () => {
 
     function testGetLatestTimeSeriesError(status: number, expectedMessage: Notification) {
       setupErrorTests();
-      const error: Response & Error = new Response(new ResponseOptions({
-        type: ResponseType.Error,
-        body: JSON.stringify('Mock HTTP Error'),
+      const error: HttpErrorResponse = new HttpErrorResponse({
+        statusText: JSON.stringify('Mock HTTP Error'),
         status: status
-      })) as Response & Error;
+      });
 
       const vs = new VirtualTimeScheduler(VirtualAction);
       const apiSvc: jasmine.SpyObj<DeploymentApiService> = TestBed.get(DeploymentApiService);
@@ -1806,11 +1798,10 @@ describe('DeploymentsService', () => {
 
     function testGetApplicationsError(status: number, expectedMessage: Notification) {
       setupErrorTests();
-      const error: Response & Error = new Response(new ResponseOptions({
-        type: ResponseType.Error,
-        body: JSON.stringify('Mock HTTP Error'),
+      const error: HttpErrorResponse = new HttpErrorResponse({
+        statusText: JSON.stringify('Mock HTTP Error'),
         status: status
-      })) as Response & Error;
+      });
 
       const vs = new VirtualTimeScheduler(VirtualAction);
       const apiSvc: jasmine.SpyObj<DeploymentApiService> = TestBed.get(DeploymentApiService);

@@ -1,64 +1,40 @@
 /* tslint:disable:no-unused-variable */
+import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
-import { BaseRequestOptions, Http, RequestOptions } from '@angular/http';
-import { MockBackend } from '@angular/http/testing';
-import { RouterTestingModule } from '@angular/router/testing';
-import { MomentModule } from 'angular2-moment';
-import { RestangularModule } from 'ngx-restangular';
-import { ModalModule } from 'ngx-modal';
-import { Fabric8CommonModule } from '../../../../common/common.module';
-import { KubernetesComponentsModule } from '../../../components/components.module';
-import { KubernetesStoreModule } from '../../../kubernetes.store.module';
-import { BuildConfigDialogsModule } from '../../buildconfig/delete-dialog/buildconfig.dialogs.module';
-import { BuildStageViewComponent } from '../build-stage-view/build-stage-view.component';
-import { PipelinesFullHistoryToolbarComponent } from '../full-history-toolbar/full-history-toolbar.pipeline.component';
-import { PipelinesFullHistoryComponent } from '../full-history/full-history.pipeline.component';
-import { TestAppModule } from './../../../../app.test.module';
-import { StageTimePipe } from './../build-stage-view/stage-time.pipe';
+
+import { Observable } from 'rxjs';
+
 import { PipelinesFullHistoryPage } from './full-history-page.pipeline.component';
 
-import { StackDetailsModule } from 'fabric8-stack-analysis-ui';
-import { InputActionDialog } from '../input-action-dialog/input-action-dialog.component';
+import { APIsStore } from '../../../store/apis.store';
+import { BuildStore } from '../../../store/build.store';
+import { BuildConfigStore } from '../../../store/buildconfig.store';
 
 describe('PipelinesFullHistoryPage', () => {
   let component: PipelinesFullHistoryPage;
   let fixture: ComponentFixture<PipelinesFullHistoryPage>;
 
   beforeEach(async(() => {
+    let mockBuildConfigStore: any = jasmine.createSpy('BuildConfigStore');
+    mockBuildConfigStore.loading = Observable.of(true);
+    mockBuildConfigStore.list = Observable.empty();
+    let mockBuildStore: any = jasmine.createSpy('BuildStore');
+    mockBuildStore.loading = Observable.of(true);
+    mockBuildStore.list = Observable.empty();
+    let mockAPIsStore: any = jasmine.createSpyObj('APIsStore', ['load']);
+    mockAPIsStore.loading = Observable.empty();
+
     TestBed.configureTestingModule({
-      imports: [
-        Fabric8CommonModule,
-        RouterTestingModule.withRoutes([]),
-        RestangularModule.forRoot(),
-        FormsModule,
-        MomentModule,
-        ModalModule,
-        KubernetesStoreModule,
-        KubernetesComponentsModule,
-        BuildConfigDialogsModule,
-        TestAppModule,
-        StackDetailsModule
-      ],
       declarations: [
-        BuildStageViewComponent,
-        InputActionDialog,
-        PipelinesFullHistoryPage,
-        PipelinesFullHistoryComponent,
-        PipelinesFullHistoryToolbarComponent,
-        StageTimePipe
+        PipelinesFullHistoryPage
       ],
       providers: [
-        MockBackend,
-        { provide: RequestOptions, useClass: BaseRequestOptions },
-        {
-          provide: Http, useFactory: (backend, options) => {
-            return new Http(backend, options);
-          }, deps: [MockBackend, RequestOptions]
-        }
-      ]
-    })
-      .compileComponents();
+        { provide: BuildConfigStore, useValue: mockBuildConfigStore },
+        { provide: BuildStore, useValue: mockBuildStore },
+        { provide: APIsStore, useValue: mockAPIsStore }
+      ],
+      schemas: [ NO_ERRORS_SCHEMA ]
+    });
   }));
 
   beforeEach(() => {

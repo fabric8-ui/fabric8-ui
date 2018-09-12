@@ -2,26 +2,15 @@ import { ErrorHandler } from '@angular/core';
 import { fakeAsync, TestBed } from '@angular/core/testing';
 
 import {
-  Http,
-  HttpModule,
-  Response,
-  ResponseOptions,
-  ResponseType,
-  XHRBackend
-} from '@angular/http';
-
-import {
-  MockBackend,
-  MockConnection
-} from '@angular/http/testing';
-
-import {
   BehaviorSubject,
   Observable,
   ReplaySubject,
   Subscription
 } from 'rxjs';
-
+import {
+  VirtualAction,
+  VirtualTimeScheduler
+} from 'rxjs/scheduler/VirtualTimeScheduler';
 
 import { createMock } from 'testing/mock';
 
@@ -40,10 +29,13 @@ import {
 
 import { NotificationsService } from '../../../app/shared/notifications.service';
 
+import { HttpClient } from '@angular/common/http';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+
 describe('OauthConfigStore', () => {
 
   let mockUserService: UserService;
-  let mockBackend: MockBackend;
+  let controller: HttpTestingController;
   let oauthStore: OAuthConfigStore;
 
   let mockLogger: jasmine.SpyObj<Logger>;
@@ -83,11 +75,8 @@ describe('OauthConfigStore', () => {
       mockUserService.loggedInUser = new BehaviorSubject(user).multicast(() => new ReplaySubject(1));
 
       TestBed.configureTestingModule({
-        imports: [HttpModule],
+        imports: [HttpClientTestingModule],
         providers: [
-          {
-            provide: XHRBackend, useClass: MockBackend
-          },
           {
             provide: UserService, useClass: mockUserService
           },
@@ -103,27 +92,20 @@ describe('OauthConfigStore', () => {
           {
             // provide OAuthConfigStore with a factory inside the fakeAsync zone
             // so the mockBackend can catch http requests made inside the constructor
-            provide: OAuthConfigStore, useFactory: fakeAsync((
-              http: Http,
-              mockBackend: MockBackend,
+            provide: OAuthConfigStore, useFactory: (
+              http: HttpClient,
               logger: Logger,
               errorHandler: ErrorHandler,
               notifications: NotificationsService
             ) => {
-              mockBackend.connections.subscribe((connection: MockConnection) => {
-                connection.mockRespond(new Response(new ResponseOptions({
-                  body: JSON.stringify(data),
-                  status: 200
-                })));
-              });
               return new OAuthConfigStore(http, mockUserService, logger, errorHandler, notifications);
-            }),
-            deps: [Http, XHRBackend, Logger, ErrorHandler, NotificationsService]
+            },
+            deps: [HttpClient, HttpTestingController, Logger, ErrorHandler, NotificationsService]
           }
         ]
       });
 
-      mockBackend = TestBed.get(XHRBackend);
+      controller = TestBed.get(HttpTestingController);
       oauthStore = TestBed.get(OAuthConfigStore);
     });
 
@@ -142,6 +124,10 @@ describe('OauthConfigStore', () => {
           }));
         }
       }));
+
+      const req = controller.expectOne('/_config/oauth.json');
+      expect(req.request.method).toBe('GET');
+      req.flush(data);
     });
   });
 
@@ -151,11 +137,8 @@ describe('OauthConfigStore', () => {
       mockUserService.loggedInUser = new BehaviorSubject({} as User).multicast(() => new ReplaySubject(1));
 
       TestBed.configureTestingModule({
-        imports: [HttpModule],
+        imports: [HttpClientTestingModule],
         providers: [
-          {
-            provide: XHRBackend, useClass: MockBackend
-          },
           {
             provide: UserService, useClass: mockUserService
           },
@@ -171,35 +154,33 @@ describe('OauthConfigStore', () => {
           {
             // provide OAuthConfigStore with a factory inside the fakeAsync zone
             // so the mockBackend can catch http requests made inside the constructor
-            provide: OAuthConfigStore, useFactory: fakeAsync((
-              http: Http,
-              mockBackend: MockBackend,
+            provide: OAuthConfigStore, useFactory: (
+              http: HttpClient,
               logger: Logger,
               errorHandler: ErrorHandler,
               notifications: NotificationsService
             ) => {
-              mockBackend.connections.subscribe((connection: MockConnection) => {
-                connection.mockRespond(new Response(new ResponseOptions({
-                  body: JSON.stringify(data),
-                  status: 200
-                })));
-              });
               return new OAuthConfigStore(http, mockUserService, logger, errorHandler, notifications);
-            }),
-            deps: [Http, XHRBackend, Logger, ErrorHandler, NotificationsService]
+            },
+            deps: [HttpClient, HttpTestingController, Logger, ErrorHandler, NotificationsService]
           }
         ]
       });
 
-      mockBackend = TestBed.get(XHRBackend);
+      controller = TestBed.get(HttpTestingController);
       oauthStore = TestBed.get(OAuthConfigStore);
     });
 
     it('should continue', (done: DoneFn) => {
+      const req = controller.expectOne('/_config/oauth.json');
+      expect(req.request.method).toBe('GET');
+      req.flush(data);
+
       mockUserService.loggedInUser.connect();
       subscriptions.push(oauthStore.loading.subscribe((val: boolean) => {
         if (!val) {
           subscriptions.push(oauthStore.resource.subscribe((config: OAuthConfig) => {
+            controller.verify();
             expect(config.loaded).toBeTruthy();
             expect(config.openshiftConsoleUrl).toBeUndefined();
 
@@ -214,16 +195,16 @@ describe('OauthConfigStore', () => {
   });
 
   describe('user service error', () => {
+    let scheduler;
     beforeEach(() => {
+      scheduler = new VirtualTimeScheduler(VirtualAction);
+
       mockUserService = createMock(UserService);
-      mockUserService.loggedInUser = Observable.throw({error : 'error'}).multicast(() => new ReplaySubject(1));
+      mockUserService.loggedInUser = Observable.throw({error : 'error'}, scheduler).multicast(() => new ReplaySubject(1));
 
       TestBed.configureTestingModule({
-        imports: [HttpModule],
+        imports: [HttpClientTestingModule],
         providers: [
-          {
-            provide: XHRBackend, useClass: MockBackend
-          },
           {
             provide: UserService, useClass: mockUserService
           },
@@ -239,33 +220,28 @@ describe('OauthConfigStore', () => {
           {
             // provide OAuthConfigStore with a factory inside the fakeAsync zone
             // so the mockBackend can catch http requests made inside the constructor
-            provide: OAuthConfigStore, useFactory: fakeAsync((
-              http: Http,
-              mockBackend: MockBackend,
-              logger: Logger,
-              errorHandler: ErrorHandler,
-              notifications: NotificationsService
-            ) => {
-              mockBackend.connections.subscribe((connection: MockConnection) => {
-                connection.mockRespond(new Response(new ResponseOptions({
-                  body: JSON.stringify(data),
-                  status: 200
-                })));
-              });
-              return new OAuthConfigStore(http, mockUserService, logger, errorHandler, notifications);
-            }),
-            deps: [Http, XHRBackend, Logger, ErrorHandler, NotificationsService]
+            provide: OAuthConfigStore, useFactory: (http: HttpClient) => {
+              return new OAuthConfigStore(http, mockUserService, mockLogger, mockErrorHandler, mockNotificationsService);
+            },
+            deps: [HttpClient]
           }
         ]
       });
 
-      mockBackend = TestBed.get(XHRBackend);
+      controller = TestBed.get(HttpTestingController);
       oauthStore = TestBed.get(OAuthConfigStore);
     });
 
     it('should notify on user service error', (done: DoneFn) => {
       mockUserService.loggedInUser.connect();
+
+      const req = controller.expectOne('/_config/oauth.json');
+      expect(req.request.method).toBe('GET');
+      req.flush(data);
+      scheduler.flush();
+
       subscriptions.push(oauthStore.loading.subscribe((val: boolean) => {
+        controller.verify();
         expect(val).toBeFalsy();
         expect(mockLogger.error).toHaveBeenCalled();
         expect(mockErrorHandler.handleError).toHaveBeenCalled();
@@ -281,11 +257,8 @@ describe('OauthConfigStore', () => {
       mockUserService.loggedInUser = new BehaviorSubject(user).multicast(() => new ReplaySubject(1));
 
       TestBed.configureTestingModule({
-        imports: [HttpModule],
+        imports: [HttpClientTestingModule],
         providers: [
-          {
-            provide: XHRBackend, useClass: MockBackend
-          },
           {
             provide: UserService, useClass: mockUserService
           },
@@ -301,36 +274,28 @@ describe('OauthConfigStore', () => {
           {
             // provide OAuthConfigStore with a factory inside the fakeAsync zone
             // so the mockBackend can catch http requests made inside the constructor
-            provide: OAuthConfigStore, useFactory: fakeAsync((
-              http: Http,
-              mockBackend: MockBackend,
-              logger: Logger,
-              errorHandler: ErrorHandler,
-              notifications: NotificationsService
-            ) => {
-              mockBackend.connections.subscribe((connection: MockConnection) => {
-                connection.mockError(new Response(new ResponseOptions({
-                  type: ResponseType.Error,
-                  body: JSON.stringify('Mock HTTP Error'),
-                  status: 404
-                })) as Response & Error);
-              });
-              return new OAuthConfigStore(http, mockUserService, logger, errorHandler, notifications);
-            }),
-            deps: [Http, XHRBackend, Logger, ErrorHandler, NotificationsService]
+            provide: OAuthConfigStore, useFactory: (http: HttpClient) => {
+              return new OAuthConfigStore(http, mockUserService, mockLogger, mockErrorHandler, mockNotificationsService);
+            },
+            deps: [HttpClient]
           }
         ]
       });
 
-
-      mockBackend = TestBed.get(XHRBackend);
+      controller = TestBed.get(HttpTestingController);
       oauthStore = TestBed.get(OAuthConfigStore);
     });
 
     it('should notify on config http error', (done: DoneFn) => {
       mockUserService.loggedInUser.connect();
+
+      const req = controller.expectOne('/_config/oauth.json');
+      expect(req.request.method).toBe('GET');
+      req.error(new ErrorEvent(''));
+
       subscriptions.push(oauthStore.loading.subscribe((val: boolean) => {
         if (!val) {
+          controller.verify();
           expect(mockLogger.error).toHaveBeenCalled();
           expect(mockErrorHandler.handleError).toHaveBeenCalled();
           expect(mockNotificationsService.message).toHaveBeenCalled();
