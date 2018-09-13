@@ -1,15 +1,16 @@
 import {
+  AfterViewInit,
   Component,
   OnDestroy,
   OnInit,
   ViewEncapsulation
 } from '@angular/core';
 
+import { ActivatedRoute, Params, Router } from '@angular/router';
 import { Broadcaster } from 'ngx-base';
-import { AuthenticationService } from 'ngx-login-client';
 import { Subscription } from 'rxjs';
 
-import { Filter, FilterConfig, FilterEvent, FilterQuery, FilterType } from 'patternfly-ng/filter';
+import { Filter, FilterConfig, FilterEvent, FilterType } from 'patternfly-ng/filter';
 import { SortEvent, SortField } from 'patternfly-ng/sort';
 import { ToolbarConfig } from 'patternfly-ng/toolbar';
 
@@ -21,6 +22,11 @@ import {
 import { BuildConfig } from '../../../../a-runtime-console/index';
 import { PipelinesService } from './services/pipelines.service';
 
+export type QueryJson = {
+  application: string[];
+  codebase: string[];
+};
+
 @Component({
   encapsulation: ViewEncapsulation.None,
   selector: 'alm-pipelines',
@@ -30,7 +36,7 @@ import { PipelinesService } from './services/pipelines.service';
     PipelinesService
   ]
 })
-export class PipelinesComponent implements OnInit, OnDestroy {
+export class PipelinesComponent implements OnInit, OnDestroy, AfterViewInit {
   toolbarConfig: ToolbarConfig;
   consoleAvailable: boolean = false;
   openshiftConsoleUrl: string;
@@ -49,9 +55,10 @@ export class PipelinesComponent implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
 
   constructor(
+    private route: ActivatedRoute,
     private contexts: Contexts,
-    private authService: AuthenticationService,
     private pipelinesService: PipelinesService,
+    private router: Router,
     private broadcaster: Broadcaster
   ) {
     this.toolbarConfig = {
@@ -119,6 +126,10 @@ export class PipelinesComponent implements OnInit, OnDestroy {
     );
   }
 
+  ngAfterViewInit() {
+    this.checkUrl();
+  }
+
   ngOnDestroy(): void {
     this.subscriptions.forEach((sub: Subscription) => {
       sub.unsubscribe();
@@ -143,6 +154,7 @@ export class PipelinesComponent implements OnInit, OnDestroy {
     this._appliedFilters = $event.appliedFilters;
     this.applyFilters();
     this.applySort();
+    this.addQueryParams();
   }
 
   sortChange($event: SortEvent): void {
@@ -205,6 +217,79 @@ export class PipelinesComponent implements OnInit, OnDestroy {
       }
       return res;
     });
+  }
+
+  addQueryParams() {
+    let urlFilter: object = {};
+    this._appliedFilters.forEach((f: Filter) => {
+      if (f.field.id === 'codebase') {
+        if (urlFilter['codebase'] === undefined) {
+          urlFilter['codebase'] = [];
+        }
+        if (urlFilter['codebase'].indexOf(f.value) === -1) {
+          urlFilter['codebase'].push(f.value);
+        }
+      } else if (f.field.id === 'application') {
+        if (urlFilter['application'] === undefined) {
+          urlFilter['application'] = [];
+        }
+        if (urlFilter['application'].indexOf(f.value) === -1) {
+          urlFilter['application'].push(f.value);
+        }
+      }
+    });
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: this._appliedFilters.length ? {q: JSON.stringify(urlFilter)} : {}
+    });
+  }
+
+  checkUrl(): void {
+    this.subscriptions.push(
+      this.route.queryParams.subscribe((query: Params) => {
+        if (query.hasOwnProperty('q')) {
+          let queryJson: QueryJson = JSON.parse(query.q);
+          let application: string[] = queryJson.application;
+          let codebase: string[] = queryJson.codebase;
+          let appliedFilter: Filter[] = [];
+          if (application !== undefined) {
+            application.forEach((app: string)  => {
+              appliedFilter.push({
+                field: {
+                  id: 'application',
+                  title: 'Application',
+                  type: 'text'
+                },
+                value: app
+              });
+            });
+          }
+          if (codebase !== undefined) {
+            codebase.forEach((code: string) => {
+              appliedFilter.push({
+                field: {
+                  id: 'codebase',
+                  title: 'Codebase',
+                  type: 'text'
+                },
+                value: code
+              });
+            });
+          }
+          this._appliedFilters = appliedFilter;
+          /**
+           * need setTimeout because of this error
+           * ERROR Error: ExpressionChangedAfterItHasBeenCheckedError:
+           * Expression has changed after it was checked. Previous value: 'false'. Current value: 'true'.
+           */
+          setTimeout(() => {
+            this.toolbarConfig.filterConfig.appliedFilters = appliedFilter;
+          }, 0);
+          this.applyFilters();
+          this.applySort();
+        }
+      })
+    );
   }
 
 }

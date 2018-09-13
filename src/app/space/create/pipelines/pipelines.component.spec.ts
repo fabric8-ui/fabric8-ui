@@ -38,6 +38,7 @@ import { ToolbarModule } from 'patternfly-ng/toolbar';
 
 import { BuildConfig } from '../../../../a-runtime-console/index';
 
+import { RouterTestingModule } from '@angular/router/testing';
 import { PipelinesComponent } from './pipelines.component';
 import { PipelinesService } from './services/pipelines.service';
 
@@ -132,6 +133,7 @@ describe('PipelinesComponent', () => {
     imports: [
       BsDropdownModule.forRoot(),
       CommonModule,
+      RouterTestingModule,
       ToolbarModule,
       ModalModule.forRoot(),
       TooltipModule.forRoot()
@@ -609,4 +611,27 @@ describe('PipelinesComponent', () => {
     });
   });
 
+  it('should add queryParams to URL on filter change', function(this: TestingContext, done) {
+    spyOn(this.testedDirective, 'addQueryParams');
+    this.testedDirective.filterChange(
+      {
+        appliedFilters: [
+          {
+            field: {
+              id: 'application',
+              title: 'Application',
+              placeholder: 'Filter by Application...',
+              type: 'text'
+            },
+            value: 'app2'
+          }
+        ]
+      }
+    );
+    this.fixture.detectChanges();
+    this.fixture.whenStable().then(() => {
+      expect(this.testedDirective.addQueryParams).toHaveBeenCalled();
+      done();
+    });
+  });
 });
