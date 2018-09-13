@@ -59,6 +59,10 @@ function run_functional_tests() {
 function build_fabric8_ui() {
     # Build and integrate planner with fabric8-ui
     docker exec $CID git clone https://github.com/fabric8-ui/fabric8-ui.git
+    # Do not remove the --unsafe-perm flag.
+    # fabric8-ui contains `postinstall.sh` script and the since it will be
+    # executed in a docker container with root privileges we need the
+    # --unsafe-perm flag.
     docker exec $CID bash -c 'cd fabric8-ui; npm install --unsafe-perm'
     docker exec $CID bash -c 'cd fabric8-ui && npm install ../*0.0.0-development.tgz'
     docker exec $CID bash -c '''
