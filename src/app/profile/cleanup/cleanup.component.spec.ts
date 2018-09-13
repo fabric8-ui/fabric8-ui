@@ -3,7 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
-import { Logger } from 'ngx-base';
+import { Broadcaster, Logger } from 'ngx-base';
 import { Contexts, SpaceService, WIT_API_URL } from 'ngx-fabric8-wit';
 import { AuthenticationService, UserService } from 'ngx-login-client';
 import { EventService } from '../../shared/event.service';
@@ -18,6 +18,9 @@ describe('CleanupComponent', () => {
 
   let fixture: ComponentFixture<CleanupComponent>;
   let component: DebugNode['componentInstance'];
+
+  let mockBroadcaster: jasmine.SpyObj<Broadcaster> = jasmine.createSpyObj('Broadcaster', ['broadcast']);
+
   let mockContexts: any = jasmine.createSpy('Contexts');
   let mockSpaceService: any = jasmine.createSpyObj('SpaceService', ['deleteSpace', 'getSpacesByUser']);
   let mockTenantService: any = jasmine.createSpyObj('TenantService', ['cleanupTenant', 'updateTenant']);
@@ -64,7 +67,8 @@ describe('CleanupComponent', () => {
         { provide: Logger, useValue: mockLogger },
         { provide: AuthenticationService, useValue: mockAuthenticationService },
         { provide: UserService, useValue: mockUserService },
-        { provide: WIT_API_URL, useValue: 'http://example.com'}
+        { provide: WIT_API_URL, useValue: 'http://example.com'},
+        { provide: Broadcaster, useValue: mockBroadcaster }
       ],
       schemas: [NO_ERRORS_SCHEMA]
     });
@@ -109,6 +113,17 @@ describe('CleanupComponent', () => {
       expect(component.showSuccessNotification).toHaveBeenCalled();
 
       expect(component.spaceService.deleteSpace).toHaveBeenCalledWith(mockSpace, true);
+    });
+
+    it('should broadcast space deleted', () => {
+      component.spaces = [mockSpace];
+      component.spaceService.deleteSpace.and.returnValue(of(mockSpace));
+      component.tenantService.cleanupTenant.and.returnValue(of('mock-response'));
+      component.tenantService.updateTenant.and.returnValue(of('mock-response'));
+      spyOn(component, 'showSuccessNotification');
+      component.confirm();
+
+      expect(component.broadcaster.broadcast).toHaveBeenCalledWith('spaceDeleted', mockSpace);
     });
 
     it('should show a notification if a space is unable to be erased', () => {

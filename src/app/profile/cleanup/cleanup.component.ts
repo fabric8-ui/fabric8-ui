@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { Broadcaster } from 'ngx-base';
 import { Contexts, Space, SpaceService } from 'ngx-fabric8-wit';
 import { ListConfig } from 'patternfly-ng/list';
 import { Observable, Subscription } from 'rxjs';
@@ -44,7 +45,8 @@ export class CleanupComponent implements OnInit, OnDestroy {
                private spaceService: SpaceService,
                private tenantService: TenantService,
                private eventService: EventService,
-               private router: Router) {
+               private router: Router,
+               private broadcaster: Broadcaster) {
   }
 
   ngOnInit() {
@@ -102,6 +104,7 @@ export class CleanupComponent implements OnInit, OnDestroy {
             space['erased'] = true;
             space['progress'] = 'Space successfully erased';
             space['statusIcon'] = 'pficon pficon-ok';
+            this.broadcaster.broadcast('spaceDeleted', space);
           }),
           catchError((error) => {
             space['progress'] = 'Error: Unable to erase';
