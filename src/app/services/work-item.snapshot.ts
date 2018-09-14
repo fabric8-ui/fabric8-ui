@@ -1116,7 +1116,7 @@ export const workItemSnapshot = {
 
 export const getWorkItemResponseSnapshot = {
     workItems: workItemSnapshot.data,
-    nextLink: undefined,
+    nextLink: '',
     totalCount: workItemSnapshot.meta.totalCount,
     included: workItemSnapshot.included,
     ancestorIDs: workItemSnapshot.meta.ancestorIDs
