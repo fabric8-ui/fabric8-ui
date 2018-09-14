@@ -105,7 +105,6 @@ mach.transpileLESS = function (src, debug) {
 
 // Build
 gulp.task('build', function (done) {
-
   // app (default)
   mach.tslint(appSrc + '/app/**/*.ts'); // Report all the linter errors
   mach.transpileTS(); // Transpile *.ts to *.js; _then_ post-process require statements to load templates
@@ -142,7 +141,6 @@ gulp.task('build', function (done) {
     util.log('');
     util.log('in the npm module you want to link this one to');
   }
-
   done();
 
 });

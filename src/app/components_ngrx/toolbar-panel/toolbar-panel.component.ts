@@ -17,10 +17,8 @@ import { cloneDeep } from 'lodash';
 import { Broadcaster } from 'ngx-base';
 import { FilterConfig, FilterEvent } from 'patternfly-ng/filter';
 import { ToolbarConfig } from 'patternfly-ng/toolbar';
-import { Observable } from 'rxjs/Observable';
-import { combineLatest } from 'rxjs/observable/combineLatest';
+import { combineLatest, Observable, Subscription } from 'rxjs';
 import { delay, filter, map } from 'rxjs/operators';
-import { Subscription } from 'rxjs/Subscription';
 
 import { Space } from 'ngx-fabric8-wit';
 import {
@@ -165,8 +163,8 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
 
     const customQueriesData = this.store
       .pipe(
-        select<AppState, PlannerState>('planner'),
-        select<PlannerState, states.CustomQueryState>('customQueries'),
+        select('planner'),
+        select('customQueries'),
         filter(customQueries => !!customQueries.length)
       );
     this.totalCount = this.workItemQuery.getWorkItems()
@@ -355,8 +353,8 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
       .pipe(filter(a => !!a.length));
     this.stateData = this.store
       .pipe(
-        select<AppState, PlannerState>('planner'),
-        select<PlannerState, states.WIState>('workItemStates'),
+        select('planner'),
+        select('workItemStates'),
         filter(a => !!a.length)
       );
     this.labelData = this.labelQuery.getLables()
@@ -365,8 +363,8 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
       .pipe(filter(space => space !== null));
     this.filterData = this.store
       .pipe(
-        select<AppState, {filters: states.FilterState}>('toolbar'),
-        select<{filters: states.FilterState}, FilterModel[]>('filters'),
+        select('toolbar'),
+        select('filters'),
         filter(filters => !!filters.length)
       );
     this.iterationData = this.iterationQuery.getIterations()

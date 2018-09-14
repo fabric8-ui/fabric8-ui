@@ -16,8 +16,8 @@ import {
   Output,
   ViewChild
 } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map, switchMap, tap } from 'rxjs/operators';
 import { WorkItemLinkQuery } from '../../models/link';
 import { WorkItemLinkUI } from './../../models/link';
 import { WorkItemLinkTypeQuery } from './../../models/link-type';
@@ -84,10 +84,11 @@ export class WorkItemLinkComponent implements OnInit, OnDestroy {
   // These are being used in the template
   linkTypesSource: Observable<LinkTypeUI[]> =
    this.linkTypeQuery.getLinkTypesForDropdown
-   .do(types => this.selectedLinkType = types[0]); // Setting up the default link type
+   .pipe(tap(types => this.selectedLinkType = types[0])); // Setting up the default link type
   workItemLinksSource: Observable<WorkItemLinkUI[]> =
     this.workItemLinkQuery.getWorkItemLinks
-    .do(links => {
+    .pipe(
+      tap(links => {
       // Reset the create environment
       this.selectedWorkItem = null;
       this.lockCreation = false;
@@ -100,7 +101,8 @@ export class WorkItemLinkComponent implements OnInit, OnDestroy {
           );
         }, 3000);
       }
-    });
+    })
+  );
   workItemLinksCountSource: Observable<number> =
     this.workItemLinkQuery.getWorkItemLinksCount;
   showLinkComponent: Boolean = false;
@@ -169,20 +171,22 @@ export class WorkItemLinkComponent implements OnInit, OnDestroy {
   }
 
   searchWorkItem(term: string): Observable<TypeaheadDropdownItem[]> {
-    return this.spaceQuery.getCurrentSpace.switchMap(space => {
-      return this.workItemService.searchLinkWorkItem(term, space.id)
-      .pipe(map(items => {
-        return items
-        .filter(item => this.searchNotAllowedIds.indexOf(item.id) == -1)
-        .map(item => {
-          return {
-            key: item.id,
-            value: `${item.attributes['system.number']} - ${item.attributes['system.title']}`,
-            selected: false
-          };
-        });
-      }));
-    });
+    return this.spaceQuery.getCurrentSpace.pipe(
+      switchMap(space => {
+        return this.workItemService.searchLinkWorkItem(term, space.id)
+        .pipe(map(items => {
+          return items
+          .filter(item => this.searchNotAllowedIds.indexOf(item.id) == -1)
+          .map(item => {
+            return {
+              key: item.id,
+              value: `${item.attributes['system.number']} - ${item.attributes['system.title']}`,
+              selected: false
+            };
+          });
+        }));
+      })
+    );
   }
 
   createLinkObject(sourceId: string, targetId: string, linkId: string, linkType: string) {

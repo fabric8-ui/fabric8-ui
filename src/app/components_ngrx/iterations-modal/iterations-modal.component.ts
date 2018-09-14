@@ -16,7 +16,7 @@ import { Broadcaster } from 'ngx-base';
 import { IterationQuery, IterationUI } from '../../models/iteration.model';
 
 // ngrx stuff
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { AppState } from './../../../app/states/app.state';
 import * as IterationActions from './../../actions/iteration.actions';
 
@@ -90,24 +90,26 @@ export class FabPlannerIterationModalComponent implements OnInit, OnDestroy, OnC
   ngOnInit() {
     this.resetValues();
     this.store
-        .select('iterationPanel')
-        .select('iterationUI')
-        .subscribe((uiState) => {
-          if (uiState.error) {
-            this.validationError = true;
-            this.validationString = uiState.error;
-          }
-          if (this.submitLoading &&
-              !uiState.modalLoading &&
-              !this.validationError) {
-            this.createUpdateIterationDialog.close();
-          }
-          this.submitLoading = uiState.modalLoading;
+      .pipe(
+        select('iterationPanel'),
+        select('iterationUI')
+      ).subscribe((uiState) => {
+        if (uiState.error) {
+          this.validationError = true;
+          this.validationString = uiState.error;
+        }
+        if (this.submitLoading &&
+            !uiState.modalLoading &&
+            !this.validationError) {
+          this.createUpdateIterationDialog.close();
+        }
+        this.submitLoading = uiState.modalLoading;
 
-        },
-        (e) => {
-          console.log('Some error has occured', e);
-        });
+      },
+      (e) => {
+        console.log('Some error has occured', e);
+      }
+    );
   }
 
   resetValues() {

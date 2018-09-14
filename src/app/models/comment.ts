@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { cloneDeep } from 'lodash';
 import { User, UserService } from 'ngx-login-client';
-import { Observable } from 'rxjs/Observable';
-import { filter, map, switchMap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 
 import {
   Add as AddCommentAction,
@@ -177,12 +177,14 @@ export class CommentQuery {
         }),
         switchMap(comments => {
           return this.userService.loggedInUser
-            .map(user => user ? user : {id: '0'})
-            .map(user => {
-              return comments.map(c => {
-                return {...c, allowEdit: c.creatorId === user.id};
-              });
-            });
+            .pipe(
+              map(user => user ? user : {id: '0'}),
+              map(user => {
+                return comments.map(c => {
+                  return {...c, allowEdit: c.creatorId === user.id};
+                });
+              })
+            );
         })
       );
   }
@@ -190,7 +192,7 @@ export class CommentQuery {
   getCommentsWithChildren(): Observable<CommentUI[]> {
     return this.getCommentsWithCreators()
       .pipe(
-        map(comments => {
+        map((comments: CommentUI[]) => {
           return comments.map(comment => {
             return {
               ...comment,

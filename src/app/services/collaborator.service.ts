@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import { User } from 'ngx-login-client';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { HttpClientService } from './../shared/http-module/http.service';
 

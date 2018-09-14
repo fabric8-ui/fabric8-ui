@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Actions, Effect } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, of as ObservableOf } from 'rxjs';
 import { catchError, map, mergeMap, switchMap } from 'rxjs/operators';
 import { cleanObject } from '../models/common.model';
 import { FilterService } from '../services/filter.service';
@@ -120,7 +120,7 @@ export class WorkItemEffects {
                   this.router.navigateByUrl(document.location.pathname + '/detail/' + wItem.number,
                                             {relativeTo: this.route});
                 }
-                return Observable.of(new WorkItemActions.AddSuccess(wItem));
+                return ObservableOf(new WorkItemActions.AddSuccess(wItem));
               }
             }),
             catchError(err => this.errHandler.handleError(
@@ -326,7 +326,7 @@ export class WorkItemEffects {
                     wp.state.space.links.self, workItem,
                     reorderPayload.destinationWorkitemID, reorderPayload.direction
                   ) :
-                  Observable.of(workitem);
+                  ObservableOf(workitem);
               }),
               map(w => {
                 let wi = this.resolveWorkItems([w], wp.state)[0];

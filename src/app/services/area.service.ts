@@ -1,5 +1,5 @@
-import { Observable } from 'rxjs/Observable';
-import { catchError, map } from 'rxjs/operators';
+import { Observable, of as ObservableOf } from 'rxjs';
+import { catchError, first, map } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
 
@@ -35,24 +35,26 @@ export class AreaService {
       if (this.checkValidUrl(areasUrl)) {
         return this.http
           .get<{data: AreaModel[]}>(areasUrl)
-          .map(response => {
-            return response.data as AreaModel[];
-          })
-          .map((data) => {
-            this.areas = data;
-            return this.areas;
-          })
-          .catch((error: Error | any) => {
-            if (error.status === 401) {
-              //this.auth.logout(true);
-            } else {
-              console.log('Fetch area API returned some error - ', error.message);
-              return Promise.reject<AreaModel[]>([] as AreaModel[]);
-            }
-          });
+          .pipe(
+            map(response => {
+              return response.data as AreaModel[];
+            }),
+            map((data) => {
+              this.areas = data;
+              return this.areas;
+            }),
+            catchError((error: Error | any) => {
+              if (error.status === 401) {
+                //this.auth.logout(true);
+              } else {
+                console.log('Fetch area API returned some error - ', error.message);
+                return Promise.reject<AreaModel[]>([] as AreaModel[]);
+              }
+            })
+          );
       } else {
         this.logger.log('URL not matched');
-        return Observable.of<AreaModel[]>([] as AreaModel[]);
+        return ObservableOf<AreaModel[]>([] as AreaModel[]);
       }
     } else {
       return Observable.throw('nospace');
@@ -87,7 +89,7 @@ export class AreaService {
         );
     } else {
       this.logger.log('URL not matched');
-      return Observable.of<AreaModel[]>([] as AreaModel[]);
+      return ObservableOf<AreaModel[]>([] as AreaModel[]);
     }
   }
 
@@ -95,24 +97,28 @@ export class AreaService {
     if (Object.keys(area).length) {
       let areaLink = area.data.links.self;
       return this.http.get<{data: AreaModel}>(areaLink)
-        .map(arearesp => arearesp.data);
+        .pipe(
+          map(arearesp => arearesp.data)
+        );
     } else {
-      return Observable.of(area);
+      return ObservableOf(area);
     }
   }
 
   getAreaById(areaId: string): Observable<AreaModel> {
-    return this.getAreas().first()
-    .map((resultAreas) => {
+    return this.getAreas().pipe(
+      first(),
+      map((resultAreas) => {
       for (let i = 0; i < resultAreas.length; i++) {
         if (resultAreas[i].id === areaId) {
           return resultAreas[i];
         }
         }
-    })
-    .catch(err => {
-      return Observable.throw(new Error(err.message));
-    });
+      }),
+      catchError(err => {
+        return Observable.throw(new Error(err.message));
+      })
+    );
   }
 
   /**

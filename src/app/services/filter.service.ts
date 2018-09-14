@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
+import { Observable, Subject } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
-import { Subject } from 'rxjs/Subject';
 import { FilterModel } from '../models/filter.model';
 import { HttpClientService } from '../shared/http-module/http.service';
 import { WorkItem } from './../models/work-item';

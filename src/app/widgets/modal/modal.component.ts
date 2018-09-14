@@ -1,8 +1,5 @@
 import { Component, OnDestroy, ViewChild } from '@angular/core';
 
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
-
 import { Modal } from 'ngx-modal';
 
 import { ModalService } from '../../services/modal.service';

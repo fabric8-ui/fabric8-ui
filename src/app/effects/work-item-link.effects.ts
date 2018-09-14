@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
-import { Observable } from 'rxjs';
+import { from as ObservableFrom, Observable } from 'rxjs';
 import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { SpaceQuery } from '../models/space';
 import * as WorkItemLinkActions from './../actions/work-item-link.actions';
@@ -101,7 +101,7 @@ export class WorkItemLinkEffects {
                 ...{ newlyAdded: true }
               };
               returnActions.push(new WorkItemLinkActions.AddSuccess(linkUIValue));
-              return Observable.from(returnActions);
+              return ObservableFrom(returnActions);
             }),
             catchError(err => this.errHandler.handleError<Action>(
               err, `Problem in creating link`, new WorkItemLinkActions.AddError()

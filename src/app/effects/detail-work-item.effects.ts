@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Observable, of as ObservableOf } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import * as DetailWorkItemActions from './../actions/detail-work-item.actions';
 import {
@@ -69,8 +69,7 @@ export class DetailWorkItemEffects {
           .find(w => w.number === payload.number);
         // If work item found in the existing list
         if (workItem) {
-          return Observable
-            .of(new DetailWorkItemActions.GetWorkItemSuccess(workItem));
+          return ObservableOf(new DetailWorkItemActions.GetWorkItemSuccess(workItem));
         }
         // Else fetch it from the server
         const spaceName = state.space.attributes.name;

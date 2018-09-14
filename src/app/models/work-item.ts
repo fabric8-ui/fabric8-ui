@@ -10,8 +10,7 @@ import {
   MemoizedSelector, select, Store
 } from '@ngrx/store';
 import { cloneDeep, orderBy } from 'lodash';
-import { Observable } from 'rxjs';
-import { combineLatest } from 'rxjs/observable/combineLatest';
+import { combineLatest, Observable } from 'rxjs';
 import { filter, map, switchMap } from 'rxjs/operators';
 import { AppState, DetailPageState, PlannerState } from './../states/app.state';
 import {

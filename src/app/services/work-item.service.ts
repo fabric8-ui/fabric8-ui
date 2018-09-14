@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 
-import { Observable } from 'rxjs/Observable';
+import { Observable, of as ObservableOf } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 import { Logger } from 'ngx-base';
@@ -438,7 +438,7 @@ export class WorkItemService {
       .patch<{data: WorkItem}>(url, JSON.stringify({data: arr, position: {direction: direction, id: prevWiId}}))
       .pipe(
         map(response => response.data[0] as WorkItem),
-        catchError(err => Observable.of(workItem))
+        catchError(err => ObservableOf(newWItem as WorkItem))
       );
   }
 
@@ -504,7 +504,7 @@ export class WorkItemService {
     if (this._currentSpace && typeof(id) !== 'undefined') {
       let workItemType = this.workItemTypes ? this.workItemTypes.find((type) => type.id === id) : null;
       if (workItemType) {
-        return Observable.of(workItemType);
+        return ObservableOf(workItemType);
       } else {
         let workItemTypeUrl = this._currentSpace.links.self.split('/spaces/')[0] +
           '/workitemtypes/' + id;
@@ -529,7 +529,7 @@ export class WorkItemService {
           );
       }
     } else {
-      return Observable.of<WorkItemType>({} as WorkItemType);
+      return ObservableOf<WorkItemType>({} as WorkItemType);
     }
   }
 

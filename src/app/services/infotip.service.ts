@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { HttpBackendClient } from './../shared/http-module/http.service';
 import { InfotipState } from './../states/infotip.state';
 

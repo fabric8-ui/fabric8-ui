@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { CustomQueryModel } from '../models/custom-query.model';
 import { HttpClientService } from '../shared/http-module/http.service';

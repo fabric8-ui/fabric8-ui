@@ -1,7 +1,7 @@
 import { Component, Inject, Injectable } from '@angular/core';
 
+import { Observable } from 'rxjs';
 import 'rxjs/add/operator/toPromise';
-import { Observable } from 'rxjs/Observable';
 import { map } from 'rxjs/operators';
 
 import { LabelModel } from '../models/label.model';

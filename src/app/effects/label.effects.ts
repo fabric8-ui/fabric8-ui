@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect } from '@ngrx/effects';
-import { Observable } from 'rxjs';
+import { Observable, of as ObservableOf } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
 import { SpaceQuery } from '../models/space';
 import * as LabelActions from './../actions/label.actions';
@@ -30,7 +30,7 @@ export class LabelEffects {
               return labels.map(l => lMapper.toUIModel(l));
             }),
             map(labels => new LabelActions.GetSuccess(labels)),
-            catchError(err => Observable.of(new LabelActions.GetError()))
+            catchError(err => ObservableOf(new LabelActions.GetError()))
           );
       })
     );

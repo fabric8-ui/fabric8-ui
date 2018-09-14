@@ -15,8 +15,7 @@ import {
   AuthenticationService
 } from 'ngx-login-client';
 import { EmptyStateConfig } from 'patternfly-ng/empty-state';
-import { Observable } from 'rxjs/Observable';
-import { combineLatest } from 'rxjs/observable/combineLatest';
+import { combineLatest, Observable } from 'rxjs';
 import { filter, switchMap, take, tap } from 'rxjs/operators';
 import { WorkItemTypeQuery, WorkItemTypeUI } from '../../models/work-item-type';
 import { IterationQuery, IterationUI } from './../../models/iteration.model';
@@ -281,14 +280,14 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
     //redirect to default type group
     //get space id
     this.spaceSource
-      .take(1)
+      .pipe(take(1))
       .subscribe(space => {
         if (space) {
           const spaceId = space.id;
           //get groupsgroups
           this.groupTypeQuery.getFirstGroupType
-            .take(1)
-            .subscribe(groupType => {
+            .pipe(take(1))
+              .subscribe(groupType => {
               const defaultGroupName = groupType.name;
               //Query for work item type group
               const type_query = this.filterService.queryBuilder('typegroup.name', this.filterService.equal_notation, defaultGroupName);

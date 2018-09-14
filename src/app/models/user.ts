@@ -5,9 +5,13 @@ import {
   Profile, User,
   UserService as UserServiceClass
 } from 'ngx-login-client';
-import { ConnectableObservable, Observable } from 'rxjs';
-import { combineLatest } from 'rxjs/observable/combineLatest';
-import { filter, startWith, switchMap, tap } from 'rxjs/operators';
+import {
+  combineLatest,
+  ConnectableObservable,
+  Observable,
+  of as ObservableOf
+} from 'rxjs';
+import { filter, map, startWith, switchMap, tap } from 'rxjs/operators';
 import { Get as GetUserAction } from './../actions/user.actions';
 import { AppState, PlannerState } from './../states/app.state';
 import {
@@ -125,7 +129,7 @@ export class UserQuery {
   }
 
   getUserObservablesByIds(ids: string[] = []): Observable<UserUI[]> {
-    if (!ids.length) { return Observable.of([]); }
+    if (!ids.length) { return ObservableOf([]); }
     return combineLatest(ids.map(id => this.getUserObservableById(id)))
     .pipe(
       // When a user is not there in the collaborator list
@@ -142,11 +146,13 @@ export class UserQuery {
         filter(c => !!c.length),
         switchMap(collaborators => {
           return this.userService.loggedInUser
-            .map(u => {
-              return collaborators.map(c => {
-                return {...c, currentUser: u ? c.id === u.id : false};
-              });
-            });
+            .pipe(
+              map(u => {
+                return collaborators.map(c => {
+                  return {...c, currentUser: u ? c.id === u.id : false};
+                });
+              })
+            );
         })
       );
   }

@@ -1,4 +1,4 @@
-import { combineLatest } from 'rxjs/observable/combineLatest';
+import { combineLatest } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
@@ -11,7 +11,7 @@ import { GroupTypeQuery, GroupTypeUI } from '../../models/group-types.model';
 import { FilterService } from '../../services/filter.service';
 
 // ngrx stuff
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { SpaceQuery } from '../../models/space';
 import * as GroupTypeActions from './../../actions/group-type.actions';
 import { AppState } from './../../states/app.state';
@@ -28,8 +28,10 @@ export class GroupTypesComponent implements OnInit, OnDestroy {
 
   authUser: any = null;
   infotipSource = this.store
-  .select('planner')
-  .select('infotips');
+    .pipe(
+      select('planner'),
+      select('infotips')
+    );
   private groupTypes: GroupTypeUI[];
   private eventListeners: any[] = [];
   private startedCheckingURL: boolean = false;
@@ -169,8 +171,10 @@ export class GroupTypesComponent implements OnInit, OnDestroy {
 
   getInfotipText(id: string) {
     return this.infotipSource
-      .select(s => s[id])
-      .select(i => i ? i['en'] : id);
+      .pipe(
+        select(s => s[id]),
+        select(i => i ? i['en'] : id)
+      );
   }
 
   //This function navigates to the desired work item group type page

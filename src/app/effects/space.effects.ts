@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { Spaces } from 'ngx-fabric8-wit';
-import { Observable } from 'rxjs';
+import { Observable, of as ObservableOf } from 'rxjs';
 import * as SpaceActions from './../actions/space.actions';
 
 import { catchError, delay, distinctUntilChanged, filter, map, switchMap, tap } from 'rxjs/operators';
@@ -35,7 +35,7 @@ export class SpaceEffects {
       ofType(SpaceActions.GET),
       switchMap(action => this.spaces.current),
       filter(space => !!space),
-      switchMap(space => Observable.of(new SpaceActions.GetSuccess(space))),
+      switchMap(space => ObservableOf(new SpaceActions.GetSuccess(space))),
       catchError(err => this.errHandler.handleError(err, `Problem in getting space`, new SpaceActions.GetError()))
     );
 

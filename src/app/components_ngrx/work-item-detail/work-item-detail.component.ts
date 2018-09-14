@@ -9,7 +9,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from 'ngx-login-client';
 import { MarkdownComponent } from 'ngx-widgets';
-import { Observable } from 'rxjs/Observable';
+import { combineLatest, Observable } from 'rxjs';
 import { AreaUI } from './../../models/area.model';
 import { LabelQuery, LabelUI } from './../../models/label.model';
 import { UserQuery, UserUI } from './../../models/user';
@@ -19,7 +19,6 @@ import { InlineInputComponent } from './../../widgets/inlineinput/inlineinput.co
 
 // ngrx stuff
 import { Store } from '@ngrx/store';
-import { combineLatest } from 'rxjs/observable/combineLatest';
 import { filter, map, switchMap } from 'rxjs/operators';
 import { CommonSelectorUI } from '../../models/common.model';
 import * as DetailWorkItemActions from './../../actions/detail-work-item.actions';

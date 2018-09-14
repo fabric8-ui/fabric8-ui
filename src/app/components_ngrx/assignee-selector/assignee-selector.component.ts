@@ -1,11 +1,8 @@
 import {
   Component,
-  ElementRef,
   EventEmitter,
   Input,
-  OnChanges,
   Output,
-  SimpleChanges,
   ViewChild
 } from '@angular/core';
 import { cloneDeep } from 'lodash';
@@ -13,8 +10,7 @@ import {
   AuthenticationService,
   User
 } from 'ngx-login-client';
-import { Observable } from 'rxjs/Observable';
-import { WorkItem, WorkItemRelations } from '../../models/work-item';
+import { WorkItem } from '../../models/work-item';
 import { WorkItemService } from '../../services/work-item.service';
 import { UserUI } from './../../models/user';
 import {

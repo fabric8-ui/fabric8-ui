@@ -4,9 +4,8 @@ import {
   ViewChild, ViewEncapsulation
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
+import { Observable, Subscription } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
-import { Subscription } from 'rxjs/Subscription';
 
 import { Broadcaster, Logger, Notifications } from 'ngx-base';
 import { AuthenticationService } from 'ngx-login-client';
@@ -18,7 +17,7 @@ import { FabPlannerIterationModalComponent } from '../iterations-modal/iteration
 import { FilterService } from './../../services/filter.service';
 
 // ngrx stuff
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { GroupTypeUI } from '../../models/group-types.model';
 import * as IterationActions from './../../actions/iteration.actions';
 import { AppState } from './../../states/app.state';
@@ -83,8 +82,10 @@ export class IterationComponent implements OnInit, OnDestroy, OnChanges {
     this.loggedIn = this.auth.isLoggedIn();
     this.editEnabled = true;
     this.spaceSubscription = this.store
-      .select('planner')
-      .select('space')
+      .pipe(
+        select('planner'),
+        select('space')
+      )
       .subscribe(space => {
         if (space) {
           console.log('[IterationComponent] New Space selected: ' + space.attributes.name);

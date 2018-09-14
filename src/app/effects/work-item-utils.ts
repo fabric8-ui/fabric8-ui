@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { ofType } from '@ngrx/effects';
 import { Action } from '@ngrx/store';
 import { Notification, Notifications, NotificationType } from 'ngx-base';
-import { Observable, pipe } from 'rxjs';
+import { Observable, of as ObservableOf, pipe } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { withLatestFrom } from 'rxjs/operators';
 import { WorkItemUI } from '../models/work-item';
 import { FilterService } from '../services/filter.service';
@@ -48,10 +49,10 @@ export function workitemMatchesFilter(route,
         && currentRoute['q'].includes('boardContextId')) ||
         (document.location.pathname.indexOf('/query') > -1)
       ) {
-        return Observable.of(workitem);
+        return ObservableOf(workitem);
     }
     if (Object.keys(currentRoute).length === 0 && currentRoute.constructor === Object) {
-      return Observable.of(workitem);
+      return ObservableOf(workitem);
     } else {
       const wiQuery = filterService.queryBuilder(
         'number', filterService.equal_notation, workitem.number.toString()
@@ -71,11 +72,13 @@ export function workitemMatchesFilter(route,
         expression: finalQuery
       };
       return workItemService.getWorkItems(1, searchPayload)
-        .map(data => data.totalCount)
-        .map(count => {
-          workitem.bold = count > 0;
-          return workitem;
-        });
+        .pipe(
+          map(data => data.totalCount),
+          map(count => {
+            workitem.bold = count > 0;
+            return workitem;
+          })
+        );
     }
 }
 

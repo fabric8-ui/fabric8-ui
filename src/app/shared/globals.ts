@@ -1,5 +1,3 @@
-import { Observable } from 'rxjs/Observable';
-
 export class GlobalSettings {
 
   private mode: boolean = true;

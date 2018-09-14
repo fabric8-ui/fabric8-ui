@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { UserService } from 'ngx-login-client';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -163,9 +163,11 @@ export class EventMapper implements Mapper<EventService, EventUI> {
 
 @Injectable()
 export class EventQuery {
-  private eventSource = this.store
-    .select(state => state.detailPage)
-    .select(state => state.events);
+  private eventSource: Observable<EventUI[]> = this.store
+    .pipe(
+      select(state => state.detailPage),
+      select(state => state.events)
+    );
 
   constructor(
     private store: Store<AppState>,

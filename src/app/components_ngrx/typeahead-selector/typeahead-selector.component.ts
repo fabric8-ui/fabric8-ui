@@ -4,8 +4,7 @@ import {
   Output, ViewChild
 } from '@angular/core';
 import { BehaviorSubject, Observable } from 'rxjs';
-import { combineLatest } from 'rxjs/observable/combineLatest';
-import { of as observableOf } from 'rxjs/observable/of';
+import { combineLatest, of as ObservableOf } from 'rxjs';
 import { catchError, filter, map, switchMap, tap } from 'rxjs/operators';
 import {
   SelectDropdownComponent
@@ -96,11 +95,11 @@ export class TypeaheadSelectorComponent implements OnInit {
               tap(v => this.searching = false),
               catchError(err => {
                 this.searching = false;
-                return Observable.of([]);
+                return ObservableOf([]);
               })
             );
         } else {
-          return observableOf([]);
+          return ObservableOf([]);
         }
       })
     );
