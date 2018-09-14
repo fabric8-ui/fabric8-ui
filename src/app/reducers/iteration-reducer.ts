@@ -40,7 +40,10 @@ export const iterationReducer: ActionReducer<IterationState> =
             state[id].showChildren = false;
           }
           let pId = state[action.payload].parentId;
-          while (pId) {
+          // Backend sends the pId for root iteration '00000000-0000-0000-0000-000000000000'
+          // removing pId !== '00000000-0000-0000-0000-000000000000' causes the while loop to go in
+          // infinite loop
+          while (pId && pId !== '00000000-0000-0000-0000-000000000000') {
             const pIndex = pId;
             if (state[pId]) {
               state[pId].showChildren = true;

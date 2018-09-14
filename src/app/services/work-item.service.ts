@@ -84,17 +84,21 @@ export class WorkItemService {
     return this.httpClientService
       .get<{
         data: WorkItem[],
-        links: {next: string},
+        links: {
+          first?: string,
+          last?: string,
+          next?: string
+        },
         meta: {
           totalCount: number,
           ancestorIDs: string[]},
         included: WorkItem[]}
-        >(url)
+      >(url)
       .pipe(
         map((resp) => {
           return {
             workItems: resp.data as WorkItem[],
-            nextLink: resp.links.next,
+            nextLink: resp.links.next ? resp.links.next : '',
             totalCount: resp.meta ? resp.meta.totalCount : 0,
             included: resp.included ? resp.included as WorkItem[] : [],
             ancestorIDs: resp.meta.ancestorIDs ? resp.meta.ancestorIDs : []
