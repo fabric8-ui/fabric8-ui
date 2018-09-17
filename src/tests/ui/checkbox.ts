@@ -1,4 +1,4 @@
-import { by, ElementFinder } from 'protractor';
+import { ElementFinder } from 'protractor';
 import { BaseElement } from './base.element';
 
 export class Checkbox extends BaseElement {

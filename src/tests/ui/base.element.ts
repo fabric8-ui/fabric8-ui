@@ -42,9 +42,9 @@ export class BaseElement extends ElementFinder implements BaseElementInterface {
 
   // add logging mixin
   name: string = '';
-  log: (action: string, ...msg: string[]) => void;
-  debug: (context: string, ...msg: string[]) => void;
-  fail: (action: string, ...msg: string[]) => void;
+  log!: (action: string, ...msg: string[]) => void;
+  debug!: (context: string, ...msg: string[]) => void;
+  fail!: (action: string, ...msg: string[]) => void;
 
   /**
    * Extend this class, to describe single custom fragment on your page
@@ -152,8 +152,8 @@ export class BaseElement extends ElementFinder implements BaseElementInterface {
 export class BaseElementArray extends ElementArrayFinder {
 
   // Loggin Mixin
-  log: (action: string, ...msg: string[]) => void;
-  debug: (context: string, ...msg: string[]) => void;
+  log!: (action: string, ...msg: string[]) => void;
+  debug!: (context: string, ...msg: string[]) => void;
 
   constructor(wrapped: ElementArrayFinder, name: string = 'unnamed') {
     // see: clone https://github.com/angular/protractor/blob/5.2.0/lib/element.ts#L106

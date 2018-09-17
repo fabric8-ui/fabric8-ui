@@ -1,6 +1,4 @@
-import { ElementFinder } from 'protractor';
 import * as ui from '../../ui';
-import { WorkItemQuickPreview } from './workitem-quickpreview';
 
 export class Iteration extends ui.BaseElement {
 

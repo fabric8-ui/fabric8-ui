@@ -1,9 +1,6 @@
-import { $, by, ElementFinder } from 'protractor';
+import { by, ElementFinder } from 'protractor';
 import { BaseElement } from './base.element';
 import { Checkbox } from './checkbox';
-
-import * as support from '../support';
-
 
 export class MultipleSelectionList extends BaseElement {
   list = new BaseElement(this.$('div > ul'));

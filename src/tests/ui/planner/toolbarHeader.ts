@@ -1,4 +1,4 @@
-import { $, $$, browser, ElementFinder } from 'protractor';
+import { $, $$, ElementFinder } from 'protractor';
 import * as ui from '../../ui';
 import { BaseElement } from './../base.element';
 import { WorkItemList } from './workitem-list';

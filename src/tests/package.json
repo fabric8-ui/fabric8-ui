@@ -1,0 +1,15 @@
+{
+  "name": "planner-functional-test",
+  "version": "0.0.3",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "@types/uuid": "^3.4.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": ""
+  },
+  "author": "Raunak Bajpai",
+  "license": "ISC"
+}

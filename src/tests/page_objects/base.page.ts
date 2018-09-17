@@ -11,8 +11,8 @@ export abstract class BasePage {
   // add logging mixin
 
   name: string = '...';
-  log: (action: string, ...msg: string[]) => void;
-  debug: (context: string, ...msg: string[]) => void;
+  log!: (action: string, ...msg: string[]) => void;
+  debug!: (context: string, ...msg: string[]) => void;
 
   // Use undefined to indicate the url has not been set
   // It will use be in openInBrowser to throw error if the caller forgot
