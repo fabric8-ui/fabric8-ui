@@ -9,8 +9,9 @@ import { NewForgeConfig } from '../shared/new-forge.config';
 import { AppLauncherGitproviderService } from './app-launcher-gitprovider.service';
 
 import { HttpClientTestingModule, HttpTestingController, TestRequest } from '@angular/common/http/testing';
-import { AUTH_API_URL, AuthenticationService } from 'ngx-login-client';
+import { AuthenticationService } from 'ngx-login-client';
 import { createMock } from 'testing/mock';
+import { ProviderService } from '../../../shared/account/provider.service';
 
 
 describe('Service: AppLauncherGitproviderService', () => {
@@ -32,6 +33,7 @@ describe('Service: AppLauncherGitproviderService', () => {
   let repos = ['fabric8-ui', 'fabric-uxd'];
 
   beforeEach(() => {
+    const mockProviderService = jasmine.createSpy('ProviderService');
     const mockAuthenticationService: jasmine.SpyObj<AuthenticationService> = createMock(AuthenticationService);
     mockAuthenticationService.getToken.and.returnValue('mock-token');
     const mockHelperService: jasmine.SpyObj<HelperService> = createMock(HelperService);
@@ -41,11 +43,11 @@ describe('Service: AppLauncherGitproviderService', () => {
       imports: [HttpClientTestingModule],
       providers: [
         AppLauncherGitproviderService,
+        { provide: ProviderService, useValue: mockProviderService },
         { provide: HelperService, useValue: mockHelperService },
         { provide: AuthenticationService, useValue: mockAuthenticationService },
         { provide: Config, useClass: NewForgeConfig},
-        { provide: FABRIC8_FORGE_API_URL, useValue: 'http://example.com' },
-        { provide: AUTH_API_URL, useValue: 'http://auth.example.com' }
+        { provide: FABRIC8_FORGE_API_URL, useValue: 'http://example.com' }
       ]
     });
     service = TestBed.get(AppLauncherGitproviderService);

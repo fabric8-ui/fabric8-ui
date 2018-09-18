@@ -1,8 +1,10 @@
-import { Inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { GitHubDetails, GitProviderService, HelperService } from 'ngx-launcher';
-import { AUTH_API_URL, AuthenticationService } from 'ngx-login-client';
+import { AuthenticationService } from 'ngx-login-client';
+
+import { ProviderService } from '../../../shared/account/provider.service';
 
 import { HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse } from '@angular/common/http';
 
@@ -13,7 +15,6 @@ export class AppLauncherGitproviderService implements GitProviderService {
     private API_BASE: string = 'services/git/';
     private ORIGIN: string = '';
     private PROVIDER: string = 'GitHub';
-    private linkUrl: string;
     private gitHubUserLogin: string;
     private headers: HttpHeaders = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -26,12 +27,11 @@ export class AppLauncherGitproviderService implements GitProviderService {
       private http: HttpClient,
       private auth: AuthenticationService,
       private helperService: HelperService,
-      @Inject(AUTH_API_URL) authApiUrl: string
+      private providerService: ProviderService
     ) {
       if (this.helperService) {
         this.END_POINT = this.helperService.getBackendUrl();
         this.ORIGIN = this.helperService.getOrigin();
-        this.linkUrl = authApiUrl + 'token/link';
       }
       if (this.auth.getToken() != null) {
         this.headers = this.headers.set('Authorization', `Bearer ${this.auth.getToken()}`);
@@ -39,32 +39,12 @@ export class AppLauncherGitproviderService implements GitProviderService {
     }
 
   /**
-   * Link an Identity Provider account to the user account
-   *
-   * @param provider Identity Provider name to link to the user's account
-   * @param redirect URL to be redirected to after successful account linking
-   */
-  link(provider: string, redirect: string): void {
-    let linkURL = this.linkUrl + '?for=' + provider + '&redirect=' +  encodeURIComponent(redirect) ;
-    this.http
-      .get(linkURL, { headers: this.headers })
-      .map((resp: HttpResponse<any>) => {
-        let redirectInfo = resp as any;
-        this.redirectToAuth(redirectInfo.redirect_location);
-      })
-      .catch((error: HttpErrorResponse) => {
-        return this.handleError(error);
-      })
-      .subscribe();
-  }
-
-  /**
    * Connect GitHub account
    *
    * @param {string} redirectUrl The GitHub redirect URL
    */
   connectGitHubAccount(redirectUrl: string): void {
-    this.link('https://github.com', redirectUrl);
+    this.providerService.link('https://github.com', redirectUrl);
   }
 
   /**
