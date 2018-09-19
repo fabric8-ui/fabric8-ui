@@ -587,4 +587,23 @@ export class FilterService {
     });
     return query;
   }
+
+  /**
+   * This function takes only a query string
+   * and returns the parent number if it's only a child Query
+   * @param query
+   * @returns string
+   */
+  isOnlyChildQuery(query: string): string | null {
+    try {
+      const jsonQuery = this.queryToJson(query);
+      if (jsonQuery[this.or_notation] &&
+        jsonQuery[this.or_notation].length === 1 &&
+        jsonQuery[this.or_notation][0]['parent.number'] &&
+        jsonQuery[this.or_notation][0]['parent.number'][this.equal_notation]) {
+          return jsonQuery[this.or_notation][0]['parent.number'][this.equal_notation];
+      }
+    } catch {}
+    return null;
+  }
 }

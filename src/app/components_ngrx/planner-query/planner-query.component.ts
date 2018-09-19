@@ -38,7 +38,7 @@ export class PlannerQueryComponent implements OnInit, OnDestroy, AfterViewChecke
         if (query.hasOwnProperty('q')) {
           this.searchQuery = query.q;
           this.disableInput = false;
-          this.currentQuery = 'Query';
+          this.currentQuery = this.breadcrumbsText('', query);
           const filters = this.filterService.queryToJson(query.q);
           this.store.dispatch(new WorkItemActions.Get({
             pageSize: 200,
@@ -191,6 +191,15 @@ export class PlannerQueryComponent implements OnInit, OnDestroy, AfterViewChecke
         prevq: JSON.stringify(prevq)
       }
     });
+  }
+
+  breadcrumbsText(index, query) {
+    const parentNumber = this.filterService.isOnlyChildQuery(query.q);
+    if (parentNumber !== null) {
+      return `Query ${index === '' ? '' : '-'} ${index} (Child of #${parentNumber})`;
+    } else {
+      return `Query ${index === '' ? '' : '-'} ${index}`;
+    }
   }
 
   ngAfterViewChecked() {
