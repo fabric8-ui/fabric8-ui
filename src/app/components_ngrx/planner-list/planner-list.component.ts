@@ -493,8 +493,8 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
       this.renderer.setStyle(this.listContainer.nativeElement, 'height', targetHeight + 'px');
     }
     // This hack is applied to get the titles in the list in order
-    if (document.getElementsByClassName('planner-hack-title-truncate').length) {
-      let arr = document.getElementsByClassName('planner-hack-title-truncate');
+    if (document.getElementsByClassName('f8-planner-list-title').length) {
+      let arr = document.getElementsByClassName('f8-planner-list-title');
       for (let i = 0; i < arr.length; i++) {
         arr[i].parentElement.style.display = 'flex';
       }

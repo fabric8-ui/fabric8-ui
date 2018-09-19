@@ -3,7 +3,7 @@
 }
 .wi-detail-title {
   display: inline-flex;
-  width: ~"calc(e('100% - 20px'))"; // lesshint-disable-line
+  width: ~'calc(e("100% - 20px"))';
 }
 
 .wi-detail-icon {
@@ -21,5 +21,12 @@
   .f8-assignees {
     display: initial;
     margin: 0 !important;
+  }
+}
+.f8-planner-cell__state {
+  display: flex;
+  &-text {
+    line-height: normal;
+    white-space: normal;
   }
 }

@@ -167,7 +167,7 @@
             </ng-template>
 
             <ng-template ngx-datatable-cell-tree-loader *ngIf="c.name==='Title'">
-              <div class="spinner spinner-xs icon-loader margin-top-5"></div>
+              <div class="spinner spinner-xs icon-loader"></div>
             </ng-template>
               <ng-template let-row="row"
                 ngx-datatable-cell-template>
@@ -177,7 +177,7 @@
                     (onDetailPreview)="onDetailPreview($event)"
                     (onQuickPreview)="onPreview($event)"
                     [class.f8-wi__table-config]="c.prop=='label' || c.prop=='assignees'"
-                    [class.planner-hack-title-truncate]="c.prop=='title'">
+                    [class.f8-planner-list-title]="c.prop=='title'">
                   </work-item-cell>
               </ng-template>
           </ngx-datatable-column>
@@ -220,7 +220,7 @@
                     [col]="c.prop"
                     (onQuickPreview)="onPreview($event)"
                     [class.f8-wi__table-config]="c.prop === 'label' || c.prop === 'assignees'"
-                    [class.planner-hack-title-truncate]="c.prop === 'title'">
+                    [class.f8-planner-list-title]="c.prop === 'title'">
                   </work-item-cell>
               </ng-template>
           </ngx-datatable-column>
