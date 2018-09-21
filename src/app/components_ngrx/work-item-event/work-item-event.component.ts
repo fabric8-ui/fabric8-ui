@@ -32,8 +32,13 @@ export class WorkItemEventComponent implements OnInit {
         this.labels();
         break;
 
-      default:
+      case 'workitemtypes':
+        this.workitemtypes();
         break;
+
+      default:
+        // Do not remove this console. It outputs the unknown events
+        console.log('Unknown event', event);
     }
   }
 
@@ -102,5 +107,10 @@ export class WorkItemEventComponent implements OnInit {
       this.toText = ' and removed the label ';
     }
     this.textType = 'label';
+  }
+
+  workitemtypes() {
+    this.intermediateText = 'changed the workitem type from';
+    this.textType = 'typeChange';
   }
 }

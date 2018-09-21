@@ -14,6 +14,7 @@ import {
 import { IterationModel, IterationQuery, IterationUI } from './iteration.model';
 import { LabelModel, LabelQuery, LabelUI } from './label.model';
 import { UserQuery, UserUI } from './user';
+import { WorkItemType, WorkItemTypeQuery, WorkItemTypeUI } from './work-item-type';
 
 
 export class Event extends modelService {
@@ -40,10 +41,10 @@ export class EventRelationships {
     }
   };
   newValue?: {
-    data?: AreaModel[] | IterationModel[] | UserService[] | LabelModel[];
+    data?: AreaModel[] | IterationModel[] | WorkItemType[] | UserService[] | LabelModel[];
   };
   oldValue?: {
-    data?: AreaModel[] | IterationModel[] | UserService[] | LabelModel[];
+    data?: AreaModel[] | IterationModel[] | WorkItemType[] | UserService[] | LabelModel[];
   };
 }
 
@@ -56,8 +57,8 @@ export interface EventUI {
   modifier?: Observable<UserUI>;
   newValueRelationships: any;
   oldValueRelationships: any;
-  newValueRelationshipsObs?: Observable<IterationUI | AreaUI | UserUI>[] | Observable<LabelUI[]>;
-  oldValueRelationshipsObs?: Observable<IterationUI | AreaUI | UserUI>[] | Observable<LabelUI[]>;
+  newValueRelationshipsObs?: Observable<IterationUI | AreaUI | WorkItemTypeUI | UserUI>[] | Observable<LabelUI[]>;
+  oldValueRelationshipsObs?: Observable<IterationUI | AreaUI | WorkItemTypeUI | UserUI>[] | Observable<LabelUI[]>;
   type: string | null;
 }
 
@@ -171,7 +172,8 @@ export class EventQuery {
     private userQuery: UserQuery,
     private iterationQuery: IterationQuery,
     private areaQuery: AreaQuery,
-    private labelQuery: LabelQuery
+    private labelQuery: LabelQuery,
+    private workitemTypeQuery: WorkItemTypeQuery
   ) { }
 
   getEventsWithModifier(): Observable<EventUI[]> {
@@ -228,7 +230,19 @@ export class EventQuery {
                     )
                 };
 
+              case 'workitemtypes':
+                return {
+                  ...event,
+                  modifier: this.userQuery.getUserObservableById(event.modifierId),
+                  newValueRelationshipsObs: event.newValueRelationships.map(item => {
+                    return this.workitemTypeQuery.getWorkItemTypeById(item.id);
+                  }),
+                  oldValueRelationshipsObs: event.oldValueRelationships.map(item => {
+                    return this.workitemTypeQuery.getWorkItemTypeById(item.id);
+                  })
+                };
               default:
+                console.log('Unknown event: ', event);
                 return {
                   ...event,
                   modifier: this.userQuery.getUserObservableById(event.modifierId)

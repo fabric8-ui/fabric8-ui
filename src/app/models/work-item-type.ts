@@ -241,8 +241,6 @@ export class WorkItemTypeQuery {
       });
     }
   );
-  // It always should be private
-  private workItemTypeEntities = this.store.pipe(select(getWorkItemTypeEntitiesSelector));
   workItemTypeSource = this.store.pipe(select(this.getAllWorkItemTypesSelector));
 
   /**
@@ -269,6 +267,9 @@ export class WorkItemTypeQuery {
   }
 
   getWorkItemTypeById(id: string): Observable<WorkItemTypeUI> {
-    return this.workItemTypeEntities[id];
+    return this.store.pipe(
+      select(getWorkItemTypeEntitiesSelector),
+      map(wt => wt[id])
+    );
   }
 }

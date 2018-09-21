@@ -405,4 +405,80 @@ describe('Unit Test :: Events Model', () => {
     };
     expect(expectedOutPut).toEqual(output);
   });
+
+  it('should correctly convert to ui model - 9 (workitem type)', () => {
+    const map = new EventMapper();
+    const input = {
+      'attributes': {
+        'name': 'workitemtype',
+        'revisionId': '3dd9e742-8f2e-431c-8640-c849c42f017d',
+        'timestamp': '2018-08-21T11:40:32.57375Z'
+      },
+      'id': '2b177029-415b-4b5d-9712-550b93536637',
+      'relationships': {
+        'modifier': {
+          'data': {
+            'id': 'b46c89ce-6a6d-4763-ad87-aad8da06e983',
+            'links': {
+              'related': 'https://api.prod-preview.openshift.io/api/users/b46c89ce-6a6d-4763-ad87-aad8da06e983'
+            },
+            'type': 'users'
+          },
+          'links': {
+            'related': 'https://prod-preview.openshift.io/api/users/b46c89ce-6a6d-4763-ad87-aad8da06e983',
+            'self': 'https://prod-preview.openshift.io/api/users/b46c89ce-6a6d-4763-ad87-aad8da06e983'
+          }
+        },
+        'newValue': {
+          'data': [
+            {
+              'id': '03b9bb64-4f65-4fa7-b165-494cd4f01401',
+              'type': 'workitemtypes'
+            }
+          ]
+        },
+        'oldValue': {
+          'data': [
+            {
+              'id': '5182fc8c-b1d6-4c3d-83ca-6a3c781fa18a',
+              'type': 'workitemtypes'
+            }
+          ]
+        },
+        'workItemType': {
+          'data': {
+            'id': '03b9bb64-4f65-4fa7-b165-494cd4f01401',
+            'type': 'workitemtypes'
+          },
+          'links': {
+            'self': 'https://prod-preview.openshift.io/api/workitemtypes/03b9bb64-4f65-4fa7-b165-494cd4f01401'
+          }
+        }
+      },
+      'type': 'events'
+    };
+    const output: EventUI = map.toUIModel(input);
+    const expectedOutPut: EventUI = {
+      name: 'workitemtype',
+      newValue: null,
+      oldValue: null,
+      timestamp: '2018-08-21T11:40:32.57375Z',
+      modifierId: 'b46c89ce-6a6d-4763-ad87-aad8da06e983',
+      newValueRelationships: [
+        {
+          'id': '03b9bb64-4f65-4fa7-b165-494cd4f01401',
+          'type': 'workitemtypes'
+        }
+      ],
+      oldValueRelationships: [
+        {
+          'id': '5182fc8c-b1d6-4c3d-83ca-6a3c781fa18a',
+          'type': 'workitemtypes'
+        }
+      ],
+      type: null
+    };
+    expect(expectedOutPut).toEqual(output);
+  });
+
 });

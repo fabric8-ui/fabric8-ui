@@ -16,20 +16,17 @@
       </span>
 
       <!-- Single Value Change -->
-      <span class="margin-h-5"
-        *ngIf="textType === 'attribute'">
+      <span *ngIf="textType === 'attribute'">
         <span [innerHTML]=intermediateText></span>
         <i> '{{ event.oldValue }}' </i>
         {{ toText }}
         <i> '{{ event.newValue }}'</i>
       </span>
 
-      <!--Area, Iteration, Assignee-->
+      <!--Area, Iteration, Assignee -->
       <span class="margin-h-5" style="display: contents;"
         *ngIf="textType === 'relationship' || textType === 'assignee'" >
-        <span class="margin-h-5"
-          [innerHTML]=intermediateText>
-        </span>
+        <span [innerHTML]=intermediateText></span>
         <i class="margin-h-3"
           *ngFor="let item of event.newValueRelationshipsObs"> '{{ (item | async)?.name }}' </i>
         <ng-container *ngIf="toText && textType === 'assignee'">{{ toText }}
@@ -44,10 +41,20 @@
         </ng-container>
       </span>
 
+      <!-- WorkitemType -->
+      <span class="margin-h-5" style="display: contents;" *ngIf="textType === 'typeChange'">
+        <span [innerHTML]=intermediateText></span>
+        <i  class="margin-h-3"
+        *ngFor="let item of event.oldValueRelationshipsObs"> '{{ (item | async)?.name }}'</i>
+        <ng-container *ngIf="toText">{{ toText }} </ng-container>
+        <i class="margin-h-3"
+          *ngFor="let item of event.newValueRelationshipsObs"> '{{ (item | async)?.name }}' </i>
+      </span>
+
       <!--Labels-->
       <div class="audit-trail__label"
         *ngIf="textType === 'label'" >
-        <span class="padding-left-5" [innerHTML]=intermediateText></span>
+        <span [innerHTML]=intermediateText></span>
         <f8-label class="margin-h-5"
           *ngIf='(event.newValueRelationshipsObs | async)?.length > 0'
           [labels]='event.newValueRelationshipsObs | async'
