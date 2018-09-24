@@ -20,6 +20,9 @@ export const UPDATE_WORKITEM_ITERATION = '[workItem] UpdateWorkitemIteration';
 export const CREATE_LINK = '[workItemLink] CreateLink';
 export const DELETE_LINK = '[workItemLink] DeleteLink';
 export const RESET_WORKITEMS = '[workItem] Reset WorkItems';
+export const GET_MORE_WORKITEMS = '[workItems] Get More WorkItems';
+export const GET_MORE_WORKITEMS_SUCCESS = '[workItems] Get More WorkItems Success';
+export const NEXT_LINK_SUCCESS = '[workItem] Next Link Success';
 
 export class Add implements Action {
   payload: {workItem: WorkItemService, createId: number, parentId: string, openDetailPage: boolean};
@@ -176,6 +179,26 @@ export class ResetWorkItems implements Action {
   readonly type = RESET_WORKITEMS;
 }
 
+export class GetMoreWorkItems implements Action {
+  payload: {
+    isShowTree: boolean;
+  };
+  constructor(payload: {
+    isShowTree: boolean;
+  }) {
+    this.payload = payload;
+  }
+  readonly type = GET_MORE_WORKITEMS;
+}
+
+export class NextLinkSuccess implements Action {
+  payload: string;
+  constructor(payload: string) {
+    this.payload = payload;
+  }
+  readonly type = NEXT_LINK_SUCCESS;
+}
+
 export type All
   = Add
   | Get
@@ -193,4 +216,6 @@ export type All
   | UpdateWorkitemIteration
   | CreateLink
   | DeleteLink
-  | ResetWorkItems;
+  | ResetWorkItems
+  | GetMoreWorkItems
+  | NextLinkSuccess;

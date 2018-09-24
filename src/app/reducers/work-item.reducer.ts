@@ -4,6 +4,7 @@ import { cloneDeep } from 'lodash';
 import * as WorkItemActions from './../actions/work-item.actions';
 import { initialState, WorkItemState } from './../states/work-item.state';
 
+import { InitialNextLinkState, NextLinkState } from '../states/index.state';
 import { WorkItem, WorkItemStateModel, WorkItemUI } from './../models/work-item';
 
 export type Action = WorkItemActions.All;
@@ -28,7 +29,7 @@ export const WorkItemReducer: ActionReducer<WorkItemState> = (state = initialSta
     }
 
     case WorkItemActions.GET_SUCCESS: {
-      return workItemAdapter.addAll(action.payload, state);
+      return workItemAdapter.addMany(action.payload, state);
     }
 
     case WorkItemActions.GET_ERROR: {
@@ -90,6 +91,20 @@ export const WorkItemReducer: ActionReducer<WorkItemState> = (state = initialSta
 
     default: {
       return state;
+    }
+  }
+};
+
+export const NextLinkreducer: ActionReducer<NextLinkState> = (state = InitialNextLinkState, action: Action) => {
+
+  switch (action.type) {
+    case WorkItemActions.NEXT_LINK_SUCCESS : {
+      console.log('######### - 6', action.payload);
+      state = action.payload;
+      return state;
+    }
+    default : {
+      console.log('####### - default is executed');
     }
   }
 };

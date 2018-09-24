@@ -48,11 +48,13 @@
 					[columnMode]="'force'"
 					[scrollbarH]="true"
 					[scrollbarV]="true"
+					[headerHeight]="headerHeight"
 					[rows]="workitems"
 					[rowHeight]="contentItemHeight"
 					[sorts]="[{prop: 'order', dir: 'desc'}]"
 					[selected]="selectedRows"
 					[selectionType]="'single'"
+					(scroll)="onScroll($event, workitems.length);"
 					>
 					<!-- FLAT LIST -->
 					<!-- columns number-assignees -->

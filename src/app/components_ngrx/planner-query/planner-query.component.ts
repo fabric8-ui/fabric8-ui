@@ -62,6 +62,10 @@ export class PlannerQueryComponent implements OnInit, OnDestroy, AfterViewChecke
   public columns: any[];
   public selectedRows: any = [];
   public searchQuery: string = '';
+  public _lastCheckedScrollHeight: any;
+  public _scrollTrigger: number;
+  public headerHeight: number = 30;
+  public targetHeight: number;
 
   private eventListeners: any[] = [];
   private hdrHeight: number = 0;
@@ -76,7 +80,8 @@ export class PlannerQueryComponent implements OnInit, OnDestroy, AfterViewChecke
     private store: Store<AppState>,
     private filterService: FilterService,
     private renderer: Renderer2,
-    private workItemTypeQuery: WorkItemTypeQuery
+    private workItemTypeQuery: WorkItemTypeQuery,
+    private el: ElementRef
   ) {}
 
   ngOnInit() {
@@ -202,6 +207,31 @@ export class PlannerQueryComponent implements OnInit, OnDestroy, AfterViewChecke
     }
   }
 
+  onScroll(event, numberOfWorkItems) {
+    console.log('############ - 1', event);
+    // if (event.path &&
+    //     this._lastCheckedScrollHeight < event.path[0].scrollHeight) {
+    //       console.log('###### - 2');
+    //   let scrollLeft = ((event.path[0].scrollHeight -
+    //     (event.path[0].offsetHeight + event.path[0].scrollTop)) * 100) /
+    //     event.path[0].scrollHeight;
+    //   if (scrollLeft <= this._scrollTrigger) {
+    //     this._lastCheckedScrollHeight = event.path[0].scrollHeight;
+    //     this.store.dispatch(new WorkItemActions.GetMoreWorkItems({
+    //       isShowTree: false
+    //     }));
+    //   }
+    // }
+    const viewHeight = this.targetHeight - this.headerHeight;
+    console.log('####### - 2', viewHeight);
+    if (event.offsetY + viewHeight >= numberOfWorkItems * this.contentItemHeight) {
+      console.log('####### - 3');
+      this.store.dispatch(new WorkItemActions.GetMoreWorkItems({
+        isShowTree: false
+      }));
+    }
+  }
+
   ngAfterViewChecked() {
     if (document.getElementsByClassName('navbar-pf').length > 0) {
       this.hdrHeight = (document.getElementsByClassName('navbar-pf')[0] as HTMLElement).offsetHeight;
@@ -209,9 +239,9 @@ export class PlannerQueryComponent implements OnInit, OnDestroy, AfterViewChecke
     if (this.querySearchRef) {
       this.querySearchRefHt = this.querySearchRef.nativeElement.offsetHeight;
     }
-    let targetHeight = window.innerHeight - (this.hdrHeight + this.querySearchRefHt);
+    this.targetHeight = window.innerHeight - (this.hdrHeight + this.querySearchRefHt);
     if (this.listContainer) {
-      this.renderer.setStyle(this.listContainer.nativeElement, 'height', targetHeight + 'px');
+      this.renderer.setStyle(this.listContainer.nativeElement, 'height', this.targetHeight + 'px');
     }
   }
 
