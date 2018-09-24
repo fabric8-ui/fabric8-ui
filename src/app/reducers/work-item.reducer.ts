@@ -1,11 +1,9 @@
 import { createEntityAdapter } from '@ngrx/entity';
-import { ActionReducer, State } from '@ngrx/store';
-import { cloneDeep } from 'lodash';
+import { ActionReducer } from '@ngrx/store';
 import * as WorkItemActions from './../actions/work-item.actions';
 import { initialState, WorkItemState } from './../states/work-item.state';
 
-import { InitialNextLinkState, NextLinkState } from '../states/index.state';
-import { WorkItem, WorkItemStateModel, WorkItemUI } from './../models/work-item';
+import { WorkItemUI } from './../models/work-item';
 
 export type Action = WorkItemActions.All;
 const workItemAdapter = createEntityAdapter<WorkItemUI>();
@@ -20,8 +18,13 @@ export const WorkItemReducer: ActionReducer<WorkItemState> = (state = initialSta
         newState.entities[action.payload.parentID].childrenLoaded = true;
         newState.entities[action.payload.parentID].treeStatus = 'expanded';
       }
-      newState = workItemAdapter.addOne(action.payload, newState);
-      return {...newState};
+      return {
+        nextLink: newState.nextLink,
+        ...workItemAdapter.addOne(action.payload, {
+          ids: newState.ids,
+          entities: newState.entities
+        })
+      };
     }
 
     case WorkItemActions.ADD_ERROR: {
@@ -29,7 +32,10 @@ export const WorkItemReducer: ActionReducer<WorkItemState> = (state = initialSta
     }
 
     case WorkItemActions.GET_SUCCESS: {
-      return workItemAdapter.addMany(action.payload, state);
+      return {
+        ...workItemAdapter.addMany(action.payload.workItems, state),
+        ...{nextLink: action.payload.nextLink}
+      };
     }
 
     case WorkItemActions.GET_ERROR: {
@@ -72,7 +78,13 @@ export const WorkItemReducer: ActionReducer<WorkItemState> = (state = initialSta
           newState.entities[action.payload.source.id]) {
           newState.entities[action.payload.source.id].hasChildren = true;
           newState.entities[action.payload.source.id].treeStatus = 'collapsed';
-          newState = workItemAdapter.removeOne(action.payload.target.id, newState);
+          newState = {
+            nextLink: newState.nextLink,
+            ...workItemAdapter.removeOne(action.payload.target.id, {
+              ids: newState.ids,
+              entities: newState.entities
+            })
+          };
         }
       }
       return {...newState};
@@ -91,20 +103,6 @@ export const WorkItemReducer: ActionReducer<WorkItemState> = (state = initialSta
 
     default: {
       return state;
-    }
-  }
-};
-
-export const NextLinkreducer: ActionReducer<NextLinkState> = (state = InitialNextLinkState, action: Action) => {
-
-  switch (action.type) {
-    case WorkItemActions.NEXT_LINK_SUCCESS : {
-      console.log('######### - 6', action.payload);
-      state = action.payload;
-      return state;
-    }
-    default : {
-      console.log('####### - default is executed');
     }
   }
 };

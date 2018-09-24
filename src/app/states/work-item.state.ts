@@ -6,8 +6,10 @@ import {
 const workItemAdapter = createEntityAdapter<WorkItemUI>();
 
 
-export const initialState: WorkItemStateModel =
-  workItemAdapter.getInitialState();
+export const initialState: WorkItemStateModel = {
+  ...workItemAdapter.getInitialState(),
+  nextLink: ''
+};
 
 export {
   WorkItemStateModel as WorkItemState

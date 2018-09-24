@@ -98,7 +98,7 @@ export class WorkItemService {
         map((resp) => {
           return {
             workItems: resp.data as WorkItem[],
-            nextLink: resp.links.next ? resp.links.next : '',
+            nextLink: resp.links.next ? resp.links.next : null,
             totalCount: resp.meta ? resp.meta.totalCount : 0,
             included: resp.included ? resp.included as WorkItem[] : [],
             ancestorIDs: resp.meta.ancestorIDs ? resp.meta.ancestorIDs : []

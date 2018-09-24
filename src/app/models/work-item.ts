@@ -186,7 +186,9 @@ export interface WorkItemUI {
   editable?: boolean; // Based on the logged in user this value will be changed. Default value is false
 }
 
-export interface WorkItemStateModel extends EntityState<WorkItemUI> {}
+export interface WorkItemStateModel extends EntityState<WorkItemUI> {
+  nextLink: string;
+}
 
 const workItemAdapter = createEntityAdapter<WorkItemUI>();
 const {

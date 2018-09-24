@@ -43,7 +43,6 @@ export interface PlannerState {
   workItemStates: states.WIState;
   workItemTypes: states.WorkItemTypeState;
   infotips: states.InfotipState;
-  nextLink: states.NextLinkState;
 }
 
 export interface  DetailPageState {

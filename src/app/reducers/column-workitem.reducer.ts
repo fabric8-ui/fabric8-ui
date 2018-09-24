@@ -10,7 +10,7 @@ export const ColumnWorkItemReducer: ActionReducer<ColumnWorkItemState> = (state 
   switch (action.type) {
     case WorkItemActions.GET_SUCCESS: {
       let cwState = {};
-      action.payload.forEach(item => {
+      action.payload.workItems.forEach(item => {
         if (item.columnIds !== null) {
           item.columnIds.forEach(col => {
             if (cwState.hasOwnProperty(col)) {

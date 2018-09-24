@@ -72,8 +72,8 @@ export class AddError implements Action {
 }
 
 export class GetSuccess implements Action {
-  payload: WorkItemUI[];
-  constructor(payload: any) {
+  payload: {workItems: WorkItemUI[], nextLink: string};
+  constructor(payload: {workItems: WorkItemUI[], nextLink: string}) {
     this.payload = payload;
   }
   readonly type = GET_SUCCESS;
@@ -217,5 +217,4 @@ export type All
   | CreateLink
   | DeleteLink
   | ResetWorkItems
-  | GetMoreWorkItems
-  | NextLinkSuccess;
+  | GetMoreWorkItems;

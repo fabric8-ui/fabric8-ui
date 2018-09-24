@@ -39,8 +39,7 @@ export class PlannerRoutingModule {}
       workItemTypes: reducers.WorkItemTypeReducer,
       workItems: reducers.WorkItemReducer,
       workItemStates: reducers.WorkItemStateReducer,
-      infotips: reducers.InfotipReducer,
-      nextLink: reducers.NextLinkreducer
+      infotips: reducers.InfotipReducer
     }, {
       initialState: {
         space: states.initialSpaceState,
@@ -54,8 +53,7 @@ export class PlannerRoutingModule {}
         workItemTypes: states.initialWorkItemTypeState,
         workItems: states.initialWorkItemState,
         workItemStates: states.initialWIState,
-        infotips: states.initialInfotipState,
-        nextLink: states.InitialNextLinkState
+        infotips: states.initialInfotipState
       }
     }),
     EffectsModule.forFeature([

@@ -153,8 +153,6 @@ export class WorkItemEffects {
             map((data: any) => {
               let wis = [];
               let nextLink = data.nextLink ? data.nextLink : '';
-              console.log('################# - next link get workitem', nextLink);
-              this.store.dispatch(new WorkItemActions.NextLinkSuccess(nextLink));
               if (payload.isShowTree) {
                 const ancestors = data.ancestorIDs;
                 wis = this.resolveWorkItems(data.workItems, state, payload.isShowTree, ancestors);
@@ -162,17 +160,13 @@ export class WorkItemEffects {
                   data.included, state,
                   false, ancestors
                 );
-                return [...wis, ...wiIncludes];
+                return { workItems: [...wis, ...wiIncludes], nextLink: nextLink };
               } else {
                 wis = this.resolveWorkItems(data.workItems, state, payload.isShowTree);
               }
-              return [...wis];
+              return { workItems: [...wis], nextLink: nextLink };
             }),
-            map((workItems: WorkItemUI[]) => {
-              return new WorkItemActions.GetSuccess(
-                workItems
-              );
-            }),
+            map(d => new WorkItemActions.GetSuccess(d)),
             catchError(err => this.errHandler.handleError<Action>(
               err, `Problem loading workitems.`, new WorkItemActions.GetError()
             ))
@@ -361,7 +355,7 @@ export class WorkItemEffects {
 
     @Effect() getMoreWorkItems$: Observable<Action> = this.actions$
     .pipe(
-      util.filterTypeWithSpace(WorkItemActions.GET_MORE_WORKITEMS, this.store.pipe(select('planner'))),
+      util.filterTypeWithSpace(WorkItemActions.GET_MORE_WORKITEMS, this.store.pipe(select(state => state.planner))),
       map(([action, state]) => {
         return {
           payload: action.payload,
@@ -371,13 +365,11 @@ export class WorkItemEffects {
       switchMap(wp => {
         const payload = wp.payload;
         const state = wp.state;
-        console.log('######### - next link', state.nextLink);
-        return this.workItemService.getMoreWorkItems(state.nextLink)
+        return this.workItemService.getMoreWorkItems(state.workItems.nextLink)
           .pipe(
             map((data: any) => {
               let wis = [];
               let nextLink = data.nextLink ? data.nextLink : '';
-              this.store.dispatch(new WorkItemActions.NextLinkSuccess(nextLink));
               if (payload.isShowTree) {
                 const ancestors = data.ancestorIDs;
                 wis = this.resolveWorkItems(data.workItems, state, payload.isShowTree, ancestors);
@@ -385,17 +377,13 @@ export class WorkItemEffects {
                   data.included, state,
                   false, ancestors
                 );
-                return [...wis, ...wiIncludes];
+                return { workItems: [...wis, ...wiIncludes], nextLink };
               } else {
                 wis = this.resolveWorkItems(data.workItems, state, payload.isShowTree);
               }
-              return [...wis];
+              return { workItems: [...wis], nextLink };
             }),
-            map((workItems: WorkItemUI[]) => {
-              return new WorkItemActions.GetSuccess(
-                workItems
-              );
-            }),
+            map(d => new WorkItemActions.GetSuccess(d)),
             catchError(err => this.errHandler.handleError<Action>(
               err, `Problem in fetching more workitems.`, new WorkItemActions.GetError()
             ))

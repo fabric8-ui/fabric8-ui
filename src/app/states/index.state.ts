@@ -85,7 +85,3 @@ export {
   ColumnWorkItemState,
   initialState as InitialColumnWorkItemState
 } from './column-workItem.state';
-export {
-  NextLinkState,
-  initialState as InitialNextLinkState
-} from './next-link.state';
