@@ -33,6 +33,13 @@ export const WorkItemReducer: ActionReducer<WorkItemState> = (state = initialSta
 
     case WorkItemActions.GET_SUCCESS: {
       return {
+        ...workItemAdapter.addMany(action.payload.workItems, workItemAdapter.removeAll(state)),
+        ...{nextLink: action.payload.nextLink}
+      };
+    }
+
+    case WorkItemActions.GET_MORE_WORKITEMS_SUCCESS: {
+      return {
         ...workItemAdapter.addMany(action.payload.workItems, state),
         ...{nextLink: action.payload.nextLink}
       };

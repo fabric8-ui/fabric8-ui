@@ -365,6 +365,11 @@ export class WorkItemEffects {
       switchMap(wp => {
         const payload = wp.payload;
         const state = wp.state;
+        if (state.workItems.nextLink == '') {
+          return Observable.of(
+            new WorkItemActions.GetMoreWorkItemsSuccess({ workItems: [], nextLink: '' })
+          );
+        }
         return this.workItemService.getMoreWorkItems(state.workItems.nextLink)
           .pipe(
             map((data: any) => {
@@ -383,7 +388,7 @@ export class WorkItemEffects {
               }
               return { workItems: [...wis], nextLink };
             }),
-            map(d => new WorkItemActions.GetSuccess(d)),
+            map(d => new WorkItemActions.GetMoreWorkItemsSuccess(d)),
             catchError(err => this.errHandler.handleError<Action>(
               err, `Problem in fetching more workitems.`, new WorkItemActions.GetError()
             ))

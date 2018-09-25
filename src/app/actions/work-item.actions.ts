@@ -191,12 +191,12 @@ export class GetMoreWorkItems implements Action {
   readonly type = GET_MORE_WORKITEMS;
 }
 
-export class NextLinkSuccess implements Action {
-  payload: string;
-  constructor(payload: string) {
+export class GetMoreWorkItemsSuccess implements Action {
+  payload: {workItems: WorkItemUI[], nextLink: string};
+  constructor(payload: {workItems: WorkItemUI[], nextLink: string}) {
     this.payload = payload;
   }
-  readonly type = NEXT_LINK_SUCCESS;
+  readonly type = GET_MORE_WORKITEMS_SUCCESS;
 }
 
 export type All
@@ -217,4 +217,5 @@ export type All
   | CreateLink
   | DeleteLink
   | ResetWorkItems
-  | GetMoreWorkItems;
+  | GetMoreWorkItems
+  | GetMoreWorkItemsSuccess;

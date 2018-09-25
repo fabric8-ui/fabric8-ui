@@ -40,9 +40,9 @@
 	<div class="f8-wi-list">
 		<div
 			class="f8-wi-list-wrap"
-			*ngIf="workItemsSource | async as workitems"
+      *ngLet="workItemsSource | async as workitems"
 			#listContainer>
-				<ngx-datatable #myTable
+        <ngx-datatable #myTable
 					*ngIf="!!workitems.length"
 					class="material fullscreen"
 					[columnMode]="'force'"
@@ -53,8 +53,12 @@
 					[rowHeight]="contentItemHeight"
 					[sorts]="[{prop: 'order', dir: 'desc'}]"
 					[selected]="selectedRows"
-					[selectionType]="'single'"
-					(scroll)="onScroll($event, workitems.length);"
+          [selectionType]="'single'"
+
+          (scroll)="onScroll($event.offsetY, workitems.length);"
+          almInfiniteScroll
+          [eachElementHeightInPx]="contentItemHeight"
+          (initItems)="checkPageSize($event)"
 					>
 					<!-- FLAT LIST -->
 					<!-- columns number-assignees -->

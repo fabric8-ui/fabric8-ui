@@ -1,4 +1,9 @@
-import { AfterViewChecked, Component, ElementRef, HostListener, OnDestroy, OnInit, Renderer2, ViewChild, ViewEncapsulation } from '@angular/core';
+import {
+  AfterViewChecked, AfterViewInit,
+  Component, ElementRef, HostListener,
+  OnDestroy, OnInit, Renderer2,
+  ViewChild, ViewEncapsulation
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { sortBy } from 'lodash';
@@ -22,7 +27,7 @@ import { WorkItemPreviewPanelComponent } from './../work-item-preview-panel/work
   templateUrl: './planner-query.component.html',
   styleUrls: ['./planner-query.component.less']
 })
-export class PlannerQueryComponent implements OnInit, OnDestroy, AfterViewChecked {
+export class PlannerQueryComponent implements OnInit, OnDestroy, AfterViewChecked, AfterViewInit {
   @ViewChild('quickPreview') quickPreview: WorkItemPreviewPanelComponent;
   @ViewChild('listContainer') listContainer: ElementRef;
   @ViewChild('querySearch') querySearchRef: ElementRef;
@@ -33,16 +38,15 @@ export class PlannerQueryComponent implements OnInit, OnDestroy, AfterViewChecke
     // Wait untill workItemTypes are loaded
     this.workItemTypeQuery.getWorkItemTypes().pipe(filter(wt => !!wt.length)))
     .pipe(
-      tap((i) => this.setDataTableColumns()),
       switchMap(([space, query]) => {
         if (query.hasOwnProperty('q')) {
           this.searchQuery = query.q;
           this.disableInput = false;
           this.currentQuery = this.breadcrumbsText('', query);
-          const filters = this.filterService.queryToJson(query.q);
+          this.filters = this.filterService.queryToJson(query.q);
           this.store.dispatch(new WorkItemActions.Get({
-            pageSize: 200,
-            filters: filters,
+            pageSize: this.initialPageSize,
+            filters: this.filters,
             isShowTree: false
           }));
         }
@@ -59,7 +63,7 @@ export class PlannerQueryComponent implements OnInit, OnDestroy, AfterViewChecke
   public uiLockedList: boolean = false;
   public emptyStateConfig: EmptyStateConfig;
   public contentItemHeight: number = 50;
-  public columns: any[];
+  public columns: any[] = [];
   public selectedRows: any = [];
   public searchQuery: string = '';
   public _lastCheckedScrollHeight: any;
@@ -70,6 +74,8 @@ export class PlannerQueryComponent implements OnInit, OnDestroy, AfterViewChecke
   private eventListeners: any[] = [];
   private hdrHeight: number = 0;
   private querySearchRefHt: number = 0;
+  private initialPageSize: number = 25;
+  private filters = null;
 
   constructor(
     private cookieService: CookieService,
@@ -123,20 +129,6 @@ export class PlannerQueryComponent implements OnInit, OnDestroy, AfterViewChecke
     }
   }
 
-  // Start: Settings(tableConfig) dropdown
-  moveToDisplay(columns) {
-    this.columns = [...columns];
-    this.cookieService.setCookie('datatableColumn', this.columns);
-    // setTimeout(() => {
-    //   this.workItems = [...this.workItems];
-    // }, 500);
-  }
-
-  moveToAvailable(columns) {
-    this.cookieService.setCookie('datatableColumn', columns);
-    this.columns = [...columns];
-  }
-  // End:  Setting(tableConfig) Dropdown
 
   fetchWorkItemForQuery(event: KeyboardEvent, query: string) {
     let keycode = event.keyCode ? event.keyCode : event.which;
@@ -207,29 +199,30 @@ export class PlannerQueryComponent implements OnInit, OnDestroy, AfterViewChecke
     }
   }
 
-  onScroll(event, numberOfWorkItems) {
-    console.log('############ - 1', event);
-    // if (event.path &&
-    //     this._lastCheckedScrollHeight < event.path[0].scrollHeight) {
-    //       console.log('###### - 2');
-    //   let scrollLeft = ((event.path[0].scrollHeight -
-    //     (event.path[0].offsetHeight + event.path[0].scrollTop)) * 100) /
-    //     event.path[0].scrollHeight;
-    //   if (scrollLeft <= this._scrollTrigger) {
-    //     this._lastCheckedScrollHeight = event.path[0].scrollHeight;
-    //     this.store.dispatch(new WorkItemActions.GetMoreWorkItems({
-    //       isShowTree: false
-    //     }));
-    //   }
-    // }
-    const viewHeight = this.targetHeight - this.headerHeight;
-    console.log('####### - 2', viewHeight);
-    if (event.offsetY + viewHeight >= numberOfWorkItems * this.contentItemHeight) {
-      console.log('####### - 3');
-      this.store.dispatch(new WorkItemActions.GetMoreWorkItems({
+  checkPageSize(event) {
+    // This is a Hack, need to find a better way
+    // if number of intially fetched item is lesser than
+    // the capable page size then we trigger another request
+    if (event.pageSize > this.initialPageSize) {
+      this.store.dispatch(new WorkItemActions.Get({
+        pageSize: event.pageSize,
+        filters: this.filters,
         isShowTree: false
       }));
     }
+  }
+
+  onScroll(offsetY: number, numberOfItems: number) {
+    const viewHeight = this.el.nativeElement.getBoundingClientRect().height - this.headerHeight;
+    if (offsetY + viewHeight >= numberOfItems * this.contentItemHeight) {
+      this.fetchMoreItems(); // or this.loadPage(this.limit);
+    }
+  }
+
+  fetchMoreItems() {
+    this.store.dispatch(new WorkItemActions.GetMoreWorkItems({
+      isShowTree: false
+    }));
   }
 
   ngAfterViewChecked() {
@@ -243,6 +236,10 @@ export class PlannerQueryComponent implements OnInit, OnDestroy, AfterViewChecke
     if (this.listContainer) {
       this.renderer.setStyle(this.listContainer.nativeElement, 'height', this.targetHeight + 'px');
     }
+  }
+
+  ngAfterViewInit() {
+    this.setDataTableColumns();
   }
 
   @HostListener('window:resize', ['$event'])

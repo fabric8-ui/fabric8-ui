@@ -2,6 +2,8 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap';
+import { FeatureFlagResolver, FeatureTogglesService } from 'ngx-feature-flag';
+import { InfiniteScrollModule } from 'ngx-widgets';
 import { EmptyStateModule } from 'patternfly-ng/empty-state';
 import { NgxDatatableModule } from 'rh-ngx-datatable';
 import { SpaceQuery } from '../../models/space';
@@ -18,6 +20,7 @@ import { PlannerQueryComponent } from './planner-query.component';
 // import { FeatureFlagResolver, FeatureTogglesService } from 'ngx-feature-flag';
 import { ErrorHandler } from '../../effects/work-item-utils';
 import { WorkItemTypeQuery } from '../../models/work-item-type';
+import { NgLetModule } from '../../shared/ng-let';
 import { togglesApiUrlProvider } from '../../shared/toggles-api.provider';
 
 @NgModule({
@@ -31,7 +34,9 @@ import { togglesApiUrlProvider } from '../../shared/toggles-api.provider';
     NgxDatatableModule,
     TooltipModule,
     WorkItemCellModule,
-    WorkItemPreviewPanelModule
+    WorkItemPreviewPanelModule,
+    InfiniteScrollModule,
+    NgLetModule
   ],
   declarations: [PlannerQueryComponent],
   exports: [PlannerQueryComponent],
