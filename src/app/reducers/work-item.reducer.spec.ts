@@ -83,7 +83,8 @@ describe('WorkItemReduer: ', () => {
           eventLink: '',
           selected: false
         }
-      }
+      },
+      nextLink: ''
     };
   });
 
@@ -97,7 +98,8 @@ describe('WorkItemReduer: ', () => {
   it('Initial state should be as empty state', () => {
     const initialState = {
       ids: [],
-      entities: {}
+      entities: {},
+      nextLink: ''
     };
 
     expect(WorkItemInitialState).toEqual(initialState);
@@ -105,14 +107,14 @@ describe('WorkItemReduer: ', () => {
 
   it('GetSuccess action should return new state', () => {
 
-    const action = new WorkItemActions.GetSuccess(workItems);
+    const action = new WorkItemActions.GetSuccess({workItems: workItems, nextLink: ''});
     const state = WorkItemReducer(WorkItemInitialState, action);
 
     expect(state).toEqual(workItemState);
   });
 
   it('GetError action should return previous state', () => {
-    const action = new WorkItemActions.GetSuccess(workItems);
+    const action = new WorkItemActions.GetSuccess({workItems: workItems, nextLink: ''});
     const state = WorkItemReducer(WorkItemInitialState, action);
 
     const getErrorAction = new WorkItemActions.GetError();
@@ -129,7 +131,7 @@ describe('WorkItemReduer: ', () => {
   });
 
   it('AddError action should return the previous state', () => {
-    const action = new WorkItemActions.GetSuccess(workItems);
+    const action = new WorkItemActions.GetSuccess({workItems: workItems, nextLink: ''});
     const state = WorkItemReducer(WorkItemInitialState, action);
 
     const addErrorAction = new WorkItemActions.AddError();
@@ -141,7 +143,7 @@ describe('WorkItemReduer: ', () => {
   it('UpdateSuccess action should return updated state', () => {
     let workItemsClone = cloneDeep(workItems);
     workItemsClone[0].title = 'Work Item Updated';
-    const action = new WorkItemActions.GetSuccess(workItems);
+    const action = new WorkItemActions.GetSuccess({workItems: workItems, nextLink: ''});
     const state = WorkItemReducer(WorkItemInitialState, action);
 
     const updateSuccessAction = new WorkItemActions.UpdateSuccess(workItemsClone[0]);
@@ -151,7 +153,7 @@ describe('WorkItemReduer: ', () => {
   });
 
   it('UpdateError action should return previous state', () => {
-    const action = new WorkItemActions.GetSuccess(workItems);
+    const action = new WorkItemActions.GetSuccess({workItems: workItems, nextLink: ''});
     const state = WorkItemReducer(WorkItemInitialState, action);
 
     const updateErrorAction = new WorkItemActions.UpdateError();
@@ -197,7 +199,7 @@ describe('WorkItemReduer: ', () => {
         eventLink: ''
       }
     ];
-    const action = new WorkItemActions.GetSuccess(workItems);
+    const action = new WorkItemActions.GetSuccess({workItems: workItems, nextLink: ''});
     const state = WorkItemReducer(WorkItemInitialState, action);
 
     const getChildrenSuccessAction = new WorkItemActions.GetChildrenSuccess({parent: workItems[0], children: children});
@@ -208,7 +210,7 @@ describe('WorkItemReduer: ', () => {
   });
 
   it('GetChildrenError action should return previous state', () => {
-    const action = new WorkItemActions.GetSuccess(workItems);
+    const action = new WorkItemActions.GetSuccess({workItems: workItems, nextLink: ''});
     const state = WorkItemReducer(WorkItemInitialState, action);
 
     const GetChildrenErrorAction = new WorkItemActions.GetChildrenError(workItems[0]);
@@ -254,7 +256,7 @@ describe('WorkItemReduer: ', () => {
 
     let workItems1 = cloneDeep(workItems);
     workItems1.push(workItem1);
-    const action = new WorkItemActions.GetSuccess(workItems1);
+    const action = new WorkItemActions.GetSuccess({workItems: workItems1, nextLink: ''});
     const state = WorkItemReducer(WorkItemInitialState, action);
 
     const createLinkAction = new WorkItemActions.CreateLink({
@@ -305,7 +307,7 @@ describe('WorkItemReduer: ', () => {
 
     let workItems1 = cloneDeep(workItems);
     workItems1.push(workItem1);
-    const action = new WorkItemActions.GetSuccess(workItems1);
+    const action = new WorkItemActions.GetSuccess({workItems: workItems1, nextLink: ''});
     const state = WorkItemReducer(WorkItemInitialState, action);
     const createLinkAction = new WorkItemActions.CreateLink({
       source: workItems1[0],

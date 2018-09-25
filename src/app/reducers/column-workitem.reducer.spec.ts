@@ -35,7 +35,7 @@ describe('ColumnWorkitemReducer: ', () => {
       '0000-000-07': ['2']
     };
 
-    const action = new GetSuccess(workitems);
+    const action = new GetSuccess({workItems: workitems, nextLink: ''});
     const state = ColumnWorkItemReducer(InitialColumnWorkItemState, action);
 
     expect(state).toEqual(columWorkItemState);
@@ -51,7 +51,7 @@ describe('ColumnWorkitemReducer: ', () => {
       }
     ] as WorkItemUI[];
 
-    const action = new GetSuccess(workitems);
+    const action = new GetSuccess({workItems: workitems, nextLink: ''});
     const state = ColumnWorkItemReducer(InitialColumnWorkItemState, action);
 
     expect(state).toEqual(InitialColumnWorkItemState);
