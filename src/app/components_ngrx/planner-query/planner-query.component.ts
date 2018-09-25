@@ -49,6 +49,7 @@ export class PlannerQueryComponent implements OnInit, OnDestroy, AfterViewChecke
             filters: this.filters,
             isShowTree: false
           }));
+          this.scrollCheckedFor = 0;
         }
         if (query.hasOwnProperty('prevq')) {
           this.breadcrumbs = JSON.parse(query.prevq);
@@ -76,6 +77,9 @@ export class PlannerQueryComponent implements OnInit, OnDestroy, AfterViewChecke
   private querySearchRefHt: number = 0;
   private initialPageSize: number = 25;
   private filters = null;
+  // This variable stores the number of items
+  // Scroll is already checked for
+  private scrollCheckedFor: number = 0;
 
   constructor(
     private cookieService: CookieService,
@@ -214,8 +218,9 @@ export class PlannerQueryComponent implements OnInit, OnDestroy, AfterViewChecke
 
   onScroll(offsetY: number, numberOfItems: number) {
     const viewHeight = this.el.nativeElement.getBoundingClientRect().height - this.headerHeight;
-    if (offsetY + viewHeight >= numberOfItems * this.contentItemHeight) {
-      this.fetchMoreItems(); // or this.loadPage(this.limit);
+    if (offsetY + viewHeight >= numberOfItems * this.contentItemHeight && this.scrollCheckedFor < numberOfItems) {
+      this.scrollCheckedFor = numberOfItems;
+      this.fetchMoreItems();
     }
   }
 
