@@ -20,8 +20,7 @@ describe('Markdown component - ', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ FormsModule, MarkdownModule, BrowserModule ],
-      declarations: [ ]
+      imports: [ FormsModule, MarkdownModule, BrowserModule ]
     })
       .compileComponents()
       .then(() => {
@@ -115,5 +114,12 @@ describe('Markdown component - ', () => {
     comp.rawText = 'xyz';
     comp.saveClick();
     expect(comp.onSaveClick.emit).toHaveBeenCalled();
+  });
+
+  it('should emit onClickOut when clicked outside', () => {
+    spyOn(comp.onClickOut, 'emit');
+    comp.onClick(fixture.nativeElement);
+    comp.onClick(document.body);
+    expect(comp.onClickOut.emit).toHaveBeenCalledTimes(1);
   });
 });

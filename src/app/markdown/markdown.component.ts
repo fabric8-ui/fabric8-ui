@@ -4,6 +4,7 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  HostListener,
   Input,
   OnChanges,
   OnInit,
@@ -45,6 +46,23 @@ export class MarkdownComponent implements OnChanges, OnInit, AfterViewChecked {
   @Output() onSaveClick = new EventEmitter();
   @Output() showPreview = new EventEmitter();
   @Output() onCloseClick = new EventEmitter();
+  @Output() onClickOut = new EventEmitter();
+
+  @HostListener('document:click', ['$event.target'])
+  onClick(target: HTMLElement): void {
+    if (!target) {
+      return;
+    }
+    const clickedInside = this.elementRef.nativeElement.contains(target);
+
+    if (this.editorInput) {
+      this.isNoDataChanged = this.editorInput.nativeElement.innerText.trim() === this.rawText;
+    }
+
+    if (!clickedInside) {
+      this.onClickOut.emit(this.isNoDataChanged);
+    }
+  }
 
   @ViewChild('editorInput') editorInput: ElementRef;
   @ViewChild('editorBox') editorBox: ElementRef;
@@ -57,6 +75,7 @@ export class MarkdownComponent implements OnChanges, OnInit, AfterViewChecked {
   rawText = '';
   fieldEmpty: boolean = true;
   previousRawText = '';
+  isNoDataChanged: boolean = false;
 
   private markdownViewExpanded: boolean = false;
   private tabBarVisible: boolean = true;
