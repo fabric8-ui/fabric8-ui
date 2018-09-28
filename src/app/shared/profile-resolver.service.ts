@@ -7,8 +7,8 @@ import {
 } from '@angular/router';
 import { Context } from 'ngx-fabric8-wit';
 import { UserService } from 'ngx-login-client';
-import { Observable,  of ,  throwError as observableThrowError } from 'rxjs';
-import { catchError,  first, switchMap, take } from 'rxjs/operators';
+import { Observable, of, throwError as observableThrowError } from 'rxjs';
+import { catchError, first, switchMap, take } from 'rxjs/operators';
 import { Navigation } from '../models/navigation';
 import { ContextService } from './context.service';
 

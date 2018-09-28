@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { Broadcaster, Logger } from 'ngx-base';
 import { Contexts, SpaceService, WIT_API_URL } from 'ngx-fabric8-wit';
 import { AuthenticationService, UserService } from 'ngx-login-client';
-import { Observable, of, throwError as observableThrowError } from 'rxjs';
+import { of, throwError as observableThrowError } from 'rxjs';
 import { TenantService } from '../services/tenant.service';
 import { CleanupComponent } from './cleanup.component';
 

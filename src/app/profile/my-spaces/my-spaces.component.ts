@@ -17,7 +17,6 @@ import { Filter, FilterEvent } from 'patternfly-ng/filter';
 import { ListConfig } from 'patternfly-ng/list';
 import { SortEvent, SortField } from 'patternfly-ng/sort';
 import { Subscription } from 'rxjs';
-import { tap } from 'rxjs/operators';
 import { ExtProfile, GettingStartedService } from '../../getting-started/services/getting-started.service';
 import { MySpacesSearchSpacesDialog } from './my-spaces-search-dialog/my-spaces-search-spaces-dialog.component';
 

@@ -13,7 +13,7 @@ import { FormsModule } from '@angular/forms';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { Space, SpaceService } from 'ngx-fabric8-wit';
 import { InfiniteScrollModule } from 'ngx-widgets';
-import { Observable, of as observableOf,  throwError as observableThrowError } from 'rxjs';
+import { of as observableOf, throwError as observableThrowError } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { createMock } from 'testing/mock';
 import {

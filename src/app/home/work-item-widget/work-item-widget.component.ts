@@ -3,7 +3,7 @@ import { FilterService, WorkItem, WorkItemService } from 'fabric8-planner';
 import { Space, Spaces } from 'ngx-fabric8-wit';
 import { User, UserService } from 'ngx-login-client';
 import { Subscription } from 'rxjs';
-import { map, switchMap, tap } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { filterOutClosedItems, WorkItemsData } from '../../shared/workitem-utils';
 
 @Component({

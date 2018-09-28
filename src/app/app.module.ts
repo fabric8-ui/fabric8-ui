@@ -1,4 +1,4 @@
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { ApplicationRef, ErrorHandler, NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
@@ -105,7 +105,6 @@ import {
 } from 'ngx-feature-flag';
 import { FeatureFooterModule } from './feature-flag/notification-footer/feature-footer.module';
 import { FeatureAcknowledgementService } from './feature-flag/service/feature-acknowledgement.service';
-import { TogglesModule } from './feature-flag/toggles.module';
 import { GettingStartedService } from './getting-started/services/getting-started.service';
 import { AboutModalModule } from './layout/about-modal/about-modal.module';
 import { RavenExceptionHandler } from './shared/exception.handler';

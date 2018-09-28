@@ -10,7 +10,7 @@ import {
   SpaceService
 } from 'ngx-fabric8-wit';
 import { UserService } from 'ngx-login-client';
-import { Observable,  of as observableOf } from 'rxjs';
+import { of as observableOf } from 'rxjs';
 import { MenusService } from '../../../layout/header/menus.service';
 import { ContextService } from '../../../shared/context.service';
 import { loggedInUser, profile } from '../../../shared/context.service.mock';

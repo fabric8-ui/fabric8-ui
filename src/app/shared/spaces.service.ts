@@ -2,8 +2,8 @@ import { ErrorHandler } from '@angular/core';
 import { Injectable } from '@angular/core';
 import { Broadcaster } from 'ngx-base';
 import { Contexts, Space, Spaces, SpaceService } from 'ngx-fabric8-wit';
-import { forkJoin, merge, Observable, of, of as observableOf, Subscription } from 'rxjs';
-import { catchError, filter,  map, switchMap, withLatestFrom } from 'rxjs/operators';
+import { forkJoin, merge, Observable, of as observableOf, Subscription } from 'rxjs';
+import { catchError, filter, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { ExtProfile, ProfileService } from '../profile/profile.service';
 import { RecentData, RecentUtils } from './recent-utils';
 
@@ -97,7 +97,7 @@ export class SpacesService extends RecentUtils<Space> implements Spaces {
           return spaces.filter((space: Space): boolean => space !== null);
         }));
       } else {
-        return of([]);
+        return observableOf([]);
       }
     }));
   }

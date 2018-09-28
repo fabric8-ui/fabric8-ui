@@ -18,7 +18,7 @@ class HostComponent { }
 
 describe('LandingPageComponent', () => {
 
-  const testContext = initContext(LandingPageComponent, HostComponent, {
+  const testContext: TestContext<LandingPageComponent, HostComponent> = initContext(LandingPageComponent, HostComponent, {
     providers: [
       {
         provide: LoginService,

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRouteSnapshot, Resolve, RouterStateSnapshot } from '@angular/router';
-import { Observable,  of as observableOf } from 'rxjs';
+import { of as observableOf } from 'rxjs';
 
 @Injectable()
 export class DataResolver implements Resolve<any> {

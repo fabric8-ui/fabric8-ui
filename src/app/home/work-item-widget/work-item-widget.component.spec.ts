@@ -9,7 +9,6 @@ import { Broadcaster } from 'ngx-base';
 import { Context, Contexts, Fabric8WitModule, Spaces } from 'ngx-fabric8-wit';
 import { User, UserService } from 'ngx-login-client';
 import { ConnectableObservable,  Observable ,  of as observableOf, Subject } from 'rxjs';
-import { publish } from 'rxjs/operators';
 import { createMock } from 'testing/mock';
 import { MockFeatureToggleComponent } from 'testing/mock-feature-toggle.component';
 import {
@@ -74,7 +73,7 @@ describe('Home: WorkItemWidgetComponent', () => {
     workItems: fakeWorkItems
   } as WorkItemsData);
 
-  const testContext = initContext(WorkItemWidgetComponent, HostComponent, {
+  const testContext: TestingContext = initContext(WorkItemWidgetComponent, HostComponent, {
     declarations: [ MockFeatureToggleComponent ],
     imports: [
       Fabric8WitModule,

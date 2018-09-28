@@ -8,10 +8,9 @@ import { Logger } from 'ngx-base';
 import { WIT_API_URL } from 'ngx-fabric8-wit';
 import {
   AuthenticationService,
-  User,
   UserService
 } from 'ngx-login-client';
-import { never as observableNever, Observable,  of as observableOf } from 'rxjs';
+import { never as observableNever,  of as observableOf } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { createMock } from 'testing/mock';
 import {

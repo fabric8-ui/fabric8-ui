@@ -7,8 +7,7 @@ import { By } from '@angular/platform-browser';
 import { RouterTestingModule } from '@angular/router/testing';
 import { Space } from 'ngx-fabric8-wit';
 import {
-  initContext,
-  TestContext
+  initContext
 } from 'testing/test-context';
 import { MySpacesSearchSpacesDialogSpaceItemComponent } from './my-spaces-search-spaces-dialog-space-item.component';
 

@@ -55,7 +55,7 @@ describe('HeaderComponent', () => {
   let fixture: ComponentFixture<HeaderComponent>;
   let component: DebugNode['componentInstance'];
 
-  const testContext = initContext(HeaderComponent, HostComponent, {
+  const testContext: TestingContext = initContext(HeaderComponent, HostComponent, {
     imports: [
       RouterTestingModule.withRoutes([
         { path: '_home', component: MockRoutedComponent },

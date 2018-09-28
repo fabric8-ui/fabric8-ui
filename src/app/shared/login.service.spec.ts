@@ -11,7 +11,7 @@ import {
   AuthenticationService,
   UserService
 } from 'ngx-login-client';
-import { never as observableNever,  Observable ,  of } from 'rxjs';
+import { never as observableNever, of } from 'rxjs';
 import { createMock } from 'testing/mock';
 import { LoginService } from './login.service';
 import { WindowService } from './window.service';

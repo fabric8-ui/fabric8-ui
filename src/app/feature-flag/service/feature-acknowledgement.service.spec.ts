@@ -3,7 +3,7 @@ import { async, TestBed } from '@angular/core/testing';
 import { Logger } from 'ngx-base';
 import { WIT_API_URL } from 'ngx-fabric8-wit';
 import { AuthenticationService, UserService } from 'ngx-login-client';
-import { Observable,  of as observableOf } from 'rxjs';
+import { of as observableOf } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { ExtUser } from '../../getting-started/services/getting-started.service';
 import { loggedInUser } from '../../shared/context.service.mock';

@@ -13,7 +13,7 @@ import {
   HttpTestingController
 } from '@angular/common/http/testing';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { Observable ,  of } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { RequestCache } from '../request-cache.service';
 import { CacheInterceptor } from './cache.interceptor';
 

@@ -8,7 +8,7 @@ import { FeatureFlagConfig } from 'ngx-feature-flag';
 import { AuthenticationService } from 'ngx-login-client';
 import { ActionConfig } from 'patternfly-ng/action';
 import { EmptyStateConfig } from 'patternfly-ng/empty-state';
-import { merge as observableMerge,  Observable, Subscription } from 'rxjs';
+import { merge as observableMerge, Subscription } from 'rxjs';
 import { filter, map, mergeMap } from 'rxjs/operators';
 import { OnLogin } from '../a-runtime-console/index';
 import { FeatureAcknowledgementService } from './feature-flag/service/feature-acknowledgement.service';
