@@ -7,7 +7,6 @@ import {
 import { debounce } from 'lodash';
 import { NotificationType } from 'ngx-base';
 import {
-  combineLatest,
   Observable,
   Subscription
 } from 'rxjs';
@@ -15,7 +14,6 @@ import { first } from 'rxjs/operators';
 import { NotificationsService } from '../../../../shared/notifications.service';
 import { PodPhase } from '../models/pod-phase';
 import { Pods } from '../models/pods';
-import { Stat } from '../models/stat';
 import { DeploymentsService } from '../services/deployments.service';
 
 @Component({
@@ -32,6 +30,7 @@ export class DeploymentsDonutComponent implements OnInit {
   @Input() environment: string;
 
   atQuota: boolean = false;
+  requestedScaleIsMaximum: boolean = false;
   isIdled: boolean = false;
   pods: Observable<Pods>;
   desiredReplicas: number = 1;
@@ -54,6 +53,7 @@ export class DeploymentsDonutComponent implements OnInit {
 
   private replicas: number;
   private scaleRequestPending: boolean = false;
+  private maxPods: number;
 
   constructor(
     private deploymentsService: DeploymentsService,
@@ -73,12 +73,19 @@ export class DeploymentsDonutComponent implements OnInit {
     );
 
     this.subscriptions.push(
-      combineLatest(
-        this.deploymentsService.getEnvironmentCpuStat(this.spaceId, this.environment),
-        this.deploymentsService.getEnvironmentMemoryStat(this.spaceId, this.environment)
-      ).subscribe((stats: Stat[]): void => {
-        this.atQuota = stats.some((stat: Stat): boolean => stat.used >= stat.quota);
-      })
+      this.deploymentsService
+        .canScale(this.spaceId, this.environment, this.applicationId)
+        .subscribe((canScale: boolean): void => {
+          this.atQuota = !canScale;
+        })
+    );
+
+    this.subscriptions.push(
+      this.deploymentsService
+        .getMaximumPods(this.spaceId, this.environment, this.applicationId)
+        .subscribe((maxPods: number): void => {
+          this.maxPods = maxPods;
+        })
     );
   }
 
@@ -87,20 +94,20 @@ export class DeploymentsDonutComponent implements OnInit {
   }
 
   scaleUp(): void {
-    let desired = this.desiredReplicas;
-    this.desiredReplicas = desired + 1;
+    this.desiredReplicas++;
+    this.requestedScaleIsMaximum = this.desiredReplicas >= this.maxPods;
 
     this.debounceScale();
     this.scaleRequestPending = true;
   }
 
   scaleDown(): void {
+    this.requestedScaleIsMaximum = false;
     if (this.desiredReplicas === 0) {
       return;
     }
 
-    let desired = this.desiredReplicas;
-    this.desiredReplicas = desired - 1;
+    this.desiredReplicas--;
 
     this.debounceScale();
     this.scaleRequestPending = true;

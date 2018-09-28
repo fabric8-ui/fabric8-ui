@@ -33,10 +33,12 @@ import {
   distinctUntilChanged,
   filter,
   finalize,
+  first,
   map,
   mergeMap,
   pairwise,
-  startWith
+  startWith,
+  withLatestFrom
 } from 'rxjs/operators';
 import { NotificationsService } from '../../../../shared/notifications.service';
 import { CpuStat } from '../models/cpu-stat';
@@ -59,6 +61,7 @@ import {
   EnvironmentStat,
   MemorySeries,
   MultiTimeseriesData,
+  PodQuotaRequirement,
   PodsQuota,
   TimeseriesData
 } from './deployment-api.service';
@@ -149,6 +152,47 @@ export class DeploymentsService implements OnDestroy {
     return this.getDeployment(spaceId, environmentName, applicationId).pipe(
       map((deployment: Deployment) => deployment.attributes.version),
       distinctUntilChanged()
+    );
+  }
+
+  canScale(spaceId: string, environmentName: string, applicationId: string): Observable<boolean> {
+    return combineLatest(
+      this.getEnvironmentCpuStat(spaceId, environmentName),
+      this.getEnvironmentMemoryStat(spaceId, environmentName)
+    ).pipe(
+      withLatestFrom(this.apiService.getQuotaRequirementPerPod(spaceId, environmentName, applicationId)),
+      map((v: [[CpuStat, MemoryStat], PodQuotaRequirement]): boolean => {
+        const cpuStat: CpuStat = v[0][0];
+        const memStat: ScaledMemoryStat = ScaledMemoryStat.from(v[0][1], MemoryUnit.B);
+        const quotaRequirement: PodQuotaRequirement = v[1];
+
+        const cpuRemaining: number = cpuStat.quota - cpuStat.used;
+        const memRemaining: number = memStat.quota - memStat.used;
+
+        return cpuRemaining >= quotaRequirement.cpucores &&
+          memRemaining >= quotaRequirement.memory;
+      })
+    );
+  }
+
+  // similar to canScale above, but is "one-shot" - emits one maximum value and completes. canScale provides ongoing status emissions.
+  getMaximumPods(spaceId: string, environmentName: string, applicationId: string): Observable<number> {
+    return combineLatest(
+      this.getEnvironmentCpuStat(spaceId, environmentName),
+      this.getEnvironmentMemoryStat(spaceId, environmentName)
+    ).pipe(
+      first(),
+      withLatestFrom(this.apiService.getQuotaRequirementPerPod(spaceId, environmentName, applicationId)),
+      map((v: [[CpuStat, MemoryStat], PodQuotaRequirement]): number => {
+        const requirement: PodQuotaRequirement = v[1];
+        const cpuQuota: CpuStat = v[0][0];
+        const memQuota: MemoryStat = ScaledMemoryStat.from(v[0][1], MemoryUnit.B);
+
+        const maxCpu: number = Math.floor(cpuQuota.quota / requirement.cpucores);
+        const maxMem: number = Math.floor(memQuota.quota / requirement.memory);
+
+        return Math.min(maxCpu, maxMem);
+      })
     );
   }
 

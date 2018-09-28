@@ -8,7 +8,6 @@ import {
 } from 'ngx-base';
 import {
   empty as emptyObservable,
-  Observable,
   of,
   Subject,
   throwError as _throw,
@@ -553,6 +552,175 @@ describe('DeploymentsService', () => {
       service.getVersion('foo-spaceId', 'stage', 'vertx-hello')
         .subscribe((version: string): void => {
           expect(version).toEqual('1.0.2');
+          done();
+        });
+      timerToken.next();
+    });
+  });
+
+  describe('#canScale', () => {
+    const GB: number = Math.pow(1024, 3);
+    it('should return true when remaining quota is sufficient', function(done: DoneFn): void {
+      apiService.getEnvironments.and.returnValue(of([
+        {
+          attributes: {
+            name: 'stage',
+            quota: {
+              cpucores: {
+                used: 1,
+                quota: 2
+              },
+              memory: {
+                used: 0.5 * GB,
+                quota: 1 * GB,
+                units: 'bytes'
+              }
+            }
+          }
+        }
+      ]));
+      apiService.getQuotaRequirementPerPod.and.returnValue(of({
+        cpucores: 1,
+        memory: 0.5 * GB
+      }));
+
+      service.canScale('foo-spaceId', 'stage', 'vertx-hello')
+        .pipe(first())
+        .subscribe((canScale: boolean): void => {
+          expect(canScale).toBeTruthy();
+          done();
+        });
+      timerToken.next();
+    });
+
+    it('should return false when remaining CPU quota is insufficient', function(done: DoneFn): void {
+      apiService.getEnvironments.and.returnValue(of([
+        {
+          attributes: {
+            name: 'stage',
+            quota: {
+              cpucores: {
+                used: 2,
+                quota: 2
+              },
+              memory: {
+                used: 0.5 * GB,
+                quota: 1 * GB,
+                units: 'bytes'
+              }
+            }
+          }
+        }
+      ]));
+      apiService.getQuotaRequirementPerPod.and.returnValue(of({
+        cpucores: 1,
+        memory: 0.5 * GB
+      }));
+
+      service.canScale('foo-spaceId', 'stage', 'vertx-hello')
+        .pipe(first())
+        .subscribe((canScale: boolean): void => {
+          expect(canScale).toBeFalsy();
+          done();
+        });
+      timerToken.next();
+    });
+
+    it('should return false when remaining Memory quota is insufficient', function(done: DoneFn): void {
+      apiService.getEnvironments.and.returnValue(of([
+        {
+          attributes: {
+            name: 'stage',
+            quota: {
+              cpucores: {
+                used: 1,
+                quota: 2
+              },
+              memory: {
+                used: 0.75 * GB,
+                quota: 1 * GB,
+                units: 'bytes'
+              }
+            }
+          }
+        }
+      ]));
+      apiService.getQuotaRequirementPerPod.and.returnValue(of({
+        cpucores: 1,
+        memory: 0.5 * GB
+      }));
+
+      service.canScale('foo-spaceId', 'stage', 'vertx-hello')
+        .pipe(first())
+        .subscribe((canScale: boolean): void => {
+          expect(canScale).toBeFalsy();
+          done();
+        });
+      timerToken.next();
+    });
+  });
+
+  describe('#getMaximumPods', () => {
+    const GB: number = Math.pow(1024, 3);
+    it('should return appropriate number of maximum pods for typical scenario', function(done: DoneFn): void {
+      apiService.getEnvironments.and.returnValue(of([
+        {
+          attributes: {
+            name: 'stage',
+            quota: {
+              cpucores: {
+                used: 0,
+                quota: 2
+              },
+              memory: {
+                used: 0,
+                quota: 1 * GB,
+                units: 'bytes'
+              }
+            }
+          }
+        }
+      ]));
+      apiService.getQuotaRequirementPerPod.and.returnValue(of({
+        cpucores: 1,
+        memory: 0.5 * GB
+      }));
+
+      service.getMaximumPods('foo-spaceId', 'stage', 'vertx-hello')
+        .subscribe((maxPods: number): void => {
+          expect(maxPods).toEqual(2);
+          done();
+        });
+      timerToken.next();
+    });
+
+    it('should return maximum based on resource with least available quota', function(done: DoneFn): void {
+      apiService.getEnvironments.and.returnValue(of([
+        {
+          attributes: {
+            name: 'stage',
+            quota: {
+              cpucores: {
+                used: 0,
+                quota: 2
+              },
+              memory: {
+                used: 0,
+                quota: 1 * GB,
+                units: 'bytes'
+              }
+            }
+          }
+        }
+      ]));
+      apiService.getQuotaRequirementPerPod.and.returnValue(of({
+        cpucores: 2,
+        memory: 0.5 * GB
+      }));
+
+      service.getMaximumPods('foo-spaceId', 'stage', 'vertx-hello')
+        .subscribe((maxPods: number): void => {
+          expect(maxPods).toEqual(1); // only one CPU allocation will fit
           done();
         });
       timerToken.next();

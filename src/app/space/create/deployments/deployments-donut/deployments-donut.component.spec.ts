@@ -6,19 +6,14 @@ import {
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import {
+  BehaviorSubject,
   of,
   Subject,
   throwError as _throw
 } from 'rxjs';
 import { createMock } from 'testing/mock';
-import {
-  initContext,
-  TestContext
-} from 'testing/test-context';
+import { initContext } from 'testing/test-context';
 import { NotificationsService } from '../../../../shared/notifications.service';
-import { CpuStat } from '../models/cpu-stat';
-import { MemoryStat } from '../models/memory-stat';
-import { MemoryUnit } from '../models/memory-unit';
 import { PodPhase } from '../models/pod-phase';
 import { Pods } from '../models/pods';
 import { DeploymentsService } from '../services/deployments.service';
@@ -54,10 +49,10 @@ describe('DeploymentsDonutComponent', () => {
               of('scalePods')
             );
             svc.getPods.and.returnValue(
-              of({ pods: [['Running' as PodPhase, 1], ['Terminating' as PodPhase, 1]], total: 2 })
+              new BehaviorSubject<Pods>({ pods: [['Running' as PodPhase, 1], ['Terminating' as PodPhase, 1]], total: 2 })
             );
-            svc.getEnvironmentCpuStat.and.returnValue(new Subject<CpuStat>());
-            svc.getEnvironmentMemoryStat.and.returnValue(new Subject<MemoryStat>());
+            svc.canScale.and.returnValue(new Subject<boolean>());
+            svc.getMaximumPods.and.returnValue(of(2));
             return svc;
           }
         },
@@ -86,6 +81,29 @@ describe('DeploymentsDonutComponent', () => {
     testContext.testedDirective.scaleUp();
     testContext.detectChanges();
     expect(testContext.testedDirective.desiredReplicas).toBe(desired + 1);
+  });
+
+  it('should detect when detected scale attempt reaches maximum supported pods', function() {
+    TestBed.get(DeploymentsService).getPods().next({ pods: [], total: 0 });
+
+    expect(testContext.testedDirective.desiredReplicas).toBe(0);
+    expect(testContext.testedDirective.requestedScaleIsMaximum).toBeFalsy();
+
+    testContext.testedDirective.scaleUp();
+    expect(testContext.testedDirective.desiredReplicas).toBe(1);
+    expect(testContext.testedDirective.requestedScaleIsMaximum).toBeFalsy();
+
+    testContext.testedDirective.scaleUp();
+    expect(testContext.testedDirective.desiredReplicas).toBe(2);
+    expect(testContext.testedDirective.requestedScaleIsMaximum).toBeTruthy();
+
+    testContext.testedDirective.scaleDown();
+    expect(testContext.testedDirective.desiredReplicas).toBe(1);
+    expect(testContext.testedDirective.requestedScaleIsMaximum).toBeFalsy();
+
+    testContext.testedDirective.scaleDown();
+    expect(testContext.testedDirective.desiredReplicas).toBe(0);
+    expect(testContext.testedDirective.requestedScaleIsMaximum).toBeFalsy();
   });
 
   it('should decrement desired replicas on scale down by one', function() {
@@ -174,31 +192,11 @@ describe('DeploymentsDonutComponent', () => {
       expect(testContext.testedDirective.atQuota).toBeFalsy();
     });
 
-    it('should be "false" when both stats are below quota', function() {
-      const mockSvc: jasmine.SpyObj<DeploymentsService> = TestBed.get(DeploymentsService);
-      mockSvc.getEnvironmentCpuStat().next({ used: 0, quota: 2 });
-      mockSvc.getEnvironmentMemoryStat().next({ used: 0, quota: 2, units: MemoryUnit.GB });
+    it('should mirror inverted DeploymentsService#canScale()', function() {
+      TestBed.get(DeploymentsService).canScale().next(true);
       expect(testContext.testedDirective.atQuota).toBeFalsy();
-    });
 
-    it('should be "true" when CPU usage reaches quota', function() {
-      const mockSvc: jasmine.SpyObj<DeploymentsService> = TestBed.get(DeploymentsService);
-      mockSvc.getEnvironmentCpuStat().next({ used: 2, quota: 2 });
-      mockSvc.getEnvironmentMemoryStat().next({ used: 1, quota: 2, units: MemoryUnit.GB });
-      expect(testContext.testedDirective.atQuota).toBeTruthy();
-    });
-
-    it('should be "true" when Memory usage reaches quota', function() {
-      const mockSvc: jasmine.SpyObj<DeploymentsService> = TestBed.get(DeploymentsService);
-      mockSvc.getEnvironmentCpuStat().next({ used: 1, quota: 2 });
-      mockSvc.getEnvironmentMemoryStat().next({ used: 2, quota: 2, units: MemoryUnit.GB });
-      expect(testContext.testedDirective.atQuota).toBeTruthy();
-    });
-
-    it('should be "true" when both stats usage reaches quota', function() {
-      const mockSvc: jasmine.SpyObj<DeploymentsService> = TestBed.get(DeploymentsService);
-      mockSvc.getEnvironmentCpuStat().next({ used: 2, quota: 2 });
-      mockSvc.getEnvironmentMemoryStat().next({ used: 2, quota: 2, units: MemoryUnit.GB });
+      TestBed.get(DeploymentsService).canScale().next(false);
       expect(testContext.testedDirective.atQuota).toBeTruthy();
     });
   });
