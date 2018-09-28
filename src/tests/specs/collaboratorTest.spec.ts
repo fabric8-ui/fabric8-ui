@@ -27,6 +27,7 @@ describe('Planner Collaborator Tests:', () => {
     planner1 = new PlannerPage(URL);
     await browser.get(URL);
     await planner.waitUntilUrlContains('typegroup');
+    await planner.waitUntilTitleContains('Plan');
   });
 
   beforeEach(async () => {

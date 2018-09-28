@@ -56,10 +56,17 @@ export abstract class BasePage {
 
     let urlNow = await browser.getCurrentUrl();
     this.debug('now :', urlNow);
+    // wait for page to load
+    await this.waitUntilUrlContains('typegroup');
+    await this.waitUntilTitleContains('Plan');
   }
 
   async waitUntilUrlContains(text: string, timeout?: number) {
     await browser.wait(ExpectedConditions.urlContains(text), timeout);
+  }
+
+  async waitUntilTitleContains(title: string) {
+    await browser.wait(ExpectedConditions.titleContains('Plan'));
   }
 }
 
