@@ -24,6 +24,7 @@
 /services/node_modules
 /tests/node_modules
 /src/tests/node_modules
+/src/tests/dist
 
 # IDEs and editors
 /.idea

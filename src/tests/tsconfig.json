@@ -5,9 +5,11 @@
     "moduleResolution": "node",
     "inlineSourceMap": true,
     "declaration": true,
-    "noImplicitAny": false
+    "noImplicitAny": false,
+    "outDir": "./dist"
   },
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "dist"
   ]
 }
