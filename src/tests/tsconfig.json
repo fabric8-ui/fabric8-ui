@@ -4,7 +4,7 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "inlineSourceMap": true,
-    "declaration": false,
+    "declaration": true,
     "noImplicitAny": false
   },
   "exclude": [
