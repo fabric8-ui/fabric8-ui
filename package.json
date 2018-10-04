@@ -175,7 +175,7 @@
     "karma-mocha-reporter": "2.2.5",
     "karma-remap-coverage": "0.1.4",
     "karma-sourcemap-loader": "0.3.7",
-    "karma-typescript": "3.0.13",
+    "karma-typescript": "3.0.8",
     "karma-typescript-angular2-transform": "1.0.2",
     "karma-typescript-es6-transform": "1.0.4",
     "karma-webpack": "2.0.5",
