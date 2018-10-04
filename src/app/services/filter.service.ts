@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 import { FilterModel } from '../models/filter.model';
 import { HttpClientService } from '../shared/http-module/http.service';
@@ -142,7 +142,7 @@ export class FilterService {
         map(response => response.data as FilterModel[]),
         catchError((error: Error | any) => {
           console.log('API returned error: ', error.message);
-          return Observable.throw('Error  - [FilterService - getFilters]' + error.message); // TODO ng6: use throwError from rxjs 6
+          return throwError('Error  - [FilterService - getFilters]' + error.message);
         })
       );
   }

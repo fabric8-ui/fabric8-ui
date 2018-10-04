@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { CustomQueryModel } from '../models/custom-query.model';
 import { HttpClientService } from '../shared/http-module/http.service';
@@ -66,7 +66,7 @@ export class CustomQueryService {
       } else {
         console.log(str, error.message);
       }
-      return Observable.throw(new Error(error.message)); // TODO ng6: use throwError from rxjs 6
+      return throwError(new Error(error.message));
     }
 
 }

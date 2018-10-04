@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 
-import { Observable, of as ObservableOf } from 'rxjs';
+import { Observable, of as ObservableOf, throwError } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
 
 import { Logger } from 'ngx-base';
@@ -53,7 +53,7 @@ export class WorkItemService {
 
   private handleError(error: Error | any, msg: string) {
     this.notifyError(msg, error);
-    return Observable.throw(new Error(error.message)); // TODO ng6: use throwError from rxjs 6
+    return throwError(new Error(error.message));
   }
 
   /**
@@ -106,7 +106,7 @@ export class WorkItemService {
         }),
         catchError((error: Error | any) => {
           this.notifyError('Getting work items failed.', error);
-          return Observable.throw(new Error(error.message)); // TODO ng6: use throwError from rxjs 6
+          return throwError(new Error(error.message));
         })
       );
   }
@@ -138,11 +138,11 @@ export class WorkItemService {
           }),
           catchError((error: Error | any) => {
             this.notifyError('Getting more work items failed.', error);
-            return Observable.throw(new Error(error.message)); // TODO ng6: use throwError from rxjs 6
+            return throwError(new Error(error.message));
           })
         );
     } else {
-      return Observable.throw('No more item found'); // TODO ng6: use throwError from rxjs 6
+      return throwError('No more item found');
     }
   }
 
@@ -166,7 +166,7 @@ export class WorkItemService {
         map(item => item.data),
         catchError((error: Error | any) => {
           this.notifyError('Getting work item data failed.', error);
-          return Observable.throw(new Error(error.message)); // TODO ng6: use throwError from rxjs 6
+          return throwError(new Error(error.message));
         })
       );
     } else {
@@ -175,7 +175,7 @@ export class WorkItemService {
           map(i => i.data),
           catchError((error: Error | any) => {
             this.notifyError('Getting work item data failed.', error);
-            return Observable.throw(new Error(error.message)); // TODO ng6: use throwError from rxjs 6
+            return throwError(new Error(error.message));
           })
         );
     }
@@ -227,7 +227,7 @@ export class WorkItemService {
         map(response => [response.data as Link[], response.included]),
         catchError((error: Error | any) => {
           this.notifyError('Getting linked items data failed.', error);
-          return Observable.throw(new Error(error.message)); // TODO ng6: use throwError from rxjs 6
+          return throwError(new Error(error.message));
         })
       );
   }
@@ -250,7 +250,7 @@ export class WorkItemService {
         }),
         catchError((error: Error | any) => {
           this.notifyError('Getting work item type information failed.', error);
-          return Observable.throw(new Error(error.message)); // TODO ng6: use throwError from rxjs 6
+          return throwError(new Error(error.message));
         })
       );
   }
@@ -298,7 +298,7 @@ export class WorkItemService {
         }),
         catchError((error: Error | any) => {
           this.notifyError('Updating work item failed.', error);
-          return Observable.throw(new Error(error.message)); // TODO ng6: use throwError from rxjs 6
+          return throwError(new Error(error.message));
         })
       );
   }
@@ -318,7 +318,7 @@ export class WorkItemService {
         }),
         catchError((error: Error | any) => {
           this.notifyError('Creating comment failed.', error);
-          return Observable.throw(new Error(error.message)); // TODO ng6: use throwError from rxjs 6
+          return throwError(new Error(error.message));
         })
       );
   }
@@ -341,7 +341,7 @@ export class WorkItemService {
         }),
         catchError((error: Error | any) => {
           this.notifyError('Updating comment failed.', error);
-          return Observable.throw(new Error(error.message)); // TODO ng6: use throwError from rxjs 6
+          return throwError(new Error(error.message));
         })
       );
   }
@@ -356,7 +356,7 @@ export class WorkItemService {
       .pipe(
         catchError((error: Error | any) => {
           this.notifyError('Deleting comment failed.', error);
-          return Observable.throw(new Error(error.message)); // TODO ng6: use throwError from rxjs 6
+          return throwError(new Error(error.message));
         })
       );
   }
@@ -373,7 +373,7 @@ export class WorkItemService {
         map(d => d.data),
         catchError((error: Error | any) => {
           this.notifyError('Getting link meta info failed (forward).', error);
-          return Observable.throw(new Error(error.message)); // TODO ng6: use throwError from rxjs 6
+          return throwError(new Error(error.message));
         })
       );
   }
@@ -524,7 +524,7 @@ export class WorkItemService {
             }),
             catchError((error: Error | any) => {
               this.notifyError('Getting work item type info failed.', error);
-              return Observable.throw(new Error(error.message)); // TODO ng6: use throwError from rxjs 6
+              return throwError(new Error(error.message));
             })
           );
       }

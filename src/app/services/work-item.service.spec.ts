@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { Logger } from 'ngx-base';
 import { Spaces, WIT_API_URL } from 'ngx-fabric8-wit';
 import { UserService } from 'ngx-login-client';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 
 import { delay } from 'rxjs/operators';
 import {
@@ -134,7 +134,7 @@ describe('Unit Test :: WorkItemService', () => {
     const wiService = TestBed.get(WorkItemService);
     wiService['baseApiUrl'] = 'link/to/spaces/';
     wiService.httpClientService.get.and.returnValue(
-      Observable.throw(new Error('Internal service error')).pipe(delay(100))
+      throwError(new Error('Internal service error')).pipe(delay(100))
     );
     spyOn(wiService, 'notifyError');
     wiService.getWorkItems('', {}).subscribe(
@@ -165,7 +165,7 @@ describe('Unit Test :: WorkItemService', () => {
   it('getMoreWorkItems :: Should call notifyError if error response comes', done => {
     const wiService = TestBed.get(WorkItemService);
     wiService.httpClientService.get.and.returnValue(
-      Observable.throw(new Error('Internal service error')).pipe(delay(100))
+      throwError(new Error('Internal service error')).pipe(delay(100))
     );
     spyOn(wiService, 'notifyError');
     wiService.getMoreWorkItems('some/url').subscribe(
@@ -231,7 +231,7 @@ describe('Unit Test :: WorkItemService', () => {
     const wiService = TestBed.get(WorkItemService);
     wiService['baseApiUrl'] = 'link/to/';
     wiService.httpClientService.get.and.returnValue(
-      Observable.throw(new Error('Internal service error')).pipe(delay(100))
+      throwError(new Error('Internal service error')).pipe(delay(100))
     );
     spyOn(wiService, 'notifyError');
     // We are providing the space name as empty to the function
@@ -269,7 +269,7 @@ describe('Unit Test :: WorkItemService', () => {
     const wiService = TestBed.get(WorkItemService);
     wiService['baseApiUrl'] = 'link/to/';
     wiService.httpBackendClient.get.and.returnValue(
-      Observable.throw(new Error('Internal service error')).pipe(delay(100))
+      throwError(new Error('Internal service error')).pipe(delay(100))
     );
     spyOn(wiService, 'notifyError');
     // We are providing the space name as empty to the function
@@ -344,7 +344,7 @@ describe('Unit Test :: WorkItemService', () => {
   it('getWorkItemTypes :: Should call notifyError on error', done => {
     const wiService = TestBed.get(WorkItemService);
     wiService.httpClientService.get.and.returnValue(
-      Observable.throw(new Error('Internal server error')).pipe(delay(100))
+      throwError(new Error('Internal server error')).pipe(delay(100))
     );
     spyOn(wiService, 'notifyError');
     wiService.getWorkItemTypes('link/to/types').subscribe(

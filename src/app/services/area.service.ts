@@ -1,4 +1,4 @@
-import { Observable, of as ObservableOf } from 'rxjs';
+import { Observable, of as ObservableOf, throwError } from 'rxjs';
 import { catchError, first, map } from 'rxjs/operators';
 
 import { Injectable } from '@angular/core';
@@ -57,7 +57,7 @@ export class AreaService {
         return ObservableOf<AreaModel[]>([] as AreaModel[]);
       }
     } else {
-      return Observable.throw('nospace');
+      return throwError('nospace');
     }
   }
 
@@ -116,7 +116,7 @@ export class AreaService {
         }
       }),
       catchError(err => {
-        return Observable.throw(new Error(err.message));
+        return throwError(new Error(err.message));
       })
     );
   }
