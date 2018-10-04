@@ -7,7 +7,7 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { Spaces } from 'ngx-fabric8-wit';
 import { WIT_API_URL } from 'ngx-fabric8-wit';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { FilterModel } from '../models/filter.model';
 import { WorkItem } from './../models/work-item';
@@ -81,7 +81,7 @@ describe('Unit Test :: Filter Service', () => {
     };
 
     service.httpClientService.get.and.returnValue(
-      Observable.of(returnValue).pipe(delay(200))
+      of(returnValue).pipe(delay(200))
     );
 
     filterService.getFilters('').subscribe((data) => {

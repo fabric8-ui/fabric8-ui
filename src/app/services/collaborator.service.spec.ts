@@ -2,7 +2,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { Response, ResponseOptions } from '@angular/http';
 import { User } from 'ngx-login-client';
-import { Observable } from 'rxjs/Observable';
+import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { HttpClientService } from '../shared/http-module/http.service';
 import { CollaboratorService } from './collaborator.service';
@@ -28,7 +28,7 @@ describe('Unit test :: Collaborator Service', () => {
     };
 
     collabService.httpClienService.get.and.returnValue(
-      Observable.of(returnValue).pipe(delay(200))
+      of(returnValue).pipe(delay(200))
     );
     collabService.getCollaborators('').subscribe((d) => {
       expect(d).toEqual(returnValue.data);

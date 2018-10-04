@@ -3,7 +3,7 @@ import { provideMockActions } from '@ngrx/effects/testing';
 import { cold, hot } from 'jasmine-marbles';
 
 import { Notifications } from 'ngx-base';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Action } from 'rxjs/scheduler/Action';
 import * as Actions from '../actions/infotip.actions';
 import { InfotipService } from '../services/infotip.service';
@@ -47,7 +47,7 @@ describe('InfotipEffects', () => {
     const action = new Actions.Get();
     const success = new Actions.GetSuccess(payload);
 
-    infotipService.getInfotips.and.returnValue(Observable.of(payload));
+    infotipService.getInfotips.and.returnValue(of(payload));
 
     actions = hot('--a-', { a: action });
     const expected = cold('--b', { b: success });

@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { Response, ResponseOptions } from '@angular/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 
 import { BoardService } from './board.service';
@@ -34,7 +34,7 @@ describe('BoardService :: ', () => {
   it('getBoardApiUrl :: Should fetch board api URL', done => {
     const boardService = TestBed.get(BoardService);
     boardService.http.get.and.returnValue(
-      Observable.of(spaceTemplateResponse).pipe(delay(200))
+      of(spaceTemplateResponse).pipe(delay(200))
     );
     boardService.getBoardApiUrl('').subscribe(url => {
       expect(url).toEqual(
@@ -47,7 +47,7 @@ describe('BoardService :: ', () => {
   it('getBoards :: Should fetch list of boards', done => {
     const boardService = TestBed.get(BoardService);
     boardService.http.get.and.returnValue(
-      Observable.of(boardsResponse)
+      of(boardsResponse)
       .pipe(delay(200))
     );
     boardService.getBoards('').subscribe(resp => {

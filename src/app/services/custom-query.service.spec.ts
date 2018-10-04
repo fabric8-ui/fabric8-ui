@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { Response, ResponseOptions } from '@angular/http';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { CustomQueryModel } from '../models/custom-query.model';
 import { HttpClientService } from '../shared/http-module/http.service';
 import { CustomQueryService } from './custom-query.service';
@@ -24,7 +24,7 @@ describe('Custom Query :: Unit Tests', () => {
   });
 
   it('should get all the custom queries', () => {
-    httpService.get.and.returnValue(Observable.of({
+    httpService.get.and.returnValue(of({
       data: [] as CustomQueryModel[]
     }));
 
@@ -35,7 +35,7 @@ describe('Custom Query :: Unit Tests', () => {
   });
 
   it('should create a custom query', () => {
-    httpService.post.and.returnValue(Observable.of({
+    httpService.post.and.returnValue(of({
       data: {} as CustomQueryModel
     }));
     customqueryService.create({} as CustomQueryModel, '')
@@ -45,7 +45,7 @@ describe('Custom Query :: Unit Tests', () => {
   });
 
   it('should delete a custom query', () => {
-    httpService.delete.and.returnValue(Observable.of());
+    httpService.delete.and.returnValue(of());
     customqueryService.delete('').subscribe(() => {
       expect(httpService.delete).toHaveBeenCalled();
     });

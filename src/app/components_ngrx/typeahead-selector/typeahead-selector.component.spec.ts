@@ -3,7 +3,7 @@ import { async, ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core
 import { TruncateModule } from 'ng2-truncate';
 import { WidgetsModule } from 'ngx-widgets';
 
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { NgLetModule } from '../../shared/ng-let';
 import { SelectDropdownModule } from '../../widgets/select-dropdown/select-dropdown.module';
 import { TypeaheadDatasourceFunction, TypeaheadDropdownItem, TypeaheadSelectorComponent } from './typeahead-selector.component';
@@ -202,6 +202,6 @@ class TestComponent {
   allowMultiSelect: boolean = false;
 
   dataSource: TypeaheadDatasourceFunction = (inp: string) => {
-    return Observable.of(this.items);
+    return of(this.items);
   }
 }
