@@ -2,6 +2,7 @@
   "name": "ngx-widgets",
   "version": "0.0.0-development",
   "description": "A collection of Angular components and other useful things to be shared.",
+  "main": "src/app/index.js",
   "module": "src/app/index.js",
   "typings": "src/app/index.d.ts",
   "scripts": {
