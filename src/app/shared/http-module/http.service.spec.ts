@@ -93,7 +93,7 @@ describe('HttpService', () => {
 
     const req = httpMock.expectOne('/some/url');
     expect(req.request.method).toBe('DELETE');
-    req.event(new HttpResponse<boolean>({body: false}));
+    req.event(new HttpResponse<string>({body: null}));
   });
 
 });

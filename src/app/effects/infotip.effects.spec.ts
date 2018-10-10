@@ -4,7 +4,6 @@ import { cold, hot } from 'jasmine-marbles';
 
 import { Notifications } from 'ngx-base';
 import { Observable, of, throwError } from 'rxjs';
-import { Action } from 'rxjs/scheduler/Action';
 import * as Actions from '../actions/infotip.actions';
 import { InfotipService } from '../services/infotip.service';
 import { InfotipState } from '../states/infotip.state';

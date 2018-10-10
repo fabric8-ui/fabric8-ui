@@ -85,7 +85,7 @@
     "ngx-bootstrap": "^3.0.1",
     "ngx-feature-flag": "1.0.0",
     "ngx-modal": "^0.0.29",
-    "ngx-widgets": "3.1.2",
+    "ngx-widgets": "3.1.4",
     "patternfly-ng": "^3.10.3",
     "rh-ngx-datatable": "12.0.16"
   },
