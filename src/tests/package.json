@@ -1,16 +1,13 @@
 {
   "name": "planner-functional-test",
   "version": "0.0.3",
-  "description": "",
+  "description": "Page objects for planner functional tests",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "dependencies": {
     "@types/uuid": "^3.4.4"
   },
   "devDependencies": {},
-  "scripts": {
-    "test": ""
-  },
-  "author": "Raunak Bajpai",
+  "author": "Raunak Bajpai <rbajpai@redhat.com>",
   "license": "ISC"
 }
