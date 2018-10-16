@@ -30,18 +30,14 @@
       [class.pointer]="row.hasChildren"
       [class.click-disable]="!row.hasChildren"
       (click)="onExploration(row)"></span>
-      <span *ngIf="context ==='query' && !row.hasChildren"
-      class="fa fa-angle-right margin-left-10 icon__disabled padding-v-5 pointer"
-      style="cursor: not-allowed"
-      ></span>
     <a class="fa fa-list-alt margin-left-5 padding-v-5 pointer"
       placement="right"
       tooltip="Open Detail View"
       [routerLink]="context === 'list' ? ['detail', row.number] : ['../', 'detail', row.number]"></a>
   </div>
 </div>
-<!-- Status -->
 
+<!-- Status -->
 <div class="f8-planner-cell__state"
   *ngIf="col === 'state'">
   <span class="padding-right-5 padding-top-4"
