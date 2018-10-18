@@ -10,7 +10,7 @@
 </ul>
 <div class="editor-container">
   <div class="editor" #previewArea
-    (click)="enableEditor()"
+    (click)="enableEditor($event);"
     [class.active]="editorActive"
     [class.show-less]="!showMore && !editorActive">
     <div class="editor-icon-container">

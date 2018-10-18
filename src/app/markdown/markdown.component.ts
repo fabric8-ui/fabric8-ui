@@ -232,7 +232,10 @@ export class MarkdownComponent implements OnChanges, OnInit, AfterViewChecked {
     }
   }
 
-  enableEditor() {
+  enableEditor(event: MouseEvent) {
+    if (event) {
+      event.stopPropagation();
+    }
     if (this.rawText === '') {
       this.activeEditor();
     }
