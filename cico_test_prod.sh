@@ -50,7 +50,7 @@ CID=$(docker run --detach=true \
 # Get all the deps in
 echo "Container name: $CID"
 
-docker exec $CID bash -c 'cd tests'
+docker exec $CID bash -c 'npm i && cd tests'
 
 docker exec -t -e REFRESH_TOKEN=$REFRESH_TOKEN $CID bash -c \
   "cd tests && WEBDRIVER_VERSION=2.37 DEBUG=true HEADLESS_MODE=true USER_NAME=$USER_NAME FABRIC8_WIT_API_URL=$FABRIC8_WIT_API_URL BASE_URL=$BASE_URL ./run_e2e_tests.sh"
