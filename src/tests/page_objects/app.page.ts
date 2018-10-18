@@ -35,7 +35,7 @@ export abstract class AppPage extends BasePage {
   }
 
   async ready() {
-    await browser.wait(until.presenceOf(this.appTag));
+    await browser.wait(until.visibilityOf(this.appTag));
   }
 
   async clickPlanTab() {

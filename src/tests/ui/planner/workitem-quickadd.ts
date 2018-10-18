@@ -3,6 +3,7 @@ import * as ui from '../../ui';
 import { WorkItem } from './index';
 
 export class WorkItemQuickAdd extends ui.BaseElement {
+  workItemListQuickAdd = new ui.BaseElement(this.$('.f8-quickadd__wiblk'), 'work Item quick add');
   titleTextInput = new ui.TextInput(this.$('input.f8-quickadd-input'), 'Work item Title');
   buttonsDiv = this.$('div.f8-quickadd__wiblk-btn.pull-right');
   addButton = new ui.Button(this.buttonsDiv.$$('button.btn.btn-primary').first(), 'Add Button');
@@ -19,6 +20,7 @@ export class WorkItemQuickAdd extends ui.BaseElement {
 
   async ready() {
     await super.ready();
+    await this.workItemListQuickAdd.untilTextIsPresent('Add Work Item');
     await this.addAndOpenButton.ready();
   }
 
