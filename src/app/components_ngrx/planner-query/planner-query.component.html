@@ -26,6 +26,35 @@
 			[(ngModel)]="searchQuery"
 				placeholder="Enter your Query...">
 		<span class="f8-query__input-hint">Press Enter to Search....</span>
+		<div
+			*ngIf="!(addDisabled | async)"
+			class="dropdown-kebab-pf dropdown f8-query__create-workitem"
+			[autoClose]="false"
+			(clickOut)="closeCreateWorkItemDialog($event)"
+			[isOpen]="isCreateWorkitemDropdownOpen"
+			(isOpenChange)="createWorkItemDialogChange($event)"
+			dropdown>
+			<button
+				type="button"
+				class="btn btn-primary dropdown-toggle"
+				dropdownToggle>
+					Create WorkItem
+			</button>
+			<div
+				*dropdownMenu
+				 class="dropdown-menu-right dropdown-menu f8-query__create-workitem-menu">
+					<aside>
+							<i class="fa fa-close btn btn-link f8-query__create-workitem-close"
+								(click)="closeCreateWorkItemDialog($event)"></i>
+					</aside>
+					<alm-work-item-quick-add *ngIf="quickAddWorkItemTypes | async as quickAddWorkItemTypes"
+						[wilistview]="'wi-query-view'"
+						[workItemTypes]="quickAddWorkItemTypes"
+						[selectedType]="quickAddWorkItemTypes[0]"
+						[selectedIteration]="selectedIterationSource | async">
+					</alm-work-item-quick-add>
+			</div>
+		</div>
 		<div>
 			<ng-container *ngFor="let breadcrumb of breadcrumbs; let i=index;">
 			>&nbsp;

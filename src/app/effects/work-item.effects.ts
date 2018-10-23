@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Actions, Effect } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
-import { Observable, of } from 'rxjs';
+import { Notification, Notifications, NotificationType } from 'ngx-base';
+import { empty, Observable, of } from 'rxjs';
 import { catchError, map, mergeMap, switchMap } from 'rxjs/operators';
 import { cleanObject } from '../models/common.model';
 import { FilterService } from '../services/filter.service';
@@ -28,7 +29,8 @@ export class WorkItemEffects {
     private router: Router,
     private route: ActivatedRoute,
     private filterService: FilterService,
-    private errHandler: util.ErrorHandler
+    private errHandler: util.ErrorHandler,
+    private notifications: Notifications
   ) {}
 
   resolveWorkItems(
@@ -114,11 +116,24 @@ export class WorkItemEffects {
                     })
                   );
               } else {
-                // for a normal (not a child) work item creation
-                // Add item success notification
+                let currentURL = document.location.pathname;
+                let detailURL = currentURL.indexOf('/plan/query') > -1 ? currentURL.split('/plan/query')[0] : null;
+                const routeURL = detailURL ?
+                  detailURL + '/plan/detail/' + wItem.number :
+                  currentURL + '/detail/' + wItem.number;
                 if (payload.openDetailPage) {
-                  this.router.navigateByUrl(document.location.pathname + '/detail/' + wItem.number,
-                                            {relativeTo: this.route});
+                  this.router.navigateByUrl(routeURL,
+                      {relativeTo: this.route});
+                } else if (currentURL.indexOf('/plan/query') > -1) {
+                  try {
+                    this.notifications.message({
+                      message: `New Work Item #${wItem.number} created.`,
+                      type: NotificationType.SUCCESS
+                    } as Notification);
+                  } catch (e) {
+                    console.log('Work item is added.');
+                  }
+                  return empty();
                 }
                 return of(new WorkItemActions.AddSuccess(wItem));
               }
