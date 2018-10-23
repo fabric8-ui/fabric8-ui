@@ -19,6 +19,7 @@ import {
   WidgetsModule
 } from 'ngx-widgets';
 import { SafePipeModule } from '../../pipes/safe.module';
+import { ClickOutModule } from '../../widgets/clickout/clickout.module';
 import { GlobalSettings } from './../../shared/globals';
 import { CommentModule } from './../../widgets/comment-module/comment.module';
 import { UserAvatarModule } from './../../widgets/user-avatar/user-avatar.module';
@@ -34,6 +35,7 @@ let providers = [
   imports: [
     AlmEditableModule,
     AlmIconModule,
+    ClickOutModule,
     CollapseModule,
     CommonModule,
     CommentModule,

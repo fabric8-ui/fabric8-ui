@@ -92,4 +92,13 @@ describe('Quick preview tests: ', () => {
     await planner.quickPreview.titleInput.clickWhenReady();
     expect(await planner.quickPreview.assigneeDropdownMenu.getAttribute('className')).not.toContain('show');
   });
+
+  it('Should not close description box on outside click if the description is changed', async () => {
+    await planner.workItemList.clickWorkItem('Workitem_Title_2');
+    await planner.quickPreview.openDescriptionBox();
+    expect(await planner.quickPreview.isSaveButtonDisplayed()).toBeTruthy();
+    await planner.quickPreview.descriptionTextarea.enterText('test');
+    await planner.quickPreview.titleInput.clickWhenReady();
+    expect(await planner.quickPreview.isSaveButtonDisplayed()).toBeTruthy();
+  });
 });

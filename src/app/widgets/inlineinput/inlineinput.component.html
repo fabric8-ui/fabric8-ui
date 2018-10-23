@@ -1,5 +1,6 @@
 <div class="inlineinput-container"
-[class.read-only]="disabled">
+[class.read-only]="disabled"
+(clickOut)="input.value == inputValue || input.value == '' ? closeClick() : ''">
   <textarea
     #input
     autosize

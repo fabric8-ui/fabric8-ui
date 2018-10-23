@@ -46,12 +46,14 @@
 
       <!-- workitemtype field type: markup -->
       <f8-markdown
+        #markup
         *ngIf="fieldValue.field.type.kind==='markup'"
         [editAllow]="editAllow"
         [rawText]="fieldValue?.value?.content"
         [renderedText]="fieldValue?.value?.rendered"
         (onSaveClick)="markupUpdate($event)"
-        (showPreview)="showPreview($event)">
+        (showPreview)="showPreview($event)"
+        (onClickOut)="$event ? markup.closeClick() : ''">
       </f8-markdown>
 
       <!-- workitemtype field type: instant (datetime) -->

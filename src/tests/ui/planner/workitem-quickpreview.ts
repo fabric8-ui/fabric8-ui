@@ -128,6 +128,7 @@ export class WorkItemQuickPreview extends ui.BaseElement {
   commentCancelButton = new ui.Button(this.commentDiv.$('.fl.btn.btn-default.pull-right.action-btn'), 'Comment cancel button');
   commentsText = new ui.BaseElementArray(this.$$('.f8-comment-body .comment .editor-box.editor-preview'), 'Comment List');
   commentsCount = new ui.BaseElement(this.$('#total_comments'), 'comment count');
+  commentsEditIcon = new ui.Clickable(this.commentDiv.$('.edit-icon'), 'comments clickable edit icon');
 
   /* UI elements for the Agile template of the workitem preview */
   effortTextArea = new ui.TextInput(this.$('[placeholder="Effort"]'), 'effort textarea');
@@ -185,7 +186,7 @@ export class WorkItemQuickPreview extends ui.BaseElement {
 
   private async addComment(comment: string) {
     await this.loadingAnimation.untilCount(0);
-    await this.commentsField.clickWhenReady();
+    await this.commentsEditIcon.clickWhenReady();
     await this.commentsInputField.enterText(comment);
   }
 

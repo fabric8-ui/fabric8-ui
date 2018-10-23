@@ -55,7 +55,7 @@ describe('Agile template tests: ', () => {
     await plannerAgile.quickPreview.close();
   });
 
-  it('Dynamic fields should not get closed on outside click', async () => {
+  it('Dynamic fields should not get closed on outside click if the field value is changed', async () => {
     let newWorkItem = { title: 'Workitem of type Story', type : 'Story'};
     await plannerAgile.createWorkItem(newWorkItem);
     expect(plannerAgile.workItemList.hasWorkItem(newWorkItem.title)).toBeTruthy();
@@ -63,6 +63,7 @@ describe('Agile template tests: ', () => {
     await plannerAgile.workItemList.clickWorkItem(newWorkItem.title);
     await plannerAgile.quickPreview.storyPoints.clickWhenReady();
     expect(await plannerAgile.quickPreview.isDynamicFieldSaveButtonDisplayed()).toBeTruthy();
+    await plannerAgile.quickPreview.storyPoints.enterText('8');
     await plannerAgile.quickPreview.labelDropdown.clickWhenReady();
     expect(await plannerAgile.quickPreview.isDynamicFieldSaveButtonDisplayed()).toBeTruthy();
     await plannerAgile.quickPreview.close();

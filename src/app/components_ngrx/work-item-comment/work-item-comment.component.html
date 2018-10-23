@@ -35,7 +35,9 @@
         [placeholder]="'Add a new comment...'"
         [allowEmptySave]="false"
         (onSaveClick)="createComment($event)"
-        (showPreview)="showPreview($event)">
+        (showPreview)="showPreview($event)"
+        (onClickOut)="$event ? commentMarkdown.closeClick() : ''"
+        #commentMarkdown>
       </f8-markdown>
     </div>
     <div>

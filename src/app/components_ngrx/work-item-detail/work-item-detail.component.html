@@ -49,8 +49,7 @@
               [disabled]="!workItem?.editable"
               [value]="workItem.title"
               (onSave)="saveTitle($event)"
-              [placeholder]="'Enter title'"
-              (clickOut)="inlineInput.closeClick()">
+              [placeholder]="'Enter title'">
             </f8-inlineinput>
           </div>
         </div>
@@ -238,7 +237,9 @@
                   [rawText]="workItem.descriptionRendered!==null ? workItem.description : workItem.description.content"
                   [renderedText]="(workItem.descriptionRendered!==null ? workItem.descriptionRendered : workItem.description.rendered) | safe: 'html'"
                   (onSaveClick)="descUpdate($event)"
-                  (showPreview)="showPreview($event)" #descMarkdown>
+                  (showPreview)="showPreview($event)"
+                  (onClickOut)="$event ? descMarkdown.closeClick() : ''"
+                  #descMarkdown>
                 </f8-markdown>
               </div>
             </section>

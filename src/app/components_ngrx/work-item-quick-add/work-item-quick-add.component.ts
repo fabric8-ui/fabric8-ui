@@ -109,7 +109,6 @@ export class WorkItemQuickAddComponent implements OnInit, OnDestroy, AfterViewIn
     this.selectedType = type;
   }
 
-
   createWorkItemObj() {
     this.workItem = new WorkItem() as WorkItemService;
     this.workItem.attributes = new Map<string, string | number>();
