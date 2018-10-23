@@ -20,13 +20,11 @@ import { WorkItemPreviewPanelModule } from '../work-item-preview-panel/work-item
 import { PlannerQueryRoutingModule } from './planner-query-routing.module';
 import { PlannerQueryComponent } from './planner-query.component';
 
-// import { FeatureFlagResolver, FeatureTogglesService } from 'ngx-feature-flag';
 import { InfiniteScrollModule } from 'ngx-widgets';
 import { ErrorHandler } from '../../effects/work-item-utils';
 import { WorkItemTypeQuery } from '../../models/work-item-type';
 import { UrlService } from '../../services/url.service';
 import { NgLetModule } from '../../shared/ng-let';
-import { togglesApiUrlProvider } from '../../shared/toggles-api.provider';
 import { ClickOutModule } from '../../widgets/clickout/clickout.module';
 import { WorkItemQuickAddModule } from '../work-item-quick-add/work-item-quick-add.module';
 
@@ -57,9 +55,6 @@ import { WorkItemQuickAddModule } from '../work-item-quick-add/work-item-quick-a
     WorkItemQuery,
     FilterService,
     TooltipConfig,
-    // FeatureFlagResolver,
-    // FeatureTogglesService,
-    togglesApiUrlProvider,
     UrlService,
     WorkItemTypeQuery,
     ErrorHandler
