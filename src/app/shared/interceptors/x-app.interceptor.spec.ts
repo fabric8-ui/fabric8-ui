@@ -9,7 +9,8 @@ import { FABRIC8_FORGE_API_URL } from '../runtime-console/fabric8-ui-forge-api';
 import { XAppInterceptor } from './x-app.interceptor';
 
 describe('XAppInterceptor', () => {
-  const testUrl: string = 'http://forge.example.com/test';
+  const forgeTestUrl: string = 'http://forge.example.com/test';
+  const recommendorTestUrl: string = 'http://recommender.example.com/test';
 
   let httpMock: HttpTestingController;
   let httpClient: HttpClient;
@@ -37,10 +38,19 @@ describe('XAppInterceptor', () => {
     httpMock.verify();
   });
 
-  it('should add an X-App header', () => {
-    httpClient.get(testUrl).subscribe(() => {});
+  it('should add an X-App header to forge URL', () => {
+    httpClient.get(forgeTestUrl).subscribe(() => {});
 
-    const req = httpMock.expectOne(testUrl);
+    const req = httpMock.expectOne(forgeTestUrl);
+
+    expect(req.request.headers.has('X-App')).toBeTruthy();
+    expect(req.request.headers.get('X-App')).toBe('OSIO');
+  });
+
+  it('should add an X-App header to recommender URL', () => {
+    httpClient.get(recommendorTestUrl).subscribe(() => {});
+
+    const req = httpMock.expectOne(recommendorTestUrl);
 
     expect(req.request.headers.has('X-App')).toBeTruthy();
     expect(req.request.headers.get('X-App')).toBe('OSIO');
