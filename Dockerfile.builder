@@ -23,7 +23,8 @@ RUN set -ex \
 ENV NODE_VERSION 8.3.0
 
 RUN yum -y update && \
-    yum install -y bzip2 fontconfig tar gcc-c++ java-1.8.0-openjdk nmap-ncat psmisc gtk3 git \
+    yum install -y bzip2 fontconfig tar gcc-c++ java-1.8.0-openjdk nmap-ncat psmisc gtk3 \
+      centos-release-scl sclo-git212.x86_64 \
       python-setuptools xorg-x11-xauth wget unzip which \
       xorg-x11-server-Xvfb xfonts-100dpi libXfont GConf2 \
       xorg-x11-fonts-75dpi xfonts-scalable xfonts-cyrillic \
@@ -32,7 +33,7 @@ RUN yum -y update && \
       yum -y clean all
 
 # Get and set up git v2.12
-RUN yum -y install centos-release-scl sclo-git212.x86_64
+# RUN yum -y install centos-release-scl sclo-git212.x86_64
 RUN export PATH=${PATH}:/opt/rh/sclo-git212/root/usr/bin/
 
 RUN curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.xz" \

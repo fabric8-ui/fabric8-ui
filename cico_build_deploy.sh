@@ -54,12 +54,6 @@ if [ ! -d dist ]; then
 
   docker run --detach=true --name="${BUILDER_CONT}" -t -v $(pwd)/dist:/dist:Z -e BUILD_NUMBER -e BUILD_URL -e BUILD_TIMESTAMP -e JENKINS_URL -e GIT_BRANCH -e "CI=true" -e GH_TOKEN -e NPM_TOKEN -e FABRIC8_BRANDING=openshiftio -e FABRIC8_REALM=fabric8 "${BUILDER_CONT}"
 
-  # Semantic release needs git v2 and default is v1. This will update to v2.
-  docker exec "${BUILDER_CONT}" yum -y install centos-release-scl
-  docker exec "${BUILDER_CONT}" yum -y install sclo-git212.x86_64
-  docker exec "${BUILDER_CONT}" export PATH=${PATH}:/opt/rh/sclo-git212/root/usr/bin/
-
-
   # In order to run semantic-release we need a non detached HEAD, see https://github.com/semantic-release/semantic-release/issues/329
   docker exec "${BUILDER_CONT}" git checkout master
 
