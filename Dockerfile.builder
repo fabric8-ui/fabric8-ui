@@ -24,7 +24,7 @@ ENV NODE_VERSION 8.3.0
 
 RUN yum -y update && \
     yum install -y bzip2 fontconfig tar gcc-c++ java-1.8.0-openjdk nmap-ncat psmisc gtk3 \
-      # git centos-release-scl sclo-git212.x86_64 \
+      git centos-release-scl sclo-git212.x86_64 \
       python-setuptools xorg-x11-xauth wget unzip which \
       xorg-x11-server-Xvfb xfonts-100dpi libXfont GConf2 \
       xorg-x11-fonts-75dpi xfonts-scalable xfonts-cyrillic \
@@ -40,13 +40,13 @@ RUN yum -y update && \
 
 #1. Install a package with repository for your system:
 # On CentOS, install package centos-release-scl available in CentOS repository:
-RUN yum -y install centos-release-scl
+#RUN yum -y install centos-release-scl
 
 # On RHEL, enable RHSCL repository for you system:
-RUN yum-config-manager --enable rhel-server-rhscl-7-rpms
+#RUN yum-config-manager --enable rhel-server-rhscl-7-rpms
 
 # 2. Install the collection:
-RUN yum -y install sclo-git212
+#RUN yum -y install sclo-git212
 #RUN yum -y install git
 #RUN git --version
 
