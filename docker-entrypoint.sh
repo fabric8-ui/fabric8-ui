@@ -1,4 +1,4 @@
-#!/bin/bash
+#!scl enable sclo-git212 bash
 
 
 echo -n Updating Webdriver and Selenium...

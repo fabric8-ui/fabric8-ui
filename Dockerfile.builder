@@ -24,7 +24,7 @@ ENV NODE_VERSION 8.3.0
 
 RUN yum -y update && \
     yum install -y bzip2 fontconfig tar gcc-c++ java-1.8.0-openjdk nmap-ncat psmisc gtk3 \
-      git centos-release-scl sclo-git212.x86_64 \
+      # git centos-release-scl sclo-git212.x86_64 \
       python-setuptools xorg-x11-xauth wget unzip which \
       xorg-x11-server-Xvfb xfonts-100dpi libXfont GConf2 \
       xorg-x11-fonts-75dpi xfonts-scalable xfonts-cyrillic \
@@ -33,8 +33,26 @@ RUN yum -y update && \
       yum -y clean all
 
 # Get and set up git v2.12
-# RUN yum -y install centos-release-scl sclo-git212.x86_64
-RUN export PATH=${PATH}:/opt/rh/sclo-git212/root/usr/bin/
+#RUN yum -y install centos-release-scl sclo-git212.x86_64
+#ENV PATH=${PATH}:/opt/rh/sclo-git212/root/usr/bin/
+#RUN ls /opt/rh/sclo-git212
+
+
+#1. Install a package with repository for your system:
+# On CentOS, install package centos-release-scl available in CentOS repository:
+RUN yum -y install centos-release-scl
+
+# On RHEL, enable RHSCL repository for you system:
+RUN yum-config-manager --enable rhel-server-rhscl-7-rpms
+
+# 2. Install the collection:
+RUN yum -y install sclo-git212
+#RUN yum -y install git
+#RUN git --version
+
+# 3. Start using the software collection:
+#RUN scl enable sclo-git212 git
+
 
 RUN curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.xz" \
   && curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/SHASUMS256.txt.asc" \
@@ -76,3 +94,6 @@ WORKDIR $WORKSPACE/
 VOLUME /dist
 
 ENTRYPOINT ["/home/fabric8/fabric8-ui/docker-entrypoint.sh"]
+
+#ENTRYPOINT ["scl"]
+#CMD ["enable", "sclo-git212", "/home/fabric8/fabric8-ui/docker-entrypoint.sh"]
