@@ -39,9 +39,9 @@ describe('EditSpaceDescriptionWidgetComponent', () => {
     }
   };
   const mockUsers: any = [
-    { id: 'mock-id-1', attributes: { username: 'mock-username-1' } },
-    { id: 'mock-id-2', attributes: { username: 'mock-username-2' } },
-    { id: 'mock-id-3', attributes: { username: 'mock-username-3' } }
+    { id: 'mock-id-d', attributes: { username: 'mock-username-d', fullName: 'Dave' } },
+    { id: 'mock-id-a', attributes: { username: 'mock-username-a', fullName: 'Ava' } },
+    { id: 'mock-id-c', attributes: { username: 'mock-username-c', fullName: 'Charles' } }
   ];
 
   const testContext = initContext(EditSpaceDescriptionWidgetComponent, HostComponent, {
@@ -86,6 +86,7 @@ describe('EditSpaceDescriptionWidgetComponent', () => {
       { provide: CollaboratorService, useFactory: () => {
           let mockCollaboratorService: jasmine.SpyObj<CollaboratorService> = createMock(CollaboratorService);
           mockCollaboratorService.getInitialBySpaceId.and.returnValue(observableOf(mockUsers) as Observable<User[]>);
+          mockCollaboratorService.getTotalCount.and.returnValue(observableOf(mockUsers.length));
           return mockCollaboratorService;
         }
       }
@@ -116,6 +117,23 @@ describe('EditSpaceDescriptionWidgetComponent', () => {
       testContext.fixture.detectChanges();
       let link: DebugElement = testContext.fixture.debugElement.query(By.css('a'));
       expect(link).toBeNull();
+    });
+
+    it('should filter collaborators on search term change', function() {
+      testContext.testedDirective.popoverInit(10);
+      expect(testContext.testedDirective.filteredCollaborators).toEqual(mockUsers);
+
+      testContext.testedDirective.onCollaboratorSearchChange('Dave');
+      expect(testContext.testedDirective.filteredCollaborators).toEqual([ { id: 'mock-id-d', attributes: { username: 'mock-username-d', fullName: 'Dave' } } ]);
+
+      testContext.testedDirective.onCollaboratorSearchChange('av');
+      expect(testContext.testedDirective.filteredCollaborators).toEqual([
+        { id: 'mock-id-d', attributes: { username: 'mock-username-d', fullName: 'Dave' } },
+        { id: 'mock-id-a', attributes: { username: 'mock-username-a', fullName: 'Ava' } }
+      ]);
+
+      testContext.testedDirective.onCollaboratorSearchChange('');
+      expect(testContext.testedDirective.filteredCollaborators).toEqual(mockUsers);
     });
   });
 
@@ -153,13 +171,28 @@ describe('EditSpaceDescriptionWidgetComponent', () => {
 
   describe('#addCollaboratorsToParent', () => {
     it('should add new collaborators', function() {
-      expect(testContext.testedDirective.collaborators.length).toEqual(3);
+      expect(testContext.testedDirective.collaborators).toEqual([]);
 
-      testContext.testedDirective.addCollaboratorsToParent([
-        { id: 'mock-id-4', attributes: { username: 'mock-username-4' } }
-      ] as User[]);
+      const newUsers: User[] = [
+        {
+          id: 'mock-id-e',
+          attributes: {
+            username: 'mock-username-e',
+            fullName: 'Edith'
+          }
+        },
+        {
+          id: 'mock-id-b',
+          attributes: {
+            username: 'mock-username-b',
+            fullName: 'Brenda'
+          }
+        }
+      ] as User[];
 
-      expect(testContext.testedDirective.collaborators.length).toBe(4);
+      testContext.testedDirective.addCollaboratorsToParent(newUsers);
+
+      expect(testContext.testedDirective.collaborators).toEqual(newUsers);
     });
   });
 
