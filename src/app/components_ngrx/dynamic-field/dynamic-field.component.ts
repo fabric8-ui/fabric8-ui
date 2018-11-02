@@ -167,7 +167,6 @@ export class DynamicFieldComponent implements OnInit {
 
   extractEnumKeyValues(possibleOptions: string[]): any[] {
     return [
-      {key: null, value: 'None'},
       ...possibleOptions.map(v => {
         return {
           key: v,

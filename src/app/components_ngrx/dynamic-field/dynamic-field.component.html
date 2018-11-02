@@ -22,7 +22,6 @@
       <!-- workitemtype field type: dropdown -->
       <common-selector
         *ngIf="fieldValue.field.type.kind==='enum'"
-        [noValueLabel]="'None'"
         [allowUpdate]="editAllow"
         [headerText]="fieldValue.field.label + ' dropdown'"
         [items]="dropdownMenuItems"
