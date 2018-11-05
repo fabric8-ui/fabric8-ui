@@ -36,6 +36,7 @@ RUN yum -y update && \
 
 # Set the SCL git v2.12 on the path so we can use it
 ENV PATH=/opt/rh/sclo-git212/root/usr/bin:${PATH}
+RUN env
 
 RUN curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.xz" \
   && curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/SHASUMS256.txt.asc" \

@@ -57,14 +57,10 @@ if [ ! -d dist ]; then
   # In order to run semantic-release we need a non detached HEAD, see https://github.com/semantic-release/semantic-release/issues/329
   docker exec "${BUILDER_CONT}" git branch -va
   docker exec "${BUILDER_CONT}" git remote -v
-  docker exec "${BUILDER_CONT}" export GIT_BRANCH=master
+  docker exec "${BUILDER_CONT}" echo GIT_BRANCH
+  docker env "${BUILDER_CONT}" GIT_BRANCH=master
   docker exec "${BUILDER_CONT}" git branch -va
   docker exec "${BUILDER_CONT}" git remote -v
-
-  # check where we are
-  git branch -va
-  git remote -v
-
 
   # Build almigty-ui
   docker exec "${BUILDER_CONT}" npm install
