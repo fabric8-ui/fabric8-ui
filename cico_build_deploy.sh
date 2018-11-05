@@ -55,10 +55,11 @@ if [ ! -d dist ]; then
   docker run --detach=true --name="${BUILDER_CONT}" -t -v $(pwd)/dist:/dist:Z -e BUILD_NUMBER -e BUILD_URL -e BUILD_TIMESTAMP -e JENKINS_URL -e GIT_BRANCH -e "CI=true" -e GH_TOKEN -e NPM_TOKEN -e FABRIC8_BRANDING=openshiftio -e FABRIC8_REALM=fabric8 "${BUILDER_CONT}"
 
   # In order to run semantic-release we need a non detached HEAD, see https://github.com/semantic-release/semantic-release/issues/329
+  docker exec "${BUILDER_CONT}" git checkout master
   docker exec "${BUILDER_CONT}" git branch -va
   docker exec "${BUILDER_CONT}" git remote -v
-  docker exec "${BUILDER_CONT}" echo GIT_BRANCH
-  docker env "${BUILDER_CONT}" GIT_BRANCH=master
+  docker exec "${BUILDER_CONT}" env
+  docker exec "${BUILDER_CONT}" env GIT_BRANCH=master
   docker exec "${BUILDER_CONT}" git branch -va
   docker exec "${BUILDER_CONT}" git remote -v
 
