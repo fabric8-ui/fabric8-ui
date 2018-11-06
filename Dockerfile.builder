@@ -79,4 +79,7 @@ VOLUME /dist
 
 EXPOSE 3000
 
+# force the GIT_BRANCH var to use master for the branch
+ENV GIT_BRANCH=master
+
 ENTRYPOINT ["/home/fabric8/fabric8-ui/docker-entrypoint.sh"]
