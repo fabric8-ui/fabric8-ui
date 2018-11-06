@@ -75,7 +75,7 @@ if [ ! -d dist ]; then
   # Set the GIT_BRANCH to master since cico sets it to origin/master
   docker exec "${BUILDER_CONT}" env GIT_BRANCH=master
   docker exec "${BUILDER_CONT}" env
-  docker exec "${BUILDER_CONT}" npm run semantic-release || :
+  docker exec "${BUILDER_CONT}" npm run semantic-release-origin-master || :
   docker exec -u root "${BUILDER_CONT}" cp -r /home/fabric8/fabric8-ui/dist /
 fi
 
