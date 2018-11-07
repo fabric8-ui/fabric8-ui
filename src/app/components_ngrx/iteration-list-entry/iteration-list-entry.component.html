@@ -56,10 +56,16 @@
       *ngIf="iteration.isActive" >[Active]</span>
     </div>
     <div class="f8-itr-status">
-      <span>
-        {{ iteration.startAt ? (iteration.startAt | date:longDate) : 'Set start date' }}
+      <span *ngIf="iteration.endAt && iteration.startAt">
+        {{ (iteration.startAt | date:longDate) }}
         -
-        {{ iteration.endAt ? (iteration.endAt | date:longDate) : 'Set end date' }}
+        {{ (iteration.endAt | date:longDate) }}
+      </span>
+      <span *ngIf="iteration.startAt && !iteration.endAt">
+        Start Date: {{ (iteration.startAt | date:longDate) }}
+      </span>
+      <span *ngIf="iteration.endAt && !iteration.startAt">
+        End Date: {{ (iteration.endAt | date:longDate)}}
       </span>
     </div>
   </a>
