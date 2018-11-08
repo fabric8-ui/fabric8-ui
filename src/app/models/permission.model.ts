@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 import { SpaceQuery } from './space';
 import { UserQuery } from './user';
+import { WorkItemUI } from './work-item';
 
 @Injectable()
 export class PermissionQuery {
@@ -35,6 +36,22 @@ export class PermissionQuery {
             }
           })
         );
+      })
+    );
+  }
+
+  isAllowedToDelete(workItem): Observable<boolean> {
+    return this.spaceQuery.getCurrentSpace
+    .pipe(
+      switchMap((space) => {
+        return this.userService.loggedInUser.pipe(map(user => {
+          let spaceOwnerId = space.relationships['owned-by'].data.id;
+          if (spaceOwnerId === user.id || workItem.creator === user.id) {
+            return true;
+          } else {
+            return false;
+          }
+        }));
       })
     );
   }

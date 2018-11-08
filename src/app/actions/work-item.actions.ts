@@ -23,6 +23,9 @@ export const RESET_WORKITEMS = '[workItem] Reset WorkItems';
 export const GET_MORE_WORKITEMS = '[workItems] Get More WorkItems';
 export const GET_MORE_WORKITEMS_SUCCESS = '[workItems] Get More WorkItems Success';
 export const NEXT_LINK_SUCCESS = '[workItem] Next Link Success';
+export const DELETE = '[workItem] Delete';
+export const DELETE_SUCCESS = '[workItem] DeleteSuccess';
+export const DELETE_ERROR = '[workItem] DeleteError';
 
 export class Add implements Action {
   payload: {workItem: WorkItemService, createId: number, parentId: string, openDetailPage: boolean};
@@ -199,6 +202,26 @@ export class GetMoreWorkItemsSuccess implements Action {
   readonly type = GET_MORE_WORKITEMS_SUCCESS;
 }
 
+export class Delete implements Action {
+  payload: WorkItemUI;
+  constructor(payload: WorkItemUI) {
+    this.payload = payload;
+  }
+  readonly type = DELETE;
+}
+
+export class DeleteSuccess implements Action {
+  payload: WorkItemUI;
+  constructor(payload: WorkItemUI) {
+    this.payload = payload;
+  }
+  readonly type = DELETE_SUCCESS;
+}
+
+export class DeleteError implements Action {
+  readonly type = DELETE_ERROR;
+}
+
 export type All
   = Add
   | Get
@@ -218,4 +241,8 @@ export type All
   | DeleteLink
   | ResetWorkItems
   | GetMoreWorkItems
-  | GetMoreWorkItemsSuccess;
+  | GetMoreWorkItemsSuccess
+  | Delete
+  | DeleteSuccess
+  | DeleteError;
+

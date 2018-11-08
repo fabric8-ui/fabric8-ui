@@ -8,7 +8,7 @@ export * from './toolbarHeader';
 export * from './iteration';
 export * from './workitem-detailpage';
 export * from './query-tab';
-
+export * from '../modal_dialog';
 
 export interface WorkItem {
   title: string;

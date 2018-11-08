@@ -15,6 +15,7 @@ import { FilterColumnModule } from '../../pipes/column-filter.module';
 import { CookieService } from '../../services/cookie.service';
 import { FilterService } from '../../services/filter.service';
 import { InlineInputModule } from '../../widgets/inlineinput/inlineinput.module';
+import { PlannerModalModule } from '../../widgets/modal/modal.module';
 import { WorkItemCellModule } from '../work-item-cell/work-item-cell.module';
 import { WorkItemPreviewPanelModule } from '../work-item-preview-panel/work-item-preview-panel.module';
 import { PlannerQueryRoutingModule } from './planner-query-routing.module';
@@ -44,7 +45,8 @@ import { WorkItemQuickAddModule } from '../work-item-quick-add/work-item-quick-a
     WorkItemPreviewPanelModule,
     WorkItemQuickAddModule,
     InfiniteScrollModule,
-    NgLetModule
+    NgLetModule,
+    PlannerModalModule
   ],
   declarations: [PlannerQueryComponent],
   exports: [PlannerQueryComponent],

@@ -24,6 +24,7 @@ export class WorkItemCellComponent {
     @Output() readonly onQuickPreview = new EventEmitter();
     @Output() readonly clickLabel = new EventEmitter();
     @Output() readonly onChildExploration = new EventEmitter();
+    @Output() readonly onDelete = new EventEmitter();
 
 
     onDetail(Event: MouseEvent, id: string) {

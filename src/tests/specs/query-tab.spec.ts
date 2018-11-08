@@ -35,4 +35,17 @@ describe('Query tests', () => {
     await planner.query.enterQuery(searchQuery);
     expect(await planner.query.hasWorkItem(title)).toBe(true);
   });
+
+  it('should delete a work item', async () => {
+    let title: string = 'Delete work item from query page',
+      searchQuery: string = `title:${title}`;
+    await planner.clickQueryTab();
+    await planner.waitUntilUrlContains('query');
+    await planner.query.createWorkItem(title);
+    await planner.query.enterQuery(searchQuery);
+    expect(await planner.query.hasWorkItem(title)).toBe(true);
+    await planner.query.clickWorkItemDeleteIcon(title);
+    await planner.modal.clickConfirmButton();
+    expect(await planner.query.emptyTemplateDisplayed()).toBe(true);
+  });
 });

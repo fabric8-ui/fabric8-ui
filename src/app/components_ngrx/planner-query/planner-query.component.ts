@@ -86,6 +86,7 @@ export class PlannerQueryComponent implements OnInit, OnDestroy, AfterViewChecke
   // This variable stores the number of items
   // Scroll is already checked for
   private scrollCheckedFor: number = 0;
+  private isQuickPreviewOpen: boolean;
 
   constructor(
     private cookieService: CookieService,
@@ -134,6 +135,10 @@ export class PlannerQueryComponent implements OnInit, OnDestroy, AfterViewChecke
 
   onPreview(workItem: WorkItemUI): void {
     this.quickPreview.open(workItem);
+  }
+
+  closePreview(): void {
+    this.quickPreview.close();
   }
 
   setDataTableColumns() {

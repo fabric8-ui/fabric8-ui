@@ -15,6 +15,7 @@ export class WorkItemListEntry extends ui.BaseElement {
   iteration = new ui.BaseElement(this.$('#table-iteration'), 'Table Workitem Iteration Name');
   creator = new ui.BaseElement(this.$('.user-assign-avatar'), 'Creator column');
   assignees = new ui.BaseElement(this.$('f8-assignee'), 'Assignee column');
+  deleteIcon = new ui.Clickable(this.$('#wi-delete-icon'), 'Delete work item');
 
   constructor(element: ElementFinder, name: string) {
     super(element, name);
@@ -50,5 +51,9 @@ export class WorkItemListEntry extends ui.BaseElement {
 
   async clickDetailIcon() {
     await this.detailIcon.clickWhenReady();
+  }
+
+  async clickDeleteIcon() {
+    await this.deleteIcon.clickWhenReady();
   }
 }

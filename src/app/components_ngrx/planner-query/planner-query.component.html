@@ -9,6 +9,8 @@
 	</div>
 
 	<work-item-preview-panel #quickPreview
+	 (onOpen)="isQuickPreviewOpen = true"
+	 (onClose)="isQuickPreviewOpen = false"
 	 [context]="'query'">
 	</work-item-preview-panel>
 
@@ -107,6 +109,7 @@
 										[context]="'query'"
 										(onQuickPreview)="onPreview($event)"
 										(onChildExploration)="onChildExploration($event)"
+										(onDelete)="isQuickPreviewOpen ? closePreview() : ''"
 										[class.f8-wi__table-config]="c.prop === 'label' || c.prop === 'assignees'"
 										[class.planner-hack-title-truncate]="c.prop === 'title'">
 									</work-item-cell>
@@ -121,3 +124,5 @@
 		</div>
 	</div>
 </div>
+
+<osio-modal></osio-modal>

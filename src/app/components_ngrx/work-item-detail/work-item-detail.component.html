@@ -11,6 +11,11 @@
         </span>
         <div *ngIf="detailContext=='preview'">
           <div class="pull-left">
+            <f8-delete-workitem *ngIf="context === 'query'"
+              class="padding-right-5"
+              (onDelete)="closeDetail()"
+              [workItem]="workItem">
+            </f8-delete-workitem>
             <b>#{{ workItem.number }}</b>
             <span class="detail-created-date created-by"
               *ngIf="workItem.id">
@@ -30,6 +35,11 @@
           </div>
         </div>
         <div *ngIf="detailContext=='detail'">
+          <f8-delete-workitem
+            class="padding-right-5"
+            (onDelete)="closeDetail()"
+            [workItem]="workItem">
+          </f8-delete-workitem>
           <b>#{{ workItem.number }}</b>
           <span class="detail-created-date created-by"
             *ngIf="workItem.id">

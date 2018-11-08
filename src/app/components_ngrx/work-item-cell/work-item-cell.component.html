@@ -34,6 +34,12 @@
       placement="right"
       tooltip="Open Detail View"
       [routerLink]="context === 'list' ? ['detail', row.number] : ['../', 'detail', row.number]"></a>
+    <f8-delete-workitem 
+      *ngIf="context === 'query'"
+      class="margin-left-10 padding-v-5"
+      [workItem]="row"
+      (onDelete)="onDelete.emit()">
+    </f8-delete-workitem>
   </div>
 </div>
 

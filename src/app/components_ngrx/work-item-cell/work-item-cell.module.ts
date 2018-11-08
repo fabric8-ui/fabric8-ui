@@ -7,6 +7,7 @@ import { UserAvatarModule } from '../../widgets/user-avatar/user-avatar.module';
 
 import { RouterModule } from '@angular/router';
 import { TruncateModule } from 'ng2-truncate';
+import { DeleteWorkItemModule } from '../delete-work-item/delete-work-item.module';
 import { AssigneesModule } from './../assignee/assignee.module';
 import { LabelsModule } from './../labels/labels.module';
 import { WorkItemCellComponent } from './work-item-cell.component';
@@ -21,7 +22,8 @@ import { WorkItemCellComponent } from './work-item-cell.component';
     TooltipModule,
     TruncateModule,
     UserAvatarModule,
-    WidgetsModule
+    WidgetsModule,
+    DeleteWorkItemModule
 ],
   declarations: [WorkItemCellComponent],
   exports: [WorkItemCellComponent],
