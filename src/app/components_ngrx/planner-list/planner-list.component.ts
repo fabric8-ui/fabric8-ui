@@ -384,10 +384,12 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
         this.loadChildren(this.workItems[index]);
       } else {
         this.workItems[index].treeStatus = 'expanded';
+        this.store.dispatch(new WorkItemActions.UpdateSuccess(this.workItems[index]));
         this.workItems = [...this.workItems];
       }
     } else {
       this.workItems[index].treeStatus = 'collapsed';
+      this.store.dispatch(new WorkItemActions.UpdateSuccess(this.workItems[index]));
       this.workItems = [...this.workItems];
     }
   }
