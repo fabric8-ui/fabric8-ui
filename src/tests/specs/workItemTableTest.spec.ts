@@ -168,7 +168,7 @@ describe('Work Item datatable list: ', () => {
   it('should filter the workitem list by Assignee', async () => {
     let labelFilter = 'assignee: Unassigned';
     await planner.workItemList.overlay.untilHidden();
-    let countUnassignedWorkItem = await planner.workItemList.getUnassignedWorkItemCount('Unassigned ');
+    let countUnassignedWorkItem = await planner.workItemList.getUnassignedWorkItemCount(' Unassigned ');
     await planner.header.selectFilter('Assignee', 'Unassigned');
     await browser.sleep(1000);
     expect(await planner.header.getFilterConditions()).toContain(labelFilter);
