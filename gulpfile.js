@@ -7,7 +7,7 @@ const gulp = require('gulp'),
   cssmin = require('gulp-cssmin'),
   del = require('del'),
   exec = require('child_process').exec,
-  gulpngc = require('gulp-ngc'),
+  // gulpngc = require('gulp-ngc'),
   fs = require("fs"),
   htmlMinifier = require('html-minifier'),
   lessCompiler = require('gulp-less'),
@@ -15,7 +15,7 @@ const gulp = require('gulp'),
   path = require('path'),
   postcss = require('postcss'),
   replace = require('gulp-replace'),
-  rename = require('gulp-rename');
+  rename = require('gulp-rename'),
   runSequence = require('run-sequence'),
   sourcemaps = require('gulp-sourcemaps'),
   stylelint = require('gulp-stylelint'),
@@ -150,17 +150,19 @@ function inlineTemplate() {
 }
 
 // Build the components
+/**
+ * Since the gulpngc is no longer being supported we need to us ngc
+ *
+ * @returns {ChildProcess}
+ */
 function transpile() {
-  /**
-   * Stick with gulp-ngc v0.2.1 due to "function calls are not supported in decorators" issue
-   *
-   * See: https://github.com/angular/angular/issues/23609
-   * Related: https://github.com/dherges/ng-packagr/issues/727
-   *
-   * gulp-ngc v0.3.0 uses different args
-   * See: https://github.com/jolly-roger/gulp-ngc/issues/9
-   */
-  return gulpngc('tsconfig.json');
+  return exec('node_modules/.bin/ngc -p tsconfig.json', function (err, stdout, stderr) {
+    console.log(stdout);
+    console.log(stderr);
+    if (err !== null) {
+      process.exit(1);
+    }
+  });
 }
 
 // Build with AOT enabled
