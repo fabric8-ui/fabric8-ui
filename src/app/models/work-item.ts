@@ -304,7 +304,7 @@ export class WorkItemMapper implements Mapper<WorkItemService, WorkItemUI> {
       toPath: ['editable'],
       toValue: false
     }, {
-      fromPath: ['relationships', 'system.boardcolumns', 'data'],
+      fromPath: ['relationships', 'boardcolumns', 'data'],
       toPath: ['columnIds'],
       toFunction: (data) => {
         return Array.isArray(data) ? data.map(col => col.id) : null;
@@ -414,7 +414,7 @@ export class WorkItemMapper implements Mapper<WorkItemService, WorkItemUI> {
         );
       }.bind(this)
     }, {
-      toPath: ['relationships', 'system.boardcolumns', 'data'],
+      toPath: ['relationships', 'boardcolumns', 'data'],
       fromPath: ['columnIds'],
       toFunction: (data) => {
         if (!data) {return null; }

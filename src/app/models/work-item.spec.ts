@@ -156,7 +156,7 @@ describe('WorkItemMapper', () => {
     });
 
     it('should correctly convert to UI model - 2', () => {
-     const expWIService = {
+      const expWIService = {
         'attributes': {
           'system.created_at': '2017-06-28T07:44:36.640764Z',
           'system.description': 'Cannot resolve Area/Iteration info for new WI created in in-memory mode under Backlog > Quick Add',
@@ -239,7 +239,7 @@ describe('WorkItemMapper', () => {
           'labels': {
             'data': []
           },
-          'system.boardColumns': {},
+          'boardcolumns': {},
           'workItemLinks': {
             'links': {
               'related': 'https://api.openshift.io/api/workitems/8bccc228-bba7-43ad-b077-15fbb9148f7f/links'
