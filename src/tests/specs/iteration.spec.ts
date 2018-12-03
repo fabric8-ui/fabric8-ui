@@ -6,14 +6,12 @@ import * as support from '../support';
 describe('Iteration test', () => {
   let planner: PlannerPage;
   let c = new support.Constants();
-  let testData;
 
   beforeAll(async () => {
     await support.desktopTestSetup();
     planner = new PlannerPage(browser.baseUrl);
     await planner.openInBrowser();
     await planner.waitUntilUrlContains('typegroup');
-    testData = await c.browserName[browser.browserName];
   });
 
   beforeEach(async () => {
@@ -42,7 +40,7 @@ describe('Iteration test', () => {
     let newIteration = 'new Iteration1';
     let iteration = 'Iteration_2';
     await planner.sidePanel.createNewIteration();
-    await planner.iteration.addNewIteration(newIteration, testData.parentIteration);
+    await planner.iteration.addNewIteration(newIteration, c.parentIteration);
     await planner.iteration.clickCreateIteration();
     await planner.sidePanel.clickExpander(iteration);
     expect(await planner.sidePanel.getIterationList()).toContain(newIteration);
@@ -81,7 +79,7 @@ describe('Iteration test', () => {
     await planner.iteration.parentIteration.enterText(iterationName);
     let val = await planner.iteration.parentDropdownList.getTextWhenReady();
     // Ensure val is exactly the value we expect it to be
-    expect(val).toBe(testData.rootIteration + '/' + iterationName);
+    expect(val).toBe(c.rootIteration + '/' + iterationName);
     await planner.iteration.clickCancel();
   });
 });

@@ -49,44 +49,18 @@ let conf: Config = {
     fullTest: ['specs/**/*.spec.js']
   },
 
-  //launch 2 chrome instances
-  multiCapabilities: [
-    {
-      'browserName': 'chrome',
-      exclude: ['specs/templateSpecificTests/agileTemplate.spec.js'],
-      chromeOptions: {
-        args: process.env.HEADLESS_MODE === 'true' ? ['--no-sandbox', '--headless'] : ['--no-sandbox']
-      },
-       name: 'browserSDD'
-      },
-    {
-      'browserName': 'chrome',
-      exclude: ['specs/templateSpecificTests/sddTemplate.spec.js', 'specs/collaboratorTest.spec.js'],
-      chromeOptions: {
-        args: process.env.HEADLESS_MODE === 'true' ? ['--no-sandbox', '--headless'] : ['--no-sandbox']
-      },
-       name: 'browserAgile'
-    }
-  ],
+  //launch chrome instance
+  capabilities: {
+    browserName: 'chrome',
+    chromeOptions: {
+      args: process.env.HEADLESS_MODE === 'true' ? ['--no-sandbox', '--headless'] : ['--no-sandbox']
+    },
+    name: 'browserAgile'
+  },
 
   // Assign the test reporter to each running instance
   onPrepare: function() {
     validate_config();
-    browser.getProcessedConfig().then(function(config) {
-      switch (config.capabilities.name) {
-          case 'browserSDD':
-            browser.baseUrl = browser.baseUrl + '/' + process.env.USER_NAME + '/' + process.env.SPACE_NAME + '/plan';
-            break;
-          case 'browserAgile':
-            browser.baseUrl = browser.baseUrl + '/' + process.env.USER_NAME + '/' + process.env.SPACE_NAME_SCRUM + '/plan';
-            break;
-          default:
-            new Error('browser.baseUrl undefined');
-            break;
-      }
-      // required to get the name of browser running tests for SDD or Agile template
-      browser.browserName = config.capabilities.name;
-    });
     jasmine.getEnv().addReporter(
       new SpecReporter({
         spec: {
@@ -100,6 +74,7 @@ let conf: Config = {
     );
     // Disable control flow
     browser.ignoreSynchronization = true;
+    browser.baseUrl = browser.baseUrl + '/' + process.env.USER_NAME + '/' + process.env.SPACE_NAME_SCRUM + '/plan';
     browser.token = encodeURIComponent(JSON.stringify({
       access_token: process.env.AUTH_TOKEN,
       expires_in: 1800,

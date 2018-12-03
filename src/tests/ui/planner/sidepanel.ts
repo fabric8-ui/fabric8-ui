@@ -34,30 +34,13 @@ export class SidePanel extends ui.BaseElement {
     support.debug('... check if Side panel is Ready');
     await super.ready();
     await this.showHideSidePanelButton.ready();
-    if ((browser.browserName) === 'browserSDD') {
-      await this.scenarioButton.ready();
-      await this.experienceButton.ready();
-      await this.requirementsButton.ready();
-    } else if ((browser.browserName) === 'browserAgile') {
-      await this.workItemsGroupAgile.ready();
-    }
+    await this.workItemsGroupAgile.ready();
     await this.createIterationButton.ready();
     support.debug('... check if Side panel is Ready - OK');
   }
 
-  async clickWorkItemGroup(group: workItemGroup) {
-    switch (group) {
-      case 'Scenarios' :
-        await this.scenarioButton.clickWhenReady(); break;
-      case 'Experiences':
-        await this.experienceButton.clickWhenReady(); break;
-      case 'Requirements':
-        await this.requirementsButton.clickWhenReady(); break;
-      case 'Work Items':
-        await this.workItemsGroupAgile.clickWhenReady(); break;
-      default:
-        support.debug('Work Item group not defined'); break;
-    }
+  async clickWorkItemGroup() {
+    await this.workItemsGroupAgile.clickWhenReady();
     await this.workItemList.overlay.untilHidden();
   }
 

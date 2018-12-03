@@ -6,14 +6,12 @@ import * as support from '../support';
 describe('Detail View test: ', () => {
   let planner: PlannerPage;
   let c = new support.Constants();
-  let testData;
 
   beforeAll(async () => {
     await support.desktopTestSetup();
     planner = new PlannerPage(browser.baseUrl);
     await planner.openInBrowser();
     await planner.waitUntilUrlContains('typegroup');
-    testData = await c.browserName[browser.browserName];
   });
 
   beforeEach(async () => {
@@ -58,8 +56,8 @@ describe('Detail View test: ', () => {
     await planner.workItemList.openDetailPage(workItemTitle2);
     await planner.waitUntilUrlContains('detail');
     await planner.detailPage.titleInput.untilTextIsPresentInValue(workItemTitle2);
-    await planner.detailPage.addArea(testData.dropdownareaTitle1);
-    expect(await planner.detailPage.getArea()).toBe(testData.areaTitle1);
+    await planner.detailPage.addArea(c.dropdownareaTitle1);
+    expect(await planner.detailPage.getArea()).toBe(c.areaTitle1);
   });
 
   it('should associate workitem with an Iteration', async () => {
@@ -67,8 +65,8 @@ describe('Detail View test: ', () => {
     await planner.workItemList.openDetailPage(workItemTitle2);
     await planner.waitUntilUrlContains('detail');
     await planner.detailPage.titleInput.untilTextIsPresentInValue(workItemTitle2);
-    await planner.detailPage.addIteration(testData.dropdownIteration1);
-    expect(await planner.detailPage.getIteration()).toBe(testData.iteration1);
+    await planner.detailPage.addIteration(c.dropdownIteration1);
+    expect(await planner.detailPage.getIteration()).toBe(c.iteration1);
   });
 
   it('should add comment', async () => {
@@ -88,8 +86,8 @@ describe('Detail View test: ', () => {
     await planner.waitUntilUrlContains('detail');
     await planner.detailPage.titleInput.untilTextIsPresentInValue(workItemTitle2);
      /* Adding link b/w workItemTitle2 and Workitem_Title_3 */
-    await planner.detailPage.addLink(linkType, testData.Workitem_Title_3);
-    expect(await planner.detailPage.getLinkedItems()).toContain(testData.Workitem_Title_3);
+    await planner.detailPage.addLink(linkType, c.Workitem_Title_3);
+    expect(await planner.detailPage.getLinkedItems()).toContain(c.Workitem_Title_3);
   });
 
   it('should remove link from workitem', async () => {
@@ -99,9 +97,9 @@ describe('Detail View test: ', () => {
     await planner.workItemList.openDetailPage(workItemName1.title);
     await planner.waitUntilUrlContains('detail');
     await planner.detailPage.titleInput.untilTextIsPresentInValue(workItemName1.title);
-    await planner.detailPage.addLink(linkType, testData.Workitem_Title_4);
-    expect(await planner.detailPage.getLinkedItems()).toContain(testData.Workitem_Title_4);
-    await planner.detailPage.removeLink(testData.Workitem_Title_4);
+    await planner.detailPage.addLink(linkType, c.Workitem_Title_4);
+    expect(await planner.detailPage.getLinkedItems()).toContain(c.Workitem_Title_4);
+    await planner.detailPage.removeLink(c.Workitem_Title_4);
     await planner.detailPage.linkCount.untilTextIsPresent('0');
     expect(await planner.detailPage.linkCount.getTextWhenReady()).toBe('0');
   });
@@ -112,8 +110,8 @@ describe('Detail View test: ', () => {
     await planner.workItemList.openDetailPage(workitemname.title);
     await planner.waitUntilUrlContains('detail');
     await planner.detailPage.titleInput.untilTextIsPresentInValue(workitemname.title);
-    await planner.detailPage.changeStateTo(testData.stateOpen);
-    expect(await planner.detailPage.getState()).toBe(testData.stateOpen);
+    await planner.detailPage.changeStateTo(c.stateOpen);
+    expect(await planner.detailPage.getState()).toBe(c.stateOpen);
   });
 
   it('Should change the type of work item', async () => {
@@ -122,7 +120,7 @@ describe('Detail View test: ', () => {
     await planner.workItemList.openDetailPage(workitemname.title);
     await planner.waitUntilUrlContains('detail');
     await planner.detailPage.titleInput.untilTextIsPresentInValue(workitemname.title);
-    await planner.detailPage.changeTypeTo(testData.typeIssue);
-    expect(await planner.detailPage.getType()).toBe(testData.typeIssue);
+    await planner.detailPage.changeTypeTo(c.typeIssue);
+    expect(await planner.detailPage.getType()).toBe(c.typeIssue);
   });
 });

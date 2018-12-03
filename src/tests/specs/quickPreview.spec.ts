@@ -6,14 +6,12 @@ import * as support from '../support';
 describe('Quick preview tests: ', () => {
   let planner: PlannerPage;
   let c = new support.Constants();
-  let testData;
 
   beforeAll(async () => {
     await support.desktopTestSetup();
     planner = new PlannerPage(browser.baseUrl);
     await planner.openInBrowser();
     await planner.waitUntilUrlContains('typegroup');
-    testData = await c.browserName[browser.browserName];
   });
 
   beforeEach(async () => {
@@ -58,9 +56,9 @@ describe('Quick preview tests: ', () => {
       linkType = 'blocks';
     await planner.createWorkItem(workitemname);
     await planner.workItemList.clickWorkItem(workitemname.title);
-    await planner.quickPreview.addLink(linkType, testData.Workitem_Title_4);
-    await planner.quickPreview.linklistItem.untilTextIsPresent(testData.Workitem_Title_4);
-    expect(await planner.quickPreview.getLinkedItems()).toContain(testData.Workitem_Title_4);
+    await planner.quickPreview.addLink(linkType, c.Workitem_Title_4);
+    await planner.quickPreview.linklistItem.untilTextIsPresent(c.Workitem_Title_4);
+    expect(await planner.quickPreview.getLinkedItems()).toContain(c.Workitem_Title_4);
   });
 
   it('should open quick preview and edit the title', async () => {
@@ -72,21 +70,24 @@ describe('Quick preview tests: ', () => {
   });
 
   it('description box should not be open for wis', async () => {
-    let workitemname = {'title': 'quickpreview test'},
-      workItemTitle2 = 'Workitem_Title_2';
+    let workitemname = {'title': 'quickpreview test'};
+    let workitemname2 = { 'title': 'description box should not be open'};
     await planner.createWorkItem(workitemname);
+    await planner.createWorkItem(workitemname2);
     await planner.workItemList.clickWorkItem(workitemname.title);
     await planner.quickPreview.openDescriptionBox();
     expect(await planner.quickPreview.isSaveButtonDisplayed()).toBeTruthy();
 
     // Open another WI(Note: the description box is still in edit mode)
-    await planner.workItemList.clickWorkItem(workItemTitle2);
+    await planner.workItemList.clickWorkItem(workitemname2.title);
     // The description box should not be in edit mode
     expect(await planner.quickPreview.isSaveButtonDisplayed()).toBeFalsy();
   });
 
   it('should close assignee dropdown when clicked outside', async () => {
-    await planner.workItemList.clickWorkItem('Workitem_Title_2');
+    let workitemname = {'title': 'close assignee dropdown'};
+    await planner.createWorkItem(workitemname);
+    await planner.workItemList.clickWorkItem(workitemname.title);
     await planner.quickPreview.assigneeDropdown.clickWhenReady();
     expect(await planner.quickPreview.assigneeDropdownMenu.getAttribute('className')).toContain('show');
     await planner.quickPreview.titleInput.clickWhenReady();
@@ -94,7 +95,9 @@ describe('Quick preview tests: ', () => {
   });
 
   it('Should not close description box on outside click if the description is changed', async () => {
-    await planner.workItemList.clickWorkItem('Workitem_Title_2');
+    let workitemname = {'title': 'close description box on outside click'};
+    await planner.createWorkItem(workitemname);
+    await planner.workItemList.clickWorkItem(workitemname.title);
     await planner.quickPreview.openDescriptionBox();
     expect(await planner.quickPreview.isSaveButtonDisplayed()).toBeTruthy();
     await planner.quickPreview.descriptionTextarea.enterText('test');

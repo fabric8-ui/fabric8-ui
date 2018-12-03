@@ -7,14 +7,12 @@ import { SidePanel } from './../ui/planner/sidepanel';
 describe('Work Item datatable list: ', () => {
   let planner: PlannerPage;
   let c = new support.Constants();
-  let testData;
 
   beforeAll(async () => {
     await support.desktopTestSetup();
     planner = new PlannerPage(browser.baseUrl);
     await planner.openInBrowser();
     await planner.waitUntilUrlContains('typegroup');
-    testData = await c.browserName[browser.browserName];
   });
 
   beforeEach(async () => {
@@ -52,8 +50,8 @@ describe('Work Item datatable list: ', () => {
   });
 
   it('should filter work item by type', async () => {
-    await planner.header.selectFilter('Type', testData.type);
-    expect(await planner.header.getFilterConditions()).toContain(testData.workItemTypeFilter);
+    await planner.header.selectFilter('Type', c.type);
+    expect(await planner.header.getFilterConditions()).toContain(c.workItemTypeFilter);
   });
 
   it('hideTree and create a work item then work item should be displayed when show tree is selected', async () => {
@@ -75,7 +73,7 @@ describe('Work Item datatable list: ', () => {
     await planner.createWorkItem(newWorkItem);
     expect(await planner.workItemList.hasWorkItem(newWorkItem.title)).toBeTruthy();
     await planner.workItemList.clickWorkItem(newWorkItem.title);
-    await planner.quickPreview.changeStateTo(testData.stateClosed);
+    await planner.quickPreview.changeStateTo(c.stateClosed);
     await planner.quickPreview.close();
     await planner.header.clickShowCompleted();
     expect(await planner.workItemList.hasWorkItem(newWorkItem.title, true)).toBeFalsy();
@@ -119,14 +117,14 @@ describe('Work Item datatable list: ', () => {
       newIteration1 = 'new Iteration 1',
       childWorkItem = {
         'title': 'test list is not updated when new iteration is added',
-        'type': testData.childType
+        'type': c.childType
       };
     expect(await planner.workItemList.hasWorkItem(title)).toBeTruthy();
     await planner.workItemList.workItem(title).clickInlineQuickAdd();
     await planner.createInlineWorkItem(childWorkItem);
     expect(await planner.workItemList.hasWorkItem(childWorkItem.title)).toBeTruthy();
     await planner.sidePanel.createNewIteration();
-    await planner.iteration.addNewIteration(newIteration1, testData.rootIteration);
+    await planner.iteration.addNewIteration(newIteration1, c.rootIteration);
     await planner.iteration.clickCreateIteration();
     expect(await planner.workItemList.hasWorkItem(childWorkItem.title)).toBeTruthy();
   });
@@ -136,7 +134,7 @@ describe('Work Item datatable list: ', () => {
       labelFilter = 'label: sample_label_1',
       workItemTitle = {'title': 'test clicking on label should filter the workitem list by label'};
 
-    await planner.sidePanel.clickWorkItemGroup(testData.group2);
+    await planner.sidePanel.clickWorkItemGroup();
     await planner.createWorkItem(workItemTitle);
     await planner.workItemList.clickWorkItem(workItemTitle.title);
     await planner.quickPreview.addLabel(label);
@@ -149,17 +147,17 @@ describe('Work Item datatable list: ', () => {
 
   it('should update the workitem List on workitem edit', async () => {
     let workitem = {'title': 'TITLE_TEXT'};
-    await planner.header.selectFilter('State', testData.stateNew);
+    await planner.header.selectFilter('State', c.stateNew);
     await planner.createWorkItem(workitem);
     await planner.workItemList.clickWorkItem(workitem.title);
-    await planner.quickPreview.changeStateTo(testData.stateOpen);
+    await planner.quickPreview.changeStateTo(c.stateOpen);
     await planner.quickPreview.close();
     expect(await planner.workItemList.isTitleTextBold(workitem.title)).not.toContain('bold');
   });
 
   it('should make the title bold based on filter when adding a new workitem', async () => {
     let workitem = {'title': 'test title bold test'};
-    await planner.header.selectFilter('State', testData.stateNew);
+    await planner.header.selectFilter('State', c.stateNew);
     await planner.createWorkItem(workitem);
     expect(await planner.workItemList.hasWorkItem(workitem.title)).toBeTruthy();
     expect(await planner.workItemList.isTitleTextBold(workitem.title)).toContain('bold');
@@ -182,11 +180,11 @@ describe('Work Item datatable list: ', () => {
     await planner.createWorkItem(newWorkItem);
     expect(await planner.workItemList.hasWorkItem(newWorkItem.title)).toBeTruthy();
     await planner.workItemList.clickWorkItem(newWorkItem.title);
-    await planner.quickPreview.changeStateTo(testData.stateClosed);
+    await planner.quickPreview.changeStateTo(c.stateClosed);
     await planner.quickPreview.close();
-    await planner.header.selectFilter('State', testData.stateClosed);
+    await planner.header.selectFilter('State', c.stateClosed);
     await planner.workItemList.overlay.untilHidden();
-    expect(await planner.header.getFilterConditions()).toContain(testData.filterLabel);
+    expect(await planner.header.getFilterConditions()).toContain(c.filterLabel);
     expect(await planner.workItemList.hasWorkItem(newWorkItem.title, true)).toBeTruthy();
   });
 });
