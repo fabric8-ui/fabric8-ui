@@ -210,6 +210,11 @@ export class LabelSelectorComponent implements OnInit {
   }
 
   onAddLabelInput(val) {
-    this.createDisabled = val === '';
+    if (val.trim().length === 0 && val.length) {
+      this.labelnameInput.nativeElement.value = '';
+      this.createDisabled = true;
+    } else {
+      this.createDisabled = false;
+    }
   }
 }
