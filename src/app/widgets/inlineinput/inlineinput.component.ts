@@ -72,6 +72,7 @@ export class InlineInputComponent implements OnInit {
       });
     } else {
       this.errorMessage = `Invalid value for the field type ${this.type}`;
+      this.inputField.nativeElement.focus();
     }
   }
 
@@ -83,12 +84,17 @@ export class InlineInputComponent implements OnInit {
     }
   }
 
+  isFloat(val) {
+    let x = parseFloat(val);
+    return typeof x === 'number' && Number.isFinite(x) && x >= -2147483648 && x <= 2147483648;
+  }
+
   validateValue(value) {
     if (this.type === 'integer') {
       return /^\d+$/.test(value);
     }
     if (this.type === 'float') {
-      return /^-?\d*(\.\d+)?$/.test(value);
+      return this.isFloat(value);
     }
     return true;
   }
@@ -160,6 +166,9 @@ export class InlineInputComponent implements OnInit {
         default:
           break;
       }
+    }
+    if (this.editing && this.type == 'float' && keycode == 13) {
+      this.saveClick();
     }
     if (this.isNotValid) {
       this.errorMessage = `This is a ${this.type} field`;
