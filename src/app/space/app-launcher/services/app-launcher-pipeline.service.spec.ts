@@ -85,20 +85,6 @@ describe('Service: AppLauncherPipelineService', () => {
     req.flush(mockPipelines);
   });
 
-  it('should return filtered pipelines based on platform name', (done: DoneFn) => {
-    service.getPipelines('node').subscribe(pipelines => {
-      expect(pipelines.length).toBe(1);
-      expect(pipelines[0].id).toEqual('node-releaseandstage');
-      expect(pipelines[0]).toBe(mockPipelines[1]);
-      done();
-    });
-
-    const req: TestRequest = controller.expectOne('http://example.com/services/jenkins/pipelines');
-    expect(req.request.method).toBe('GET');
-    expect(req.request.headers.get('Authorization')).toEqual('Bearer mock-token');
-    req.flush(mockPipelines);
-  });
-
   it('should return empty pipeline collection when response is empty', (done: DoneFn) => {
     service.getPipelines().subscribe(pipelines => {
       expect(pipelines.length).toBe(0);
@@ -108,18 +94,6 @@ describe('Service: AppLauncherPipelineService', () => {
     expect(req.request.method).toBe('GET');
     expect(req.request.headers.get('Authorization')).toEqual('Bearer mock-token');
     req.flush([]);
-  });
-
-  it('should return empty pipelines collection when no match found for the platform name', (done: DoneFn) => {
-    service.getPipelines('rust').subscribe(pipelines => {
-      expect(pipelines.length).toBe(0);
-      done();
-    });
-
-    const req: TestRequest = controller.expectOne('http://example.com/services/jenkins/pipelines');
-    expect(req.request.method).toBe('GET');
-    expect(req.request.headers.get('Authorization')).toEqual('Bearer mock-token');
-    req.flush(mockPipelines);
   });
 
 });
