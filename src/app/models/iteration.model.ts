@@ -284,4 +284,18 @@ export class IterationQuery {
   deselectAllIteration() {
     this.store.dispatch(new IterationActions.Select());
   }
+
+  get getIterationIds(): Observable<string[]> {
+    return this.iterationSource.pipe(
+      map(iterations => {
+        return Object.keys(iterations);
+      })
+    );
+  }
+
+  get getIterationNames(): Observable<string[]> {
+    return this.getIterations().pipe(
+      map(iterations => iterations.map(it => it.name))
+    );
+  }
 }

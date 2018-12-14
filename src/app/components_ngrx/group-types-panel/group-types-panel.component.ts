@@ -9,6 +9,7 @@ import { AuthenticationService } from 'ngx-login-client';
 
 import { GroupTypeQuery, GroupTypeUI } from '../../models/group-types.model';
 import { FilterService } from '../../services/filter.service';
+import { AND, EQUAL } from '../../services/query-keys';
 
 // ngrx stuff
 import { select, Store } from '@ngrx/store';
@@ -76,10 +77,10 @@ export class GroupTypesComponent implements OnInit, OnDestroy {
   fnBuildQueryParam(witGroup) {
     //Query for work item type group
     const type_query = this.filterService.queryBuilder(
-      'typegroup.name', this.filterService.equal_notation, witGroup.name
+      'typegroup.name', EQUAL, witGroup.name
     );
     const first_join = this.filterService.queryJoiner(
-      {}, this.filterService.and_notation, type_query
+      {}, AND, type_query
     );
     //second_join gives json object
     return this.filterService.jsonToQuery(first_join);
@@ -88,11 +89,11 @@ export class GroupTypesComponent implements OnInit, OnDestroy {
 
   fnBuildQueryParamForBoard(witGroup) {
     const type_query = this.filterService.queryBuilder(
-      'boardContextId', this.filterService.equal_notation, witGroup.id
+      'boardContextId', EQUAL, witGroup.id
     );
     // join query with typeQuery
     const second_join = this.filterService.queryJoiner(
-      {}, this.filterService.and_notation, type_query
+      {}, AND, type_query
     );
     return this.filterService.jsonToQuery(second_join);
   }

@@ -6,8 +6,10 @@ import {
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { cloneDeep } from 'lodash';
+import { AND, EQUAL } from '../../services/query-keys';
 import { LabelUI } from './../../models/label.model';
 import { FilterService } from './../../services/filter.service';
+
 @Component({
   selector: 'f8-label',
   templateUrl: './labels.component.html',
@@ -58,7 +60,7 @@ export class LabelsComponent {
    let showCompleted: boolean = this.queryParams.hasOwnProperty('showCompleted');
    const newQuery = this.filterService.queryBuilder(
       'label',
-      this.filterService.equal_notation,
+      EQUAL,
       labelId
     );
     let existingQuery = {};
@@ -68,7 +70,7 @@ export class LabelsComponent {
     const finalQuery = this.filterService.jsonToQuery(
       this.filterService.queryJoiner(
         existingQuery,
-        this.filterService.and_notation,
+        AND,
         newQuery
       )
     );

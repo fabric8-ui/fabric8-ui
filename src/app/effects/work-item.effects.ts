@@ -8,6 +8,7 @@ import { empty, Observable, of } from 'rxjs';
 import { catchError, map, mergeMap, switchMap } from 'rxjs/operators';
 import { cleanObject } from '../models/common.model';
 import { FilterService } from '../services/filter.service';
+import { AND, EQUAL } from '../services/query-keys';
 import * as BoardUIActions from './../actions/board-ui.actions';
 import * as ColumnWorkItemActions from './../actions/column-workitem.action';
 import * as WorkItemActions from './../actions/work-item.actions';
@@ -15,6 +16,7 @@ import { WorkItemMapper, WorkItemService, WorkItemUI } from './../models/work-it
 import { WorkItemService as WIService } from './../services/work-item.service';
 import { AppState } from './../states/app.state';
 import * as util from './work-item-utils';
+
 
 export type Action = WorkItemActions.All | ColumnWorkItemActions.All | BoardUIActions.All;
 
@@ -159,10 +161,10 @@ export class WorkItemEffects {
         const payload = wp.payload;
         const state = wp.state;
         const spaceQuery = this.filterService.queryBuilder(
-          'space', this.filterService.equal_notation, state.space.id
+          'space', EQUAL, state.space.id
         );
         const finalQuery = this.filterService.queryJoiner(
-          payload.filters, this.filterService.and_notation, spaceQuery
+          payload.filters, AND, spaceQuery
         );
         return this.workItemService.getWorkItems(payload.pageSize, {expression: finalQuery})
           .pipe(

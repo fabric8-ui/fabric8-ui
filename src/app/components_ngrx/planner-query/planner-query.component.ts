@@ -1,24 +1,28 @@
+import { ActiveDescendantKeyManager } from '@angular/cdk/a11y';
+import { DOWN_ARROW, LEFT_ARROW, RIGHT_ARROW, UP_ARROW } from '@angular/cdk/keycodes';
 import {
   AfterViewChecked, AfterViewInit,
   Component, ElementRef, HostListener,
-  OnDestroy, OnInit, Renderer2,
-  ViewChild, ViewEncapsulation
+  OnDestroy, OnInit, QueryList,
+  Renderer2, ViewChild, ViewChildren, ViewEncapsulation
 } from '@angular/core';
 import { ActivatedRoute, NavigationStart, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { sortBy } from 'lodash';
 import { cloneDeep, isEqual } from 'lodash';
 import { EmptyStateConfig } from 'patternfly-ng';
-import { combineLatest, Observable } from 'rxjs';
-import { filter, startWith, switchMap, tap } from 'rxjs/operators';
+import { combineLatest, empty, Observable, of } from 'rxjs';
+import { delay, filter, startWith, switchMap, tap } from 'rxjs/operators';
 import { PermissionQuery } from '../../models/permission.model';
 import { SpaceQuery } from '../../models/space';
 import { WorkItemQuery, WorkItemUI } from '../../models/work-item';
 import { WorkItemTypeQuery, WorkItemTypeUI } from '../../models/work-item-type';
 import { CookieService } from '../../services/cookie.service';
 import { FilterService } from '../../services/filter.service';
+import { QuerySuggestionService } from '../../services/query-suggestion.service';
 import { UrlService } from '../../services/url.service';
 import { AppState } from '../../states/app.state';
+import { ListItemComponent } from '../../widgets/list-item/list-item.component';
 import { datatableColumn } from '../planner-list/datatable-config';
 import * as WorkItemActions from  './../../actions/work-item.actions';
 import { WorkItemPreviewPanelComponent } from './../work-item-preview-panel/work-item-preview-panel.component';
@@ -33,6 +37,10 @@ export class PlannerQueryComponent implements OnInit, OnDestroy, AfterViewChecke
   @ViewChild('quickPreview') quickPreview: WorkItemPreviewPanelComponent;
   @ViewChild('listContainer') listContainer: ElementRef;
   @ViewChild('querySearch') querySearchRef: ElementRef;
+  @ViewChild('queryInput') searchField: ElementRef;
+  @ViewChildren(ListItemComponent) dropdownOptions: QueryList<ListItemComponent>;
+
+  public valueLoading: boolean = false;
 
   workItemsSource: Observable<WorkItemUI[]> = combineLatest(
     this.spaceQuery.getCurrentSpace.pipe(filter(s => !!s)),
@@ -40,6 +48,7 @@ export class PlannerQueryComponent implements OnInit, OnDestroy, AfterViewChecke
     // Wait untill workItemTypes are loaded
     this.workItemTypeQuery.getWorkItemTypes().pipe(filter(wt => !!wt.length)))
     .pipe(
+      delay(500),
       switchMap(([space, query]) => {
         if (query.hasOwnProperty('q')) {
           this.searchQuery = query.q;
@@ -77,6 +86,8 @@ export class PlannerQueryComponent implements OnInit, OnDestroy, AfterViewChecke
   public targetHeight: number;
   public addDisabled: Observable<boolean> =
     this.permissionQuery.isAllowedToAdd();
+  public isSuggestionDropdownOpen: boolean;
+  public keyManager: ActiveDescendantKeyManager<ListItemComponent>;
 
   private eventListeners: any[] = [];
   private hdrHeight: number = 0;
@@ -87,6 +98,20 @@ export class PlannerQueryComponent implements OnInit, OnDestroy, AfterViewChecke
   // Scroll is already checked for
   private scrollCheckedFor: number = 0;
   private isQuickPreviewOpen: boolean;
+
+  private querySuggestion: Observable<string[]> =
+      this.querySuggestionService.getSuggestions().pipe(
+        filter(s => !!s),
+        delay(500),
+        tap(() => this.valueLoading = false),
+        tap(s => {
+          if (s.length > 0) {
+            this.isSuggestionDropdownOpen = true;
+          } else {
+            this.isSuggestionDropdownOpen = false;
+          }
+        })
+      );
 
   constructor(
     private cookieService: CookieService,
@@ -100,7 +125,8 @@ export class PlannerQueryComponent implements OnInit, OnDestroy, AfterViewChecke
     private workItemTypeQuery: WorkItemTypeQuery,
     private urlService: UrlService,
     private el: ElementRef,
-    private permissionQuery: PermissionQuery
+    private permissionQuery: PermissionQuery,
+    private querySuggestionService: QuerySuggestionService
   ) {}
 
   ngOnInit() {
@@ -163,28 +189,101 @@ export class PlannerQueryComponent implements OnInit, OnDestroy, AfterViewChecke
     }
   }
 
-
-  fetchWorkItemForQuery(event: KeyboardEvent, query: string) {
+  onInputKeyPress(event: KeyboardEvent) {
     let keycode = event.keyCode ? event.keyCode : event.which;
-    let queryParams = cloneDeep(this.route.snapshot.queryParams);
-    if (keycode === 13 && query !== '') {
-      if (queryParams.hasOwnProperty('prevq')) {
-        this.router.navigate([], {
-          relativeTo: this.route,
-          queryParams: {
-             q : query,
-             prevq: queryParams.prevq
-            }
-        });
-      } else {
-        this.router.navigate([], {
-          relativeTo: this.route,
-          queryParams: { q : query}
-        });
+    if (keycode === UP_ARROW || keycode === DOWN_ARROW) {
+      event.preventDefault();
     }
+  }
+
+  fetchWorkItemForQuery(event: KeyboardEvent, query: string, cursorPosition: number) {
+    let keycode = event.keyCode ? event.keyCode : event.which;
+    // If Enter pressed
+    if (this.isSuggestionDropdownOpen) {
+      if (keycode === 13 && this.keyManager.activeItem) {
+        this.onSelectSuggestion(
+          this.keyManager.activeItem.item, query, cursorPosition
+        );
+        this.keyManager.setActiveItem(null);
+      } else if (keycode === 13 && !this.keyManager.activeItem) {
+        this.executeQuery(query);
+      } else if (keycode === UP_ARROW || keycode === DOWN_ARROW) {
+        event.preventDefault();
+        this.keyManager.onKeydown(event);
+      } else {
+        this.valueLoading = true;
+        this.querySuggestionService.queryObservable.next(
+          query
+        );
+      }
+    } else if (!this.isSuggestionDropdownOpen) {
+      if (keycode === 13 && query !== '') {
+        this.executeQuery(query);
+      } else {
+        this.valueLoading = true;
+        this.querySuggestionService.queryObservable.next(
+          query
+        );
+      }
     } else if (keycode === 8 && (event.ctrlKey || event.metaKey)) {
       this.searchQuery = '';
     }
+
+    if (keycode === LEFT_ARROW || keycode === RIGHT_ARROW) {
+      this.querySuggestionService.queryObservable.next(
+        this.getTextTillCurrentCursor()
+      );
+    }
+  }
+
+  executeQuery(query) {
+    let queryParams = cloneDeep(this.route.snapshot.queryParams);
+    if (queryParams.hasOwnProperty('prevq')) {
+      this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: {
+            q : query,
+            prevq: queryParams.prevq
+          }
+      });
+    } else {
+      this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: { q : query}
+      });
+    }
+  }
+
+  private getTextTillCurrentCursor() {
+    return this.searchField.nativeElement.value.slice(
+      0, this.searchField.nativeElement.selectionStart
+    );
+  }
+
+  onSelectSuggestion(suggestion: string, input: string, cursorPosition: number): void {
+    this.searchField.nativeElement.value = this.querySuggestionService.replaceSuggestion(
+      input.slice(0, cursorPosition),
+      input.slice(cursorPosition),
+      suggestion
+    );
+    this.querySuggestionService.queryObservable.next('-');
+    this.searchField.nativeElement.focus();
+  }
+
+  onClickSearchField(event) {
+    this.valueLoading = true;
+    this.querySuggestionService.queryObservable.next(
+      this.getTextTillCurrentCursor()
+    );
+  }
+
+  clearInputField() {
+    this.searchQuery = '';
+    this.searchField.nativeElement.focus();
+  }
+
+  onBlurSearchField(event) {
+    this.querySuggestionService.queryObservable.next('-');
   }
 
   onChildExploration(workItem: WorkItemUI) {
@@ -285,6 +384,7 @@ export class PlannerQueryComponent implements OnInit, OnDestroy, AfterViewChecke
 
   ngAfterViewInit() {
     this.setDataTableColumns();
+    this.keyManager = new ActiveDescendantKeyManager(this.dropdownOptions).withWrap().withTypeAhead();
   }
 
   @HostListener('window:resize', ['$event'])

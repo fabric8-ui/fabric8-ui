@@ -434,7 +434,8 @@ describe('WorkItemQuery :: ', () => {
                   1: {id: '1'} as WorkItemUI,
                   2: {id: '2'} as WorkItemUI,
                   3: {id: '3'} as WorkItemUI
-                }
+                },
+                nextLink: ''
               }
             }
         };

@@ -118,6 +118,16 @@ export class AreaQuery {
     );
   }
 
+  getAreaIds(): Observable<string[]> {
+    return this.areaSource.pipe(map(areas => Object.keys(areas)));
+  }
+
+  getAreaNames(): Observable<string[]> {
+    return this.getAreas().pipe(
+      map(areas => areas.map(a => a.name))
+    );
+  }
+
   getAreaObservableById(id: string): Observable<AreaUI> {
     return this.areaSource.pipe(select(areas => areas[id]));
   }

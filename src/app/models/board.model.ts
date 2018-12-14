@@ -7,6 +7,7 @@ import { Injectable } from '@angular/core';
 import { createFeatureSelector, createSelector, MemoizedSelector, select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { filter, map, switchMap, tap } from 'rxjs/operators';
+import { AND, EQUAL } from '../services/query-keys';
 import * as WorkItemActions from './../actions/work-item.actions';
 import { FilterService } from './../services/filter.service';
 import { BoardViewState } from './../states/app.state';
@@ -143,17 +144,17 @@ export class BoardQuery {
       filter(board => !!board),
       tap((board) => {
         const boardQuery = this.filterService.queryBuilder(
-          'board.id', this.filterService.equal_notation, board.id
+          'board.id', EQUAL, board.id
         );
         let finalQuery = this.filterService.queryJoiner(
-          {}, this.filterService.and_notation, boardQuery
+          {}, AND, boardQuery
         );
         if (iterationID !== '') {
           const iterationQuery = this.filterService.queryBuilder(
-            'iteration', this.filterService.equal_notation, iterationID
+            'iteration', EQUAL, iterationID
           );
           finalQuery = this.filterService.queryJoiner(
-            finalQuery, this.filterService.and_notation, iterationQuery
+            finalQuery, AND, iterationQuery
           );
         }
         this.store.dispatch(new WorkItemActions.Get({

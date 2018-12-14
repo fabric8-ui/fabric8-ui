@@ -6,21 +6,26 @@ import { FilterModel } from '../models/filter.model';
 import { HttpClientService } from '../shared/http-module/http.service';
 import { WorkItem } from './../models/work-item';
 
+import {
+  AND, ENCLOSURE, EQUAL, IN,
+  NOT_EQUAL, NOT_IN, OR, P_END,
+  P_START, SUB_STR
+} from './query-keys';
+
 @Injectable()
 export class FilterService {
   public filters: FilterModel[] = [];
   public activeFilters = [];
   public filterChange = new Subject();
   public filterObservable: Subject<any> = new Subject();
-
-  public and_notation = '$AND';
-  public or_notation = '$OR';
-  public equal_notation = '$EQ';
-  public not_equal_notation = '$NE';
-  public in_notation = '$IN';
-  public not_in_notation = '$NIN';
-  public sub_str_notation = '$SUBSTR';
-
+  public and_notation = AND;
+  public or_notation = OR;
+  public equal_notation = EQUAL;
+  public not_equal_notation = NOT_EQUAL;
+  public in_notation = IN;
+  public not_in_notation = NOT_IN;
+  public sub_str_notation = SUB_STR;
+  public str_enclouser = ENCLOSURE;
   public special_keys = {
     'null': null,
     'true': true,
@@ -29,16 +34,16 @@ export class FilterService {
   };
 
   private compare_notations: string[] = [
-    this.equal_notation,
-    this.not_equal_notation,
-    this.in_notation,
-    this.not_in_notation,
-    this.sub_str_notation
+    EQUAL,
+    NOT_EQUAL,
+    IN,
+    NOT_IN,
+    SUB_STR
   ];
 
   private join_notations: string[] = [
-    this.and_notation,
-    this.or_notation
+    AND,
+    OR
   ];
 
   private filtertoWorkItemMap = {
@@ -101,10 +106,10 @@ export class FilterService {
     let refCurrentFilter = [];
     if (this.route.snapshot.queryParams['q']) {
       let urlString = this.route.snapshot.queryParams['q']
-      .replace(' $AND ', ' ')
-      .replace(' $OR ', ' ')
-      .replace('(', '')
-      .replace(')', '');
+      .replace(' ' + AND + ' ', ' ')
+      .replace(' ' + OR + ' ', ' ')
+      .replace(P_START, '')
+      .replace(P_END, '');
       let temp_arr = urlString.split(' ');
       for (let i = 0; i < temp_arr.length; i++) {
         let arr = temp_arr[i].split(':');
@@ -194,6 +199,40 @@ export class FilterService {
     });
   }
 
+  /**
+   * This function encloses the query value within quotes
+   * only if the string contains any space
+   * value with spaces should never be without enclouser
+   * for ease of coding and understanding
+   * @param query
+   */
+  encloseValue(query: string): any {
+    // the value could be
+    // null, true, false all special values
+    if (typeof query !== 'string') {
+      return query;
+    }
+    // If there is a space in between
+    // and there no enclouser already
+    // then enclosed the string and return it
+    if (
+      query.split(' ').length > 1 &&
+      !(query[0] === ENCLOSURE && query[query.length - 1] === ENCLOSURE)) {
+      return ENCLOSURE + query + ENCLOSURE;
+    }
+    return query;
+  }
+
+  /**
+   * This function clears the quote from the value
+   * @param query
+   */
+  clearEnclosedValue(query: string) {
+    if (query[0] === ENCLOSURE && query[query.length - 1] === ENCLOSURE) {
+      return query.substr(1, query.length - 2);
+    }
+    return query;
+  }
 
   /**
    * Take the existing query and simply AND it with provided options
@@ -204,19 +243,19 @@ export class FilterService {
     let processedObject = '';
     // If onptions has any length enclose processedObject with ()
     if (Object.keys(options).length > 1) {
-      processedObject = '(' + Object.keys(options).map(key => {
+      processedObject = P_START + Object.keys(options).map(key => {
         return typeof(options[key]) !== 'string' ? key + ':' + options[key] :
           options[key].split(',').map(val => {
-            return key + ':' + val;
-          }).join(' ' + this.and_notation + ' ');
-      }).join(' ' + this.and_notation + ' ') + ')';
+            return key + ':' + this.encloseValue(val.trim());
+          }).join(' ' + AND + ' ');
+      }).join(' ' + AND + ' ') + P_END;
     } else if (Object.keys(options).length === 1) {
       processedObject = Object.keys(options).map(key => {
         return typeof(options[key]) !== 'string' ? key + ':' + options[key] :
           options[key].split(',').map(val => {
-            return key + ':' + val;
-          }).join(' ' + this.and_notation + ' ');
-      }).join(' ' + this.and_notation + ' ');
+            return key + ':' + this.encloseValue(val.trim());
+          }).join(' ' + AND + ' ');
+      }).join(' ' + AND + ' ');
     } else {
       return decodeURIComponent(existingQuery);
     }
@@ -230,16 +269,16 @@ export class FilterService {
       let decodedURL = decodeURIComponent(existingQuery);
 
       // Check if there is any composite query in existing one
-      if (decodedURL.indexOf(this.and_notation) > -1 || decodedURL.indexOf(this.or_notation) > -1) {
+      if (decodedURL.indexOf(AND) > -1 || decodedURL.indexOf(OR) > -1) {
         // Check if existing query is a group i.e. enclosed
-        if (decodedURL[0] != '(' || decodedURL[decodedURL.length - 1] != ')') {
+        if (decodedURL[0] !== P_START || decodedURL[decodedURL.length - 1] !== P_END) {
           // enclose it with ()
-          decodedURL = '(' + decodedURL + ')';
+          decodedURL = P_START + decodedURL + P_END;
         }
       }
 
       // Add the query from option with AND operation
-      return '(' + decodedURL + ' ' + this.and_notation + ' ' + processedObject + ')';
+      return P_START + decodedURL + ' ' + AND + ' ' + processedObject + P_END;
     }
   }
 
@@ -247,9 +286,9 @@ export class FilterService {
    *
    * @param key The value is the object key like 'workitem_type', 'iteration' etc
    * @param compare The values are
-   *                FilterService::equal_notation',
-   *                FilterService::not_equal_notation',
-   *                FilterService::not_equal_notation',
+   *                FilterService::EQUAL',
+   *                FilterService::not_EQUAL',
+   *                FilterService::not_EQUAL',
    *                FilterService::in_notation',
    *                FilterService::not_in_notation'
    * @param value string or array of string of values (in case of IN or NOT IN)
@@ -271,8 +310,8 @@ export class FilterService {
    *
    * @param existingQueryObject
    * @param join The values are
-   *                FilterService::and_notation,
-   *                FilterService::or_notation
+   *                FilterService::AND,
+   *                FilterService::OR
    * @param newQueryObject
    */
   queryJoiner(existingQueryObject: object, join: string, newQueryObject: object): any {
@@ -286,7 +325,7 @@ export class FilterService {
           return newQueryObject;
         } else {
           let op = {};
-          op[this.or_notation] = [newQueryObject];
+          op[OR] = [newQueryObject];
           return op;
         }
       } else {
@@ -388,15 +427,21 @@ export class FilterService {
    */
   queryToJson(query: string, first_level: boolean = true): any {
     let temp = [], p_count = 0, p_start = -1, new_str = '', output = {};
+    // counting on parenthesis
+    // Replacing highest level of enclosed querries with __temp__
+    // for example -
+    // (a:b $AND c:d) $OR e:f becomes
+    // __temp__ $OR e:f
+    // tmp queue has a:b $AND c:d
     for (let i = 0; i < query.length; i++) {
-      if (query[i] === '(') {
+      if (query[i] === P_START) {
         if (p_start < 0) { p_start = i; }
         p_count += 1;
       }
       if (p_start === -1) {
         new_str += query[i];
       }
-      if (query[i] === ')') {
+      if (query[i] === P_END) {
         p_count -= 1;
       }
       if (p_start >= 0 && p_count === 0) {
@@ -405,10 +450,18 @@ export class FilterService {
         p_start = -1;
       }
     }
+    // In order to treat it as a queue we reverse the temp array
     temp.reverse();
-    let arr = new_str.split(this.or_notation);
+
+    // First split with $OR
+    let arr = new_str.split(OR);
     if (arr.length > 1) {
-      output[this.or_notation] = arr.map(item => {
+      // Each element after the split will be either
+      // a singular query i.e. some_key: some_value
+      // or some query with or without __temp__ in it
+      // We replace the __temp__ with the actual string
+      // Pass it through the same function
+      output[OR] = arr.map(item => {
         item = item.trim();
         if (item == '__temp__') {
           item = temp.pop();
@@ -419,9 +472,11 @@ export class FilterService {
         return this.queryToJson(item, false);
       });
     } else {
-      arr = new_str.split(this.and_notation);
+      // Next split the item by $AND
+      arr = new_str.split(AND);
       if (arr.length > 1) {
-        output[this.and_notation] = arr.map(item => {
+        // Do the same as earlier
+        output[AND] = arr.map(item => {
           if (item.trim() == '__temp__') {
             item = temp.pop();
           }
@@ -432,7 +487,7 @@ export class FilterService {
         while (new_str.indexOf('__temp__') > -1) {
           new_str = new_str.replace('__temp__', temp.pop());
         }
-        if (new_str.indexOf(this.and_notation) > -1 || new_str.indexOf(this.or_notation) > -1) {
+        if (new_str.indexOf(AND) > -1 || new_str.indexOf(OR) > -1) {
           return this.queryToJson(new_str, false);
         }
         let keyIndex = -1;
@@ -450,31 +505,31 @@ export class FilterService {
         dObj[key] = {};
         if (splitter === '!') {
           if (val_arr.length > 1) {
-            dObj[key][this.not_in_notation] = val_arr;
+            dObj[key][NOT_IN] = val_arr;
           } else {
             if (Object.keys(this.special_keys).findIndex(k => k === val_arr[0]) > -1) {
-              dObj[key][this.not_equal_notation] = this.special_keys[val_arr[0]];
+              dObj[key][NOT_EQUAL] = this.special_keys[val_arr[0]];
             } else if (key === 'title') {
-              dObj[key][this.sub_str_notation] = val_arr[0];
+              dObj[key][SUB_STR] = this.clearEnclosedValue(val_arr[0]);
             } else {
-              dObj[key][this.not_equal_notation] = val_arr[0];
+              dObj[key][NOT_EQUAL] = this.clearEnclosedValue(val_arr[0]);
             }
           }
         } else if (splitter === ':') {
           if (val_arr.length > 1) {
-            dObj[key][this.in_notation] = val_arr;
+            dObj[key][IN] = val_arr;
           } else {
             if (Object.keys(this.special_keys).findIndex(k => k === val_arr[0]) > -1) {
-              dObj[key][this.equal_notation] = this.special_keys[val_arr[0]];
+              dObj[key][EQUAL] = this.special_keys[val_arr[0]];
             } else if (key === 'title') {
-              dObj[key][this.sub_str_notation] = val_arr[0];
+              dObj[key][SUB_STR] = this.clearEnclosedValue(val_arr[0]);
             } else {
-              dObj[key][this.equal_notation] = val_arr[0];
+              dObj[key][EQUAL] = this.clearEnclosedValue(val_arr[0]);
             }
           }
         }
         if (first_level) {
-          output[this.or_notation] = [dObj];
+          output[OR] = [dObj];
         } else {
           return dObj;
         }
@@ -487,8 +542,8 @@ export class FilterService {
   jsonToQuery(obj: object): string {
     let key = Object.keys(obj)[0]; // key will be AND or OR
     let value = obj[key];
-    return '(' + value.map(item => {
-      if (Object.keys(item)[0] == this.and_notation || Object.keys(item)[0] == this.or_notation) {
+    return P_START + value.map(item => {
+      if (Object.keys(item)[0] == AND || Object.keys(item)[0] == OR) {
         return this.jsonToQuery(item);
       } else {
         let data_key = Object.keys(item)[0];
@@ -497,25 +552,25 @@ export class FilterService {
         let splitter: string = '';
 
         switch (conditional_operator) {
-          case this.equal_notation:
+          case EQUAL:
             splitter = ':';
-            return data_key + splitter + data[conditional_operator];
-          case this.not_equal_notation:
+            return data_key + splitter + this.encloseValue(data[conditional_operator]);
+          case NOT_EQUAL:
             splitter = '!';
-            return data_key + splitter + data[conditional_operator];
-          case this.in_notation:
+            return data_key + splitter + this.encloseValue(data[conditional_operator]);
+          case IN:
             splitter = ':';
             return data_key + splitter + data[conditional_operator].join();
-          case this.not_in_notation:
+          case NOT_IN:
             splitter = '!';
             return data_key + splitter + data[conditional_operator].join();
-          case this.sub_str_notation:
+          case SUB_STR:
             splitter = ':';
-            return data_key + splitter + data[conditional_operator];
+            return data_key + splitter + this.encloseValue(data[conditional_operator]);
         }
       }
     })
-    .join(' ' + key + ' ') + ')';
+    .join(' ' + key + ' ') + P_END;
   }
 
   /**
@@ -532,11 +587,11 @@ export class FilterService {
     if (queryString) {
       let decodedQuery = this.queryToJson(queryString);
       // we ignore non-AND queries for now, might want to extend that later.
-      if (!decodedQuery['$AND'] && !(decodedQuery['$OR'] && decodedQuery['$OR'].length === 1)) {
+      if (!decodedQuery[AND] && !(decodedQuery[OR] && decodedQuery[OR].length === 1)) {
         console.log('The current query is not supported by getConditionFromQuery() (non-AND query): ' + queryString);
         return undefined;
       } else {
-        let terms: any[] = decodedQuery['$AND'] ? decodedQuery['$AND'] : decodedQuery['$OR'];
+        let terms: any[] = decodedQuery[AND] ? decodedQuery[AND] : decodedQuery[OR];
         if (terms || !Array.isArray(terms)) {
           for (let i = 0; i < terms.length; i++) {
             let thisTerm = terms[i];
@@ -559,7 +614,7 @@ export class FilterService {
   // Temporary function to deal with single level $AND operator
   queryToFlat(query: string) {
     return query.replace(/^\((.+)\)$/, '$1')
-      .split(this.and_notation).map((item, index) => {
+      .split(AND).map((item, index) => {
         // regex to match field:value pattern.
         // for item=title:A:D, field -> title and value -> A:D
         let filterValue = /(^[^:]+):(.*)$/.exec(item);
@@ -576,12 +631,12 @@ export class FilterService {
     arr.forEach(item => {
       const newQuery = this.queryBuilder(
         item.field,
-        this.equal_notation,
+        EQUAL,
         item.value
       );
       query = this.queryJoiner(
         query,
-        this.and_notation,
+        AND,
         newQuery
       );
     });
@@ -597,11 +652,11 @@ export class FilterService {
   isOnlyChildQuery(query: string): string | null {
     try {
       const jsonQuery = this.queryToJson(query);
-      if (jsonQuery[this.or_notation] &&
-        jsonQuery[this.or_notation].length === 1 &&
-        jsonQuery[this.or_notation][0]['parent.number'] &&
-        jsonQuery[this.or_notation][0]['parent.number'][this.equal_notation]) {
-          return jsonQuery[this.or_notation][0]['parent.number'][this.equal_notation];
+      if (jsonQuery[OR] &&
+        jsonQuery[OR].length === 1 &&
+        jsonQuery[OR][0]['parent.number'] &&
+        jsonQuery[OR][0]['parent.number'][EQUAL]) {
+          return jsonQuery[OR][0]['parent.number'][EQUAL];
       }
     } catch {}
     return null;

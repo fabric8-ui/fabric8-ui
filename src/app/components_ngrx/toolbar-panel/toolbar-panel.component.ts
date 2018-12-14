@@ -31,6 +31,7 @@ import { FilterModel } from '../../models/filter.model';
 import { WorkItem, WorkItemQuery } from '../../models/work-item';
 import { WorkItemTypeQuery, WorkItemTypeUI } from '../../models/work-item-type';
 import { FilterService } from '../../services/filter.service';
+import { AND, EQUAL } from '../../services/query-keys';
 import { GroupTypeQuery, GroupTypeUI } from './../../models/group-types.model';
 import { IterationQuery, IterationUI } from './../../models/iteration.model';
 import { LabelQuery, LabelUI } from './../../models/label.model';
@@ -273,12 +274,12 @@ export class ToolbarPanelComponent implements OnInit, AfterViewInit, OnDestroy {
       $event.query.id : $event.value;
     const newQuery = this.filterService.queryBuilder(
       field,
-      this.filterService.equal_notation,
+      EQUAL,
       value
     );
     const finalQuery = this.filterService.queryJoiner(
       oldQueryJson,
-      this.filterService.and_notation,
+      AND,
       newQuery
     );
     const queryString = this.filterService.jsonToQuery(finalQuery);

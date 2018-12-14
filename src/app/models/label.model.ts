@@ -148,6 +148,12 @@ export class LabelQuery {
     return this.store.pipe(select(this.getAllLabelsSelector));
   }
 
+  get getlabelNames(): Observable<string[]> {
+    return this.getLables().pipe(
+      map(labels => labels.map(label => label.name))
+    );
+  }
+
   getLabelObservableById(number: string): Observable<LabelUI> {
     const labelSelector = createSelector(
       this.getLabelEntities,

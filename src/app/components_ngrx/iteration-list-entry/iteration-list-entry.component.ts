@@ -13,6 +13,7 @@ import {
 
 import { AuthenticationService } from 'ngx-login-client';
 
+import { AND, EQUAL } from '../../services/query-keys';
 import { GroupTypeUI } from './../../models/group-types.model';
 import { IterationUI } from './../../models/iteration.model';
 import { FilterService } from './../../services/filter.service';
@@ -52,12 +53,12 @@ export class IterationListEntryComponent implements OnInit {
 
   constructURL(iterationId: string) {
     //Query for work item type group
-    const type_query = this.filterService.queryBuilder('typegroup.name', this.filterService.equal_notation, this.witGroup.name);
+    const type_query = this.filterService.queryBuilder('typegroup.name', EQUAL, this.witGroup.name);
     //Query for iteration
-    const iteration_query = this.filterService.queryBuilder('iteration', this.filterService.equal_notation, iterationId);
+    const iteration_query = this.filterService.queryBuilder('iteration', EQUAL, iterationId);
     //Join type and space query
-    const first_join = this.filterService.queryJoiner({}, this.filterService.and_notation, type_query);
-    const second_join = this.filterService.queryJoiner(first_join, this.filterService.and_notation, iteration_query);
+    const first_join = this.filterService.queryJoiner({}, AND, type_query);
+    const second_join = this.filterService.queryJoiner(first_join, AND, iteration_query);
     //this.setGroupType(witGroup);
     //second_join gives json object
     return this.filterService.jsonToQuery(second_join);
@@ -65,12 +66,12 @@ export class IterationListEntryComponent implements OnInit {
 
   constructURLforBoard(iterationId: string) {
     //Query for work item type group
-    const type_query = this.filterService.queryBuilder('boardContextId', this.filterService.equal_notation, this.witGroup.id);
+    const type_query = this.filterService.queryBuilder('boardContextId', EQUAL, this.witGroup.id);
     //Query for iteration
-    const iteration_query = this.filterService.queryBuilder('iteration', this.filterService.equal_notation, iterationId);
+    const iteration_query = this.filterService.queryBuilder('iteration', EQUAL, iterationId);
     // join type and iteration query
-    const first_join = this.filterService.queryJoiner({}, this.filterService.and_notation, type_query);
-    const second_join = this.filterService.queryJoiner(first_join, this.filterService.and_notation, iteration_query);
+    const first_join = this.filterService.queryJoiner({}, AND, type_query);
+    const second_join = this.filterService.queryJoiner(first_join, AND, iteration_query);
     return this.filterService.jsonToQuery(second_join);
   }
 

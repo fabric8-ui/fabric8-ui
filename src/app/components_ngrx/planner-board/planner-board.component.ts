@@ -15,6 +15,7 @@ import { filter, map, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 import { BoardQuery, BoardUIQuery } from '../../models/board.model';
 import { WorkItemQuery, WorkItemUI } from '../../models/work-item';
 import { FilterService } from '../../services/filter.service';
+import { AND, EQUAL } from '../../services/query-keys';
 import { AppState } from '../../states/app.state';
 import * as BoardUIActions from './../../actions/board-ui.actions';
 import * as ColumnWorkItemAction from './../../actions/column-workitem.action';
@@ -101,12 +102,12 @@ export class PlannerBoardComponent implements AfterViewChecked, OnInit, OnDestro
     constructUrl(witGroup: GroupTypeUI) {
        //Query for work item type group
       const type_query = this.filterService.queryBuilder(
-          'boardContextId', this.filterService.equal_notation, witGroup.id
+          'boardContextId', EQUAL, witGroup.id
         );
       //Query for space
       //Join type and space query
       const first_join = this.filterService.queryJoiner(
-        {}, this.filterService.and_notation, type_query
+        {}, AND, type_query
       );
       //second_join gives json object
       return this.filterService.jsonToQuery(first_join);

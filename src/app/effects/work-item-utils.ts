@@ -7,6 +7,7 @@ import { map } from 'rxjs/operators';
 import { withLatestFrom } from 'rxjs/operators';
 import { WorkItemUI } from '../models/work-item';
 import { FilterService } from '../services/filter.service';
+import { AND, EQUAL } from '../services/query-keys';
 import { WorkItemService } from '../services/work-item.service';
 
 
@@ -55,18 +56,18 @@ export function workitemMatchesFilter(route,
       return ObservableOf(workitem);
     } else {
       const wiQuery = filterService.queryBuilder(
-        'number', filterService.equal_notation, workitem.number.toString()
+        'number', EQUAL, workitem.number.toString()
       );
       const exp = filterService.queryJoiner(
         filterService.queryToJson(currentRoute['q']),
-        filterService.and_notation,
+        AND,
         wiQuery
       );
       const spaceQuery = filterService.queryBuilder(
-        'space', filterService.equal_notation, spaceId
+        'space', EQUAL, spaceId
       );
       const finalQuery = filterService.queryJoiner(
-        exp, filterService.and_notation, spaceQuery
+        exp, AND, spaceQuery
       );
       const searchPayload = {
         expression: finalQuery

@@ -18,6 +18,7 @@ import { EmptyStateConfig } from 'patternfly-ng/empty-state';
 import { combineLatest, Observable } from 'rxjs';
 import { filter, switchMap, take, tap } from 'rxjs/operators';
 import { WorkItemTypeQuery, WorkItemTypeUI } from '../../models/work-item-type';
+import { AND, EQUAL, NOT_EQUAL } from '../../services/query-keys';
 import { IterationQuery, IterationUI } from './../../models/iteration.model';
 import { CookieService } from './../../services/cookie.service';
 import { FilterService } from './../../services/filter.service';
@@ -165,15 +166,15 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
           ['closed', 'Done', 'Removed', 'Closed'].forEach(state => {
             stateQuery = this.filterService.queryJoiner(
               stateQuery,
-              this.filterService.and_notation,
+              AND,
               this.filterService.queryBuilder(
-                'state', this.filterService.not_equal_notation, state
+                'state', NOT_EQUAL, state
               )
             );
           });
           exp = this.filterService.queryJoiner(
             exp,
-            this.filterService.and_notation,
+            AND,
             stateQuery
           );
         } else {
@@ -290,10 +291,10 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
               .subscribe(groupType => {
               const defaultGroupName = groupType.name;
               //Query for work item type group
-              const type_query = this.filterService.queryBuilder('typegroup.name', this.filterService.equal_notation, defaultGroupName);
+              const type_query = this.filterService.queryBuilder('typegroup.name', EQUAL, defaultGroupName);
               //Join type and space query
-              const first_join = this.filterService.queryJoiner({}, this.filterService.and_notation, type_query);
-              //const view_query = this.filterService.queryBuilder('tree-view', this.filterService.equal_notation, 'true');
+              const first_join = this.filterService.queryJoiner({}, AND, type_query);
+              //const view_query = this.filterService.queryBuilder('tree-view', EQUAL, 'true');
               //const third_join = this.filterService.queryJoiner(second_join);
               //second_join gives json object
               let query = this.filterService.jsonToQuery(first_join);
@@ -436,7 +437,7 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
     let queryParams = cloneDeep(this.route.snapshot.queryParams);
     const newQuery = this.filterService.queryBuilder(
       'label',
-      this.filterService.equal_notation,
+      EQUAL,
       labelId
     );
     let existingQuery = {};
@@ -446,7 +447,7 @@ export class PlannerListComponent implements OnInit, OnDestroy, AfterViewChecked
     const finalQuery = this.filterService.jsonToQuery(
       this.filterService.queryJoiner(
         existingQuery,
-        this.filterService.and_notation,
+        AND,
         newQuery
       )
     );

@@ -11,7 +11,7 @@ describe('Agile template tests: ', () => {
     await support.desktopTestSetup();
     plannerAgile = new PlannerPage(browser.baseUrl);
     plannerAgile.openInBrowser();
-    await plannerAgile.waitUntilUrlContains('typegroup.name:Work');
+    await plannerAgile.waitUntilUrlContains('typegroup.name');
   });
 
   beforeEach(async () => {
