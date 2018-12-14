@@ -31,7 +31,8 @@ import { AppState } from './../../states/app.state';
 @Component({
   selector: 'work-item-detail',
   templateUrl: './work-item-detail.component.html',
-  styleUrls: ['./work-item-detail.component.less']
+  styleUrls: ['./work-item-detail.component.less'],
+  providers: [AuthenticationService]
 })
 export class WorkItemDetailComponent implements OnInit, OnDestroy, AfterViewChecked {
   @ViewChild('detailHeader') detailHeader: ElementRef;

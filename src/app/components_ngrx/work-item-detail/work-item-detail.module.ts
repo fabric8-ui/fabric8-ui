@@ -5,7 +5,6 @@ import { RouterModule } from '@angular/router';
 import { MyDatePickerModule } from 'mydatepicker';
 import { TruncateModule } from 'ng2-truncate';
 import { TooltipConfig, TooltipModule } from 'ngx-bootstrap/tooltip';
-import { AuthenticationService } from 'ngx-login-client';
 import { MarkdownModule, WidgetsModule } from 'ngx-widgets';
 import { PlannerModalModule } from '../../widgets/modal/modal.module';
 import { DynamicFieldComponent } from '../dynamic-field/dynamic-field.component';
@@ -121,7 +120,6 @@ import { UserAvatarModule } from './../../widgets/user-avatar/user-avatar.module
     UrlService,
     SpaceQuery,
     BsDropdownConfig,
-    AuthenticationService,
     TooltipConfig,
     IterationQuery,
     WorkItemQuery,
