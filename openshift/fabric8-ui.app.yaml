@@ -54,6 +54,11 @@ objects:
                 configMapKeyRef:
                   name: f8ui
                   key:  analytics.license.url
+            - name: FABRIC8_AUTH_API_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: f8ui
+                  key:  auth.api.url
             - name: FABRIC8_BUILD_TOOL_DETECTOR_API_URL
               valueFrom:
                 configMapKeyRef:
