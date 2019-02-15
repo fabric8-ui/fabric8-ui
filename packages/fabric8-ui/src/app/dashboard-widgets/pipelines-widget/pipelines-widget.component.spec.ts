@@ -21,8 +21,8 @@ class HostComponent {}
 describe('PipelinesWidgetComponent', () => {
   type TestingContext = TestContext<PipelinesWidgetComponent, HostComponent>;
 
-  let ctxSubj: Subject<Context> = new Subject<Context>();
-  let fakeUserObs: Subject<User> = new Subject<User>();
+  const ctxSubj: Subject<Context> = new Subject<Context>();
+  const fakeUserObs: Subject<User> = new Subject<User>();
 
   const testContext = initContext(PipelinesWidgetComponent, HostComponent, {
     imports: [LoadingWidgetModule, RouterModule],
@@ -38,7 +38,7 @@ describe('PipelinesWidgetComponent', () => {
       {
         provide: PipelinesService,
         useFactory: () => {
-          let pipelinesService: jasmine.SpyObj<PipelinesService> = createMock(PipelinesService);
+          const pipelinesService: jasmine.SpyObj<PipelinesService> = createMock(PipelinesService);
           pipelinesService.getCurrentPipelines.and.returnValue(observableOf([{}] as BuildConfig[]));
           return pipelinesService;
         },
@@ -46,7 +46,7 @@ describe('PipelinesWidgetComponent', () => {
       {
         provide: AuthenticationService,
         useFactory: (): jasmine.SpyObj<AuthenticationService> => {
-          let authentication: jasmine.SpyObj<AuthenticationService> = createMock(
+          const authentication: jasmine.SpyObj<AuthenticationService> = createMock(
             AuthenticationService,
           );
           authentication.isLoggedIn.and.returnValue(true);
@@ -56,12 +56,12 @@ describe('PipelinesWidgetComponent', () => {
       {
         provide: Router,
         useFactory: (): jasmine.SpyObj<Router> => {
-          let mockRouterEvent: any = {
+          const mockRouterEvent: any = {
             id: 1,
             url: 'mock-url',
           };
 
-          let mockRouter = jasmine.createSpyObj('Router', [
+          const mockRouter = jasmine.createSpyObj('Router', [
             'createUrlTree',
             'navigate',
             'serializeUrl',
@@ -75,7 +75,7 @@ describe('PipelinesWidgetComponent', () => {
     schemas: [NO_ERRORS_SCHEMA],
   });
 
-  it('should enable button if the user owns the space', function() {
+  it('should enable button if the user owns the space', () => {
     testContext.testedDirective.userOwnsSpace = true;
     testContext.testedDirective.loading = false;
     testContext.detectChanges();
@@ -85,7 +85,7 @@ describe('PipelinesWidgetComponent', () => {
     ).not.toBeNull();
   });
 
-  it('should disable button if the user does not own the space', function() {
+  it('should disable button if the user does not own the space', () => {
     testContext.testedDirective.userOwnsSpace = false;
     testContext.detectChanges();
 
@@ -94,7 +94,7 @@ describe('PipelinesWidgetComponent', () => {
     ).toBeNull();
   });
 
-  it('should not show the add button if the user does not own the space', function() {
+  it('should not show the add button if the user does not own the space', () => {
     testContext.testedDirective.userOwnsSpace = false;
     testContext.detectChanges();
     expect(
@@ -102,7 +102,7 @@ describe('PipelinesWidgetComponent', () => {
     ).toBeNull();
   });
 
-  it('should show the add button if the user owns the space', function() {
+  it('should show the add button if the user owns the space', () => {
     testContext.testedDirective.userOwnsSpace = true;
     testContext.testedDirective.loading = false;
     testContext.detectChanges();

@@ -18,7 +18,9 @@ import {
 @Injectable()
 export class FeatureAcknowledgementService extends GettingStartedService implements OnDestroy {
   protected subscriptions: Subscription[] = [];
+
   showIconChanged = new EventEmitter();
+
   constructor(
     protected auth: AuthenticationService,
     protected http: HttpClient,
@@ -45,8 +47,7 @@ export class FeatureAcknowledgementService extends GettingStartedService impleme
     return this.userService.loggedInUser.pipe(
       map((user) => {
         let acknowledged: boolean = true;
-        let profile;
-        profile = cloneDeep(user) as ExtUser;
+        const profile = cloneDeep(user) as ExtUser;
         if (profile.attributes !== undefined) {
           profile.attributes.contextInformation =
             (user as ExtUser).attributes.contextInformation || {};
@@ -63,7 +64,7 @@ export class FeatureAcknowledgementService extends GettingStartedService impleme
    * @param {boolean} value True if the user want to see the icon showing the experimental features.
    */
   setToggle(value: boolean): void {
-    let profile = this.getTransientProfile();
+    const profile = this.getTransientProfile();
     delete profile.featureLevel;
     profile.contextInformation.featureAcknowledgement = value;
 
@@ -88,7 +89,7 @@ export class FeatureAcknowledgementService extends GettingStartedService impleme
    * @returns {ExtProfile} The updated transient profile
    */
   private getTransientProfile(): ExtProfile {
-    let profile = this.createTransientProfile();
+    const profile = this.createTransientProfile();
     // Delete extra information that make the update fail if present
     delete profile.username;
     if (profile) {

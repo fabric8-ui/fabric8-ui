@@ -30,18 +30,24 @@ export enum AreaCreationStatus {
 })
 export class CreateAreaDialogComponent implements OnInit {
   @Input() host: ModalDirective;
+
   @Input() parentId: string;
+
   @Input() areas: Area[];
+
   @Output() onAdded = new EventEmitter<Area>();
+
   @ViewChild('areaForm') areaForm: NgForm;
 
   @ViewChild('rawInputField') rawInputField: ElementRef;
+
   @ViewChild('inputModel') inputModel: NgModel;
 
   // Declare the enum for usage in the template
   AreaCreationStatus: typeof AreaCreationStatus = AreaCreationStatus;
 
   name: string;
+
   private _areaCreationStatus: AreaCreationStatus;
 
   constructor(private areaService: AreaService) {}
@@ -82,7 +88,7 @@ export class CreateAreaDialogComponent implements OnInit {
   }
 
   createArea() {
-    let area = {} as Area;
+    const area = {} as Area;
     area.attributes = new AreaAttributes();
     area.attributes.name = this.name.trim();
     area.type = 'areas';
@@ -99,11 +105,11 @@ export class CreateAreaDialogComponent implements OnInit {
 
   itemPath(item: AreaAttributes) {
     // remove slash from start of string
-    let parentPath = item.parent_path_resolved.slice(1, item.parent_path_resolved.length);
+    const parentPath = item.parent_path_resolved.slice(1, item.parent_path_resolved.length);
     if (parentPath === '') {
       return item.name;
     }
-    return parentPath + '/' + item.name;
+    return `${parentPath}/${item.name}`;
   }
 
   cancel() {

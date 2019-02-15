@@ -20,6 +20,7 @@ export class EditSpaceDescriptionWidgetOldComponent implements OnInit {
   private _descriptionUpdater: Subject<string> = new Subject();
 
   private loggedInUser: User;
+
   @ViewChild('description') description: any;
 
   private isEditing: boolean = false;
@@ -43,9 +44,9 @@ export class EditSpaceDescriptionWidgetOldComponent implements OnInit {
       .pipe(
         debounceTime(1000),
         map((description) => {
-          let patch = {
+          const patch = {
             attributes: {
-              description: description,
+              description,
               name: this.space ? this.space.attributes.name : '',
               version: this.space ? this.space.attributes.version : '',
             },

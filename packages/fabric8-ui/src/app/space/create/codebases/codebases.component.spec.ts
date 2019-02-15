@@ -40,7 +40,9 @@ import { GitHubService } from './services/github.service';
 })
 class FakeCodebasesToolbar {
   @Output('onFilterChange') onFilterChange = new EventEmitter();
+
   @Output('onSortChange') onSortChange = new EventEmitter();
+
   @Input() resultsCount: number;
 }
 
@@ -50,6 +52,7 @@ class FakeCodebasesToolbar {
 })
 class FakeCodebasesItemHeading {
   @Input() cheState: Che;
+
   @Input() cveNotify: boolean;
 }
 
@@ -59,8 +62,11 @@ class FakeCodebasesItemHeading {
 })
 class FakeCodebasesItem {
   @Input() cheState: Che;
+
   @Input() codebase: Codebase;
+
   @Input() index: number;
+
   @Input() cveNotify: boolean;
 }
 
@@ -70,7 +76,9 @@ class FakeCodebasesItem {
 })
 class FakeCodebasesItemActions {
   @Input() cheRunning: boolean;
+
   @Input() codebase: Codebase;
+
   @Input() index: number = -1;
 }
 
@@ -153,18 +161,19 @@ describe('CodebasesComponent', () => {
           details.created_at = '2011-04-07T10:12:58Z';
           details.pushed_at = '2011-04-07T10:12:58Z';
           return observableOf(details);
-        } else if (url === 'https://github.com/bar-org/bar-project.git') {
+        }
+        if (url === 'https://github.com/bar-org/bar-project.git') {
           const details: GitHubRepoDetails = new GitHubRepoDetails();
           details.html_url = 'https://github.com/bar-org/bar-project/html';
           details.full_name = 'Foo Project';
           details.created_at = '2010-04-07T10:10:58Z';
           details.pushed_at = '2010-04-07T10:10:58Z';
           return observableOf(details);
-        } else if (url === 'https://github.com/foo-org/bar-project.git') {
-          return observableThrowError(new Error('404 error'));
-        } else {
-          throw new Error('Unexpected codebase URL');
         }
+        if (url === 'https://github.com/foo-org/bar-project.git') {
+          return observableThrowError(new Error('404 error'));
+        }
+        throw new Error('Unexpected codebase URL');
       },
     );
 
@@ -205,7 +214,7 @@ describe('CodebasesComponent', () => {
   });
 
   describe('GitHub repo details', () => {
-    it('should handle Codebases where GitHub repo no longer exists', function() {
+    it('should handle Codebases where GitHub repo no longer exists', () => {
       broadcastSubject.next();
       codebasesSubject.next([
         {
@@ -256,7 +265,7 @@ describe('CodebasesComponent', () => {
       codebasesSubject.complete();
     });
 
-    it('should filter codebases by name', function() {
+    it('should filter codebases by name', () => {
       expect(testContext.testedDirective.allCodebases.length).toEqual(2);
       expect(testContext.testedDirective.codebases[0].name).toBe('alpha');
       expect(testContext.testedDirective.codebases[1].name).toBe('beta');
@@ -296,7 +305,7 @@ describe('CodebasesComponent', () => {
       codebasesSubject.complete();
     });
 
-    it('should sort codebases by name', function() {
+    it('should sort codebases by name', () => {
       expect(testContext.testedDirective.allCodebases.length).toEqual(2);
       expect(testContext.testedDirective.codebases[0].name).toBe('alpha');
       expect(testContext.testedDirective.codebases[1].name).toBe('beta');
@@ -311,7 +320,7 @@ describe('CodebasesComponent', () => {
       expect(testContext.testedDirective.codebases[1].name).toBe('alpha');
     });
 
-    it('should sort codebases by repository created at', function() {
+    it('should sort codebases by repository created at', () => {
       expect(testContext.testedDirective.allCodebases.length).toEqual(2);
       expect(testContext.testedDirective.codebases[0].name).toBe('alpha');
       expect(testContext.testedDirective.codebases[1].name).toBe('beta');
@@ -327,7 +336,7 @@ describe('CodebasesComponent', () => {
       expect(testContext.testedDirective.codebases[1].name).toBe('alpha');
     });
 
-    it('should sort codebases by repository pushed at', function() {
+    it('should sort codebases by repository pushed at', () => {
       expect(testContext.testedDirective.allCodebases.length).toEqual(2);
       expect(testContext.testedDirective.codebases[0].name).toBe('alpha');
       expect(testContext.testedDirective.codebases[1].name).toBe('beta');

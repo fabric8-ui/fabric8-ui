@@ -17,15 +17,25 @@ import { openShiftBrowseResourceUrl } from './helpers';
 
 export class KubernetesResource implements BaseEntity {
   id: string;
+
   name: string;
+
   version: string;
+
   namespace: string;
+
   description: string;
+
   icon: string;
+
   labels: Map<string, string> = new Map<string, string>();
+
   annotations: Map<string, string> = new Map<string, string>();
+
   resource: any;
+
   creationTimestamp: any;
+
   openShiftConsoleUrl: string;
 
   public setResource(resource) {
@@ -56,8 +66,8 @@ export class KubernetesResource implements BaseEntity {
   }
 
   updateValuesFromResource() {
-    let resource = this.resource || {};
-    let metadata = resource.metadata || {};
+    const resource = this.resource || {};
+    const metadata = resource.metadata || {};
     this.name = metadata.name || '';
     this.namespace = metadata.namespace || '';
     this.id = this.name;
@@ -67,10 +77,10 @@ export class KubernetesResource implements BaseEntity {
     this.version = this.labels['version'] || '';
 
     // for Replicas we need to also look in the spec.template.metadata.annotations
-    let spec = resource.spec || {};
-    let template = spec.template || {};
-    let templateMetadata = template.metadata || {};
-    let templateAnnotations = templateMetadata.annotations || new Map<string, string>();
+    const spec = resource.spec || {};
+    const template = spec.template || {};
+    const templateMetadata = template.metadata || {};
+    const templateAnnotations = templateMetadata.annotations || new Map<string, string>();
 
     this.icon =
       this.annotations['fabric8.io/iconUrl'] ||
@@ -114,7 +124,7 @@ export class KubernetesResource implements BaseEntity {
   isFabric8Icon(url, name) {
     if (url && (url.startsWith('img/icons/') || url.startsWith('/img/icons/'))) {
       return (
-        url.endsWith(name + '.svg') || url.endsWith(name + '.png') || url.endsWith(name + '.jpg')
+        url.endsWith(`${name}.svg`) || url.endsWith(`${name}.png`) || url.endsWith(`${name}.jpg`)
       );
     }
     return false;

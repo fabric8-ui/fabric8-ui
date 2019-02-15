@@ -7,8 +7,7 @@ import { Router } from '@angular/router';
 import { User } from 'a-runtime-console/models/user';
 import { Broadcaster, Notifications } from 'ngx-base';
 import { ModalModule } from 'ngx-bootstrap/modal';
-import { Fabric8WitModule, SpaceNameModule } from 'ngx-fabric8-wit';
-import { SpaceService } from 'ngx-fabric8-wit';
+import { Fabric8WitModule, SpaceNameModule, SpaceService } from 'ngx-fabric8-wit';
 import { UniqueSpaceNameValidatorDirective } from 'ngx-fabric8-wit/spaces/unique-space-name.directive';
 import { ValidSpaceNameValidatorDirective } from 'ngx-fabric8-wit/spaces/valid-space-name.directive';
 import { UserService } from 'ngx-login-client';
@@ -65,14 +64,14 @@ describe('AddSpaceOverlayComponent', () => {
 
   describe('page data mapping', () => {
     it('space name', () => {
-      let nameElement = getNameElement();
+      const nameElement = getNameElement();
       setValue(nameElement, 'space');
 
       expect(component.spaceName).toBe('space');
     });
 
     it('space description', () => {
-      let descriptionElement = getDescriptionElement();
+      const descriptionElement = getDescriptionElement();
       setValue(descriptionElement, 'desc');
 
       expect(component.spaceDescription).toBe('desc');
@@ -88,7 +87,7 @@ describe('AddSpaceOverlayComponent', () => {
     });
 
     it('valid space name', fakeAsync(() => {
-      let nameElement = getNameElement();
+      const nameElement = getNameElement();
       setValue(nameElement, 'SpaceA');
 
       tick(5000);
@@ -101,7 +100,7 @@ describe('AddSpaceOverlayComponent', () => {
     }));
 
     it('empty space name', fakeAsync(() => {
-      let nameElement = getNameElement();
+      const nameElement = getNameElement();
       setValue(nameElement, ' ');
 
       tick(5000);
@@ -118,21 +117,23 @@ describe('AddSpaceOverlayComponent', () => {
     }));
 
     it('space name validators are called', fakeAsync(() => {
-      let validSpaceNameEl = fixture.debugElement.query(
+      const validSpaceNameEl = fixture.debugElement.query(
         By.directive(ValidSpaceNameValidatorDirective),
       );
-      let validSpaceNameInstance = validSpaceNameEl.injector.get(ValidSpaceNameValidatorDirective);
+      const validSpaceNameInstance = validSpaceNameEl.injector.get(
+        ValidSpaceNameValidatorDirective,
+      );
       spyOn(validSpaceNameInstance, 'validate');
 
-      let uniqueSpaceNameEl = fixture.debugElement.query(
+      const uniqueSpaceNameEl = fixture.debugElement.query(
         By.directive(UniqueSpaceNameValidatorDirective),
       );
-      let uniqueSpaceNameInstance = uniqueSpaceNameEl.injector.get(
+      const uniqueSpaceNameInstance = uniqueSpaceNameEl.injector.get(
         UniqueSpaceNameValidatorDirective,
       );
       spyOn(uniqueSpaceNameInstance, 'validate');
 
-      let nameElement = getNameElement();
+      const nameElement = getNameElement();
       setValue(nameElement, 'space a***0---__');
 
       tick(5000);
@@ -153,7 +154,7 @@ describe('AddSpaceOverlayComponent', () => {
 
       spyOn(component, 'createSpace');
 
-      let button: any = getCreateSpaceAndExitButtonElement();
+      const button: any = getCreateSpaceAndExitButtonElement();
       click(button);
 
       expect(component.createSpace).toBeCalledWith(false);
@@ -165,14 +166,14 @@ describe('AddSpaceOverlayComponent', () => {
 
       spyOn(component, 'createSpace');
 
-      let button: any = getCreateSpaceButtonElement();
+      const button: any = getCreateSpaceButtonElement();
       click(button);
 
       expect(component.createSpace).toBeCalledWith(true);
     });
 
     it('cancel button', () => {
-      let broadcastArgument: any[] = [];
+      const broadcastArgument: any[] = [];
       mockBroadcaster.broadcast.and.callFake(function() {
         broadcastArgument.push([arguments[0], arguments[1]]);
       });
@@ -180,7 +181,7 @@ describe('AddSpaceOverlayComponent', () => {
       spyOn(component, 'createSpace');
       spyOn(component.spaceForm, 'reset');
 
-      let button = getCancelButtonElement();
+      const button = getCancelButtonElement();
       click(button);
 
       cancelFlowExpectations();
@@ -192,7 +193,7 @@ describe('AddSpaceOverlayComponent', () => {
     });
 
     it('X cancel button', () => {
-      let broadcastArgument: any[] = [];
+      const broadcastArgument: any[] = [];
       mockBroadcaster.broadcast.and.callFake(function() {
         broadcastArgument.push([arguments[0], arguments[1]]);
       });
@@ -200,7 +201,7 @@ describe('AddSpaceOverlayComponent', () => {
       spyOn(component, 'createSpace');
       spyOn(component.spaceForm, 'reset');
 
-      let button = getXCancelButtonElement();
+      const button = getXCancelButtonElement();
       click(button);
 
       cancelFlowExpectations();
@@ -214,8 +215,8 @@ describe('AddSpaceOverlayComponent', () => {
 
   describe('#ngOnDestroy', () => {
     it('should unsubscribe subscriptions', () => {
-      let s1: Subscription = jasmine.createSpyObj('Subscription', ['unsubscribe']);
-      let s2: Subscription = jasmine.createSpyObj('Subscription', ['unsubscribe']);
+      const s1: Subscription = jasmine.createSpyObj('Subscription', ['unsubscribe']);
+      const s2: Subscription = jasmine.createSpyObj('Subscription', ['unsubscribe']);
 
       component.subscriptions.push(s1);
       component.subscriptions.push(s2);
@@ -244,9 +245,7 @@ describe('AddSpaceOverlayComponent', () => {
       component.spaceDescription = 'DescriptionA';
       component.addAppFlow = 'importapp';
 
-      mockSpaceNamespaceService.updateConfigMap.and.callFake(function() {
-        return observableOf({});
-      });
+      mockSpaceNamespaceService.updateConfigMap.and.callFake(() => observableOf({}));
 
       let createSpaceArgument: any;
       mockSpaceService.create.and.callFake(function() {
@@ -259,7 +258,7 @@ describe('AddSpaceOverlayComponent', () => {
         navigateArgument = arguments[0];
       });
 
-      let broadcastArgument: any[] = [];
+      const broadcastArgument: any[] = [];
       mockBroadcaster.broadcast.and.callFake(function() {
         broadcastArgument.push([arguments[0], arguments[1]]);
       });
@@ -332,7 +331,7 @@ describe('AddSpaceOverlayComponent', () => {
   });
 
   function getElementByID(id: string): any {
-    let debugElement = fixture.debugElement.query(By.css(`#${id}`));
+    const debugElement = fixture.debugElement.query(By.css(`#${id}`));
     if (debugElement === null) {
       return null;
     }

@@ -23,6 +23,7 @@ export class ProfileService {
   private headers: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
 
   private profileUrl: string;
+
   private _profile: ConnectableObservable<ExtProfile>;
 
   constructor(
@@ -35,11 +36,9 @@ export class ProfileService {
     if (this.auth.getToken() != null) {
       this.headers = this.headers.set('Authorization', `Bearer ${this.auth.getToken()}`);
     }
-    this.profileUrl = apiUrl + 'users';
+    this.profileUrl = `${apiUrl}users`;
     this._profile = this.userService.loggedInUser.pipe(
-      skipWhile((user) => {
-        return !user || !user.attributes;
-      }),
+      skipWhile((user) => !user || !user.attributes),
       map((user) => cloneDeep(user) as ExtUser),
       tap((user) => {
         if (user.attributes) {
@@ -78,12 +77,12 @@ export class ProfileService {
   }
 
   silentSave(profile: Profile) {
-    let clone = cloneDeep(profile) as any;
+    const clone = cloneDeep(profile) as any;
     delete clone.username;
     // Handle the odd naming of the field on the API
     clone.contextInformation = clone.store;
     delete clone.store;
-    let payload = JSON.stringify({
+    const payload = JSON.stringify({
       data: {
         attributes: clone,
         type: 'identities',
@@ -103,12 +102,11 @@ export class ProfileService {
           current.email &&
           current.username
           // TODO Add imageURL
-          //this.current.imageURL
+          // this.current.imageURL
         ) {
           return true;
-        } else {
-          return false;
         }
+        return false;
       }),
     );
   }

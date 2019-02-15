@@ -7,7 +7,9 @@ import { Operation, ResourceOperation } from './resource-operation';
  */
 export class Poller<L> {
   protected subscription: Subscription;
+
   protected pollPeriod = 3000;
+
   protected resourceCache = {};
 
   constructor(
@@ -34,7 +36,7 @@ export class Poller<L> {
   }
 
   protected closeSubscription() {
-    let subscription = this.subscription;
+    const subscription = this.subscription;
     if (subscription) {
       this.subscription = null;
       subscription.unsubscribe();
@@ -72,31 +74,29 @@ export class Poller<L> {
   private onListMessage(list: any) {
     // lets convert the list into resource events
     const resourceCache = this.resourceCache;
-    let newCache = {};
+    const newCache = {};
     if (list) {
-      for (let obj of list) {
-        let resource = obj.resource;
+      for (const obj of list) {
+        const resource = obj.resource;
         if (resource) {
           let operation: ResourceOperation;
-          let name = obj.name;
+          const name = obj.name;
           if (name) {
             newCache[name] = resource;
-            let old = resourceCache[name];
+            const old = resourceCache[name];
             if (old == undefined) {
               operation = new ResourceOperation(Operation.ADDED, resource);
-            } else {
-              if (isNewerResource(resource, old)) {
-                operation = new ResourceOperation(Operation.MODIFIED, resource);
-              }
+            } else if (isNewerResource(resource, old)) {
+              operation = new ResourceOperation(Operation.MODIFIED, resource);
             }
             this._dataStream.next(operation);
           }
         }
       }
     }
-    for (let name in resourceCache) {
+    for (const name in resourceCache) {
       if (newCache[name] == undefined) {
-        let resource = resourceCache[name];
+        const resource = resourceCache[name];
         if (resource != undefined) {
           this._dataStream.next(new ResourceOperation(Operation.DELETED, resource));
         }
@@ -107,13 +107,13 @@ export class Poller<L> {
 }
 
 export function isNewerResource(resource: any, old: any): boolean {
-  let oldRV = resourceVersion(old);
-  let newRV = resourceVersion(resource);
+  const oldRV = resourceVersion(old);
+  const newRV = resourceVersion(resource);
   return newRV && (!oldRV || newRV !== oldRV);
 }
 
 function resourceVersion(resource: any): string {
-  let obj = resource || {};
-  let metadata = obj.metadata || {};
+  const obj = resource || {};
+  const metadata = obj.metadata || {};
   return metadata.resourceVersion;
 }

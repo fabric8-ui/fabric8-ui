@@ -29,10 +29,12 @@ import { CreateWorkItemWidgetComponent } from './create-work-item-widget.compone
 })
 class HostComponent {
   userOwnsSpace: boolean;
+
   space: Space = {
     attributes: {},
     id: 'some-space-id',
   } as Space;
+
   loggedInUser: User = {
     id: 'fakeId',
     type: 'fakeType',
@@ -62,7 +64,7 @@ describe('CreateWorkItemWidgetComponent', () => {
         {
           provide: WorkItemService,
           useFactory: (): WorkItemService => {
-            let workItemServiceMock = jasmine.createSpyObj('WorkItemService', [
+            const workItemServiceMock = jasmine.createSpyObj('WorkItemService', [
               'resolveType',
               'resolveAreaForWorkItem',
               'getWorkItems',
@@ -78,7 +80,7 @@ describe('CreateWorkItemWidgetComponent', () => {
         {
           provide: FilterService,
           useFactory: (): FilterService => {
-            let filterServiceMock: jasmine.SpyObj<FilterService> = jasmine.createSpyObj(
+            const filterServiceMock: jasmine.SpyObj<FilterService> = jasmine.createSpyObj(
               'FilterService',
               ['queryBuilder', 'queryJoiner'],
             );
@@ -88,12 +90,12 @@ describe('CreateWorkItemWidgetComponent', () => {
         {
           provide: Router,
           useFactory: (): jasmine.SpyObj<Router> => {
-            let mockRouterEvent: any = {
+            const mockRouterEvent: any = {
               id: 1,
               url: 'mock-url',
             };
 
-            let mockRouter = jasmine.createSpyObj('Router', [
+            const mockRouter = jasmine.createSpyObj('Router', [
               'createUrlTree',
               'navigate',
               'serializeUrl',
@@ -107,21 +109,21 @@ describe('CreateWorkItemWidgetComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
     });
 
-    it('Should show blank state if there are no workitems', function() {
+    it('Should show blank state if there are no workitems', () => {
       testContext.testedDirective.myWorkItems = observableOf([]);
       testContext.detectChanges();
       expect(testContext.fixture.debugElement.query(By.css('.f8-blank-slate-card'))).not.toBeNull();
     });
 
-    it('Should have logged in user', function() {
+    it('Should have logged in user', () => {
       expect(testContext.testedDirective.loggedInUser).not.toBeNull();
     });
 
-    it('Should have current space', function() {
+    it('Should have current space', () => {
       expect(testContext.testedDirective.currentSpace).not.toBeNull();
     });
 
-    it('should enable buttons if the user owns the space', function() {
+    it('should enable buttons if the user owns the space', () => {
       testContext.hostComponent.userOwnsSpace = true;
       testContext.detectChanges();
       expect(
@@ -132,7 +134,7 @@ describe('CreateWorkItemWidgetComponent', () => {
       ).not.toBeNull();
     });
 
-    it('should disable buttons if the user does not own the space', function() {
+    it('should disable buttons if the user does not own the space', () => {
       testContext.hostComponent.userOwnsSpace = false;
       testContext.detectChanges();
 
@@ -146,7 +148,7 @@ describe('CreateWorkItemWidgetComponent', () => {
   });
 
   describe('Should test with WorkItems', () => {
-    let fakeWorkItem: WorkItem = {
+    const fakeWorkItem: WorkItem = {
       attributes: {
         'system.number': 1,
         'system.state': 'new',
@@ -162,15 +164,15 @@ describe('CreateWorkItemWidgetComponent', () => {
       type: 'workitems',
     };
 
-    let fakeWorkItem1 = cloneDeep(fakeWorkItem);
-    let fakeWorkItem2 = cloneDeep(fakeWorkItem);
+    const fakeWorkItem1 = cloneDeep(fakeWorkItem);
+    const fakeWorkItem2 = cloneDeep(fakeWorkItem);
 
     fakeWorkItem1.attributes['system.state'] = 'open';
     fakeWorkItem2.attributes['system.state'] = 'open';
 
-    let fakeWorkItems: WorkItem[] = [fakeWorkItem1, fakeWorkItem2];
+    const fakeWorkItems: WorkItem[] = [fakeWorkItem1, fakeWorkItem2];
 
-    let fakeWorkItemsObs: Observable<WorkItemsData> = observableOf({
+    const fakeWorkItemsObs: Observable<WorkItemsData> = observableOf({
       workItems: fakeWorkItems,
     } as WorkItemsData);
 
@@ -190,7 +192,7 @@ describe('CreateWorkItemWidgetComponent', () => {
         {
           provide: WorkItemService,
           useFactory: (): WorkItemService => {
-            let workItemServiceMock = jasmine.createSpyObj('WorkItemService', [
+            const workItemServiceMock = jasmine.createSpyObj('WorkItemService', [
               'resolveType',
               'resolveAreaForWorkItem',
               'getWorkItems',
@@ -206,7 +208,7 @@ describe('CreateWorkItemWidgetComponent', () => {
         {
           provide: FilterService,
           useFactory: (): FilterService => {
-            let filterServiceMock: jasmine.SpyObj<FilterService> = jasmine.createSpyObj(
+            const filterServiceMock: jasmine.SpyObj<FilterService> = jasmine.createSpyObj(
               'FilterService',
               ['queryBuilder', 'queryJoiner'],
             );
@@ -216,12 +218,12 @@ describe('CreateWorkItemWidgetComponent', () => {
         {
           provide: Router,
           useFactory: (): jasmine.SpyObj<Router> => {
-            let mockRouterEvent: any = {
+            const mockRouterEvent: any = {
               id: 1,
               url: 'mock-url',
             };
 
-            let mockRouter = jasmine.createSpyObj('Router', [
+            const mockRouter = jasmine.createSpyObj('Router', [
               'createUrlTree',
               'navigate',
               'serializeUrl',

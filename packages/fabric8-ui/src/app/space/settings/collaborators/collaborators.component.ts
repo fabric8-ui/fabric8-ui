@@ -26,16 +26,23 @@ import { AddCollaboratorsDialogComponent } from './add-collaborators-dialog/add-
 })
 export class CollaboratorsComponent implements OnInit, OnDestroy {
   private emptyStateConfig: EmptyStateConfig;
+
   private listConfig: ListConfig;
+
   private subscriptions: Subscription = new Subscription();
+
   private userToRemove: User;
 
   @ViewChild('addCollabDialog') addCollabDialog: AddCollaboratorsDialogComponent;
+
   @ViewChild('modalAdd') modalAdd: ModalDirective;
+
   @ViewChild('modalDelete') modalDelete: ModalDirective;
 
   context: Context;
+
   collaborators: User[];
+
   adminCollaborators: Array<string> = [];
 
   constructor(
@@ -161,9 +168,7 @@ export class CollaboratorsComponent implements OnInit, OnDestroy {
 
   addCollaboratorsToParent(addedUsers: User[]) {
     addedUsers.forEach((user) => {
-      let matchingUser = find(this.collaborators, (existing) => {
-        return existing.id === user.id;
-      });
+      const matchingUser = find(this.collaborators, (existing) => existing.id === user.id);
       if (!matchingUser) {
         this.collaborators.push(user);
       }

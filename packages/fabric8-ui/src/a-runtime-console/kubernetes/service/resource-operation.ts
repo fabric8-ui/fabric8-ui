@@ -13,13 +13,13 @@ export function messageEventToResourceOperation(msg): ResourceOperation {
     return msg as ResourceOperation;
   }
   if (msg instanceof MessageEvent) {
-    let me = msg as MessageEvent;
-    let data = me.data;
+    const me = msg as MessageEvent;
+    const data = me.data;
     if (data) {
-      var json = JSON.parse(data);
+      const json = JSON.parse(data);
       if (json) {
-        let type = json.type;
-        let resource = json.object;
+        const type = json.type;
+        const resource = json.object;
         if (type && resource) {
           switch (type) {
             case 'ADDED':
@@ -30,12 +30,9 @@ export function messageEventToResourceOperation(msg): ResourceOperation {
               return new ResourceOperation(Operation.DELETED, resource);
             default:
               console.log(
-                'Unknown WebSocket event type ' +
-                  type +
-                  ' for ' +
-                  resource +
-                  ' on ' +
-                  this.service.serviceUrl,
+                `Unknown WebSocket event type ${type} for ${resource} on ${
+                  this.service.serviceUrl
+                }`,
               );
           }
         }

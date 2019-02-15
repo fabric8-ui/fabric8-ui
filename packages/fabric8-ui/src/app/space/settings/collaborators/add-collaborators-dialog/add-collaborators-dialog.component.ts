@@ -16,13 +16,17 @@ import { debounceTime, distinctUntilChanged, switchMap, tap } from 'rxjs/operato
 })
 export class AddCollaboratorsDialogComponent implements OnInit {
   @Input() host: ModalDirective;
+
   @Input() spaceId: string;
 
   @Output() onAdded = new EventEmitter<User[]>();
 
   collaborators: User[] = [];
+
   selectedCollaborators: User[];
+
   loading: Boolean = false;
+
   searchTerm = new Subject<string>();
 
   constructor(private userService: UserService, private collaboratorService: CollaboratorService) {}
@@ -73,12 +77,9 @@ export class AddCollaboratorsDialogComponent implements OnInit {
 
   private sortCollaborators(): void {
     this.collaborators.sort(
-      (a: User, b: User): number => {
-        return (
-          a.attributes.fullName.localeCompare(b.attributes.fullName) ||
-          a.attributes.username.localeCompare(b.attributes.username)
-        );
-      },
+      (a: User, b: User): number =>
+        a.attributes.fullName.localeCompare(b.attributes.fullName) ||
+        a.attributes.username.localeCompare(b.attributes.username),
     );
   }
 }

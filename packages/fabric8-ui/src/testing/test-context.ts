@@ -31,9 +31,13 @@ import { By } from '@angular/platform-browser';
 
 export class TestContext<T, H> {
   fixture: ComponentFixture<H>;
+
   hostComponent: H;
+
   tested: DebugElement;
+
   testedDirective: T;
+
   testedElement: any;
 
   detectChanges() {
@@ -49,7 +53,7 @@ export function initContext<T, H>(
 ): TestContext<T, H> {
   const context = new TestContext<T, H>();
 
-  beforeEach(async(function() {
+  beforeEach(async(() => {
     const declarations = [testedType, hostType];
     if (moduleMetadata && moduleMetadata.declarations) {
       declarations.push(...moduleMetadata.declarations);
@@ -59,17 +63,15 @@ export function initContext<T, H>(
       .compileComponents();
   }));
 
-  beforeEach(function() {
+  beforeEach(() => {
     context.fixture = TestBed.createComponent(hostType);
     context.hostComponent = context.fixture.componentInstance;
     const testedDebugElement = context.fixture.debugElement.query(By.directive(testedType));
     if (!testedDebugElement) {
       throw new Error(
-        'Unable to find component under test of type ' +
-          testedType.name +
-          '. Please check your ' +
-          hostType.name +
-          ' in the failing test',
+        `Unable to find component under test of type ${testedType.name}. Please check your ${
+          hostType.name
+        } in the failing test`,
       );
     }
     context.tested = testedDebugElement;
@@ -82,7 +84,7 @@ export function initContext<T, H>(
     context.fixture.detectChanges();
   });
 
-  afterEach(function() {
+  afterEach(() => {
     if (context.fixture) {
       context.fixture.destroy();
       context.fixture.nativeElement.remove();

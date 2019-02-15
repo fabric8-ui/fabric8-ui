@@ -9,6 +9,7 @@ import { catchError, map } from 'rxjs/operators';
 @Injectable()
 export class TenantService {
   private headers: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
+
   private tenantUrl: string;
 
   constructor(
@@ -20,7 +21,7 @@ export class TenantService {
     if (this.auth.getToken() != undefined) {
       this.headers = this.headers.set('Authorization', `Bearer ${this.auth.getToken()}`);
     }
-    this.tenantUrl = apiUrl + 'user/services';
+    this.tenantUrl = `${apiUrl}user/services`;
   }
 
   /**
@@ -30,9 +31,7 @@ export class TenantService {
   getTenant(): Observable<any> {
     return this.http.get(this.tenantUrl, { headers: this.headers }).pipe(
       map((res: any) => res.data),
-      catchError((error: HttpErrorResponse) => {
-        return this.handleError(error);
-      }),
+      catchError((error: HttpErrorResponse) => this.handleError(error)),
     );
   }
 
@@ -48,11 +47,7 @@ export class TenantService {
         observe: 'response',
         responseType: 'text',
       })
-      .pipe(
-        catchError((error: HttpErrorResponse) => {
-          return this.handleError(error);
-        }),
-      );
+      .pipe(catchError((error: HttpErrorResponse) => this.handleError(error)));
   }
 
   /**
@@ -61,9 +56,7 @@ export class TenantService {
    */
   cleanupTenant(): Observable<any> {
     return this.http.delete(this.tenantUrl, { headers: this.headers, responseType: 'text' }).pipe(
-      catchError((error: HttpErrorResponse) => {
-        return this.handleError(error);
-      }),
+      catchError((error: HttpErrorResponse) => this.handleError(error)),
       map(() => null),
     );
   }

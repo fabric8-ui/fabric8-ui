@@ -35,25 +35,45 @@ import { SpacesType } from './my-spaces-toolbar/my-spaces-toolbar.component';
 })
 export class MySpacesComponent implements OnDestroy, OnInit {
   listConfig: ListConfig;
+
   resultsCount: number = 0;
 
   @ViewChild(MySpacesSearchSpacesDialog) private searchSpacesDialog: MySpacesSearchSpacesDialog;
 
   private readonly pageName = 'myspaces';
-  private _spaces: Space[] = []; // current selection of mySpaces | sharedSpaces
-  private displayedSpaces: Space[] = []; // spaces visible in the UI after filters & sorting
-  private mySpaces: Space[] = []; // spaces owned by the user
-  private sharedSpaces: Space[] = []; // spaces where the user is a collaborator
+
+  private _spaces: Space[] = [];
+
+  // current selection of mySpaces | sharedSpaces
+  private displayedSpaces: Space[] = [];
+
+  // spaces visible in the UI after filters & sorting
+  private mySpaces: Space[] = [];
+
+  // spaces owned by the user
+  private sharedSpaces: Space[] = [];
+
+  // spaces where the user is a collaborator
   private appliedFilters: Filter[];
+
   private spacesCount: Observable<number>;
+
   private context: Context;
+
   private currentSortField: SortField;
+
   private mySpacesEmptyStateConfig: EmptyStateConfig;
+
   private sharedSpacesEmptyStateConfig: EmptyStateConfig;
+
   private isAscendingSort: boolean = true;
+
   private loggedInUser: User;
+
   private modalRef: BsModalRef;
+
   private spaceToDelete: Space;
+
   private subscriptions: Subscription[] = [];
 
   constructor(
@@ -151,7 +171,8 @@ export class MySpacesComponent implements OnDestroy, OnInit {
           )
           .subscribe(
             (mySpaces: Space[]): void => {
-              this._spaces = this.mySpaces = mySpaces;
+              this._spaces = mySpaces;
+              this.mySpaces = mySpaces;
               this.updateSpaces();
             },
           ),
@@ -198,14 +219,12 @@ export class MySpacesComponent implements OnDestroy, OnInit {
   // Events
 
   handlePinChange($event: any): void {
-    let index: any = findIndex(
+    const index: any = findIndex(
       this.displayedSpaces,
-      (obj: Space): boolean => {
-        return obj.id === $event.id;
-      },
+      (obj: Space): boolean => obj.id === $event.id,
     );
     if (index > -1) {
-      let space: any = this.displayedSpaces[index];
+      const space: any = this.displayedSpaces[index];
       space.showPin = space.showPin === undefined ? true : !space.showPin;
       this.savePins();
       this.updateSpaces();
@@ -215,7 +234,7 @@ export class MySpacesComponent implements OnDestroy, OnInit {
   // Filter
 
   applyFilters(): void {
-    let filters = this.appliedFilters;
+    const filters = this.appliedFilters;
     this.displayedSpaces = [];
     if (filters && filters.length > 0) {
       this._spaces.forEach(
@@ -234,7 +253,7 @@ export class MySpacesComponent implements OnDestroy, OnInit {
   matchesFilter(space: Space, filter: Filter): boolean {
     let match = true;
     if (filter.field.id === 'name') {
-      let re = new RegExp(filter.value, 'i');
+      const re = new RegExp(filter.value, 'i');
       match = space.attributes.name.match(re) !== null;
     }
     return match;
@@ -270,15 +289,10 @@ export class MySpacesComponent implements OnDestroy, OnInit {
 
   removeSpace(): void {
     if (this.context && this.context.user && this.spaceToDelete) {
-      let space = this.spaceToDelete;
+      const space = this.spaceToDelete;
       this.spaceService.delete(space).subscribe(
         (): void => {
-          let index: any = findIndex(
-            this._spaces,
-            (obj: Space): boolean => {
-              return obj.id === space.id;
-            },
-          );
+          const index: any = findIndex(this._spaces, (obj: Space): boolean => obj.id === space.id);
           if (has(this._spaces[index], 'showPin')) {
             this.savePins();
           }
@@ -313,7 +327,7 @@ export class MySpacesComponent implements OnDestroy, OnInit {
       compValue = space1.attributes.name.localeCompare(space2.attributes.name);
     }
     if (!this.isAscendingSort && compValue) {
-      compValue = compValue * -1;
+      compValue *= -1;
     }
     return compValue;
   }
@@ -348,8 +362,8 @@ export class MySpacesComponent implements OnDestroy, OnInit {
     if (this.loggedInUser.attributes === undefined) {
       return;
     }
-    let contextInformation: any = this.loggedInUser.attributes['contextInformation'];
-    let pins: any[] =
+    const contextInformation: any = this.loggedInUser.attributes['contextInformation'];
+    const pins: any[] =
       contextInformation !== undefined && contextInformation.pins !== undefined
         ? contextInformation.pins[this.pageName]
         : undefined;
@@ -371,14 +385,14 @@ export class MySpacesComponent implements OnDestroy, OnInit {
   }
 
   savePins(): void {
-    let profile = this.getTransientProfile();
+    const profile = this.getTransientProfile();
     if (profile.contextInformation === undefined) {
       profile.contextInformation = {};
     }
     if (profile.contextInformation.pins === undefined) {
       profile.contextInformation.pins = {};
     }
-    let pins: any[] = [];
+    const pins: any[] = [];
     this.displayedSpaces.forEach(
       (space: any): void => {
         if (space.showPin === true) {
@@ -411,7 +425,7 @@ export class MySpacesComponent implements OnDestroy, OnInit {
    * @returns {ExtProfile} The updated transient profile
    */
   private getTransientProfile(): ExtProfile {
-    let profile: ExtProfile = this.gettingStartedService.createTransientProfile();
+    const profile: ExtProfile = this.gettingStartedService.createTransientProfile();
     delete profile.username;
     return profile;
   }

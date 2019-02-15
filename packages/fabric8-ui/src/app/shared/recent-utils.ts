@@ -28,11 +28,12 @@ export abstract class RecentUtils<T> {
     recent: T[],
     compareFn: ((a: T, b: T) => boolean) = this.compareElements,
   ): RecentData<T> {
-    let index: number = recent.findIndex((t: T) => compareFn(t, changed));
+    const index: number = recent.findIndex((t: T) => compareFn(t, changed));
     if (index === 0) {
       // continue only if changed is new, or requires a move within recent
-      return { recent: recent, isSaveRequired: false };
-    } else if (index > 0) {
+      return { recent, isSaveRequired: false };
+    }
+    if (index > 0) {
       // if changed exists in recent, move it to the front
       recent.splice(index, 1);
       recent.unshift(changed);
@@ -44,7 +45,7 @@ export abstract class RecentUtils<T> {
         recent.pop();
       }
     }
-    return { recent: recent, isSaveRequired: true };
+    return { recent, isSaveRequired: true };
   }
 
   onBroadcastDeleted<K>(
@@ -52,12 +53,12 @@ export abstract class RecentUtils<T> {
     recent: T[],
     compareFn: ((a: T, b: K) => boolean) = this.compareElements,
   ): RecentData<T> {
-    let index: number = recent.findIndex((t: T) => compareFn(t, deleted));
+    const index: number = recent.findIndex((t: T) => compareFn(t, deleted));
     if (index === -1) {
-      return { recent: recent, isSaveRequired: false };
+      return { recent, isSaveRequired: false };
     }
     recent.splice(index, 1);
-    return { recent: recent, isSaveRequired: true };
+    return { recent, isSaveRequired: true };
   }
 
   saveProfile(patch: ExtProfile): void {

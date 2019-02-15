@@ -34,8 +34,11 @@ export interface UserServiceNamespace {
 @Injectable()
 export class PipelinesService {
   private readonly headers: HttpHeaders;
+
   private readonly apiUrl: string;
+
   private loggedIn: boolean = false;
+
   private openshiftConsoleUrl: Observable<string>;
 
   constructor(
@@ -54,7 +57,7 @@ export class PipelinesService {
       this.loggedIn = true;
     }
     this.headers = headers;
-    this.apiUrl = witUrl + 'user/services';
+    this.apiUrl = `${witUrl}user/services`;
   }
 
   getCurrentPipelines(): Observable<BuildConfig[]> {
@@ -86,19 +89,16 @@ export class PipelinesService {
           ),
           map(
             (namespaces: UserServiceNamespace[]): string => {
-              for (let namespace of namespaces) {
+              for (const namespace of namespaces) {
                 if (
                   namespace.name &&
                   namespace.type &&
                   namespace.type === 'user' &&
                   namespace['cluster-console-url']
                 ) {
-                  return (
-                    namespace['cluster-console-url'] +
-                    'project/' +
-                    namespace.name +
-                    '/browse/pipelines'
-                  );
+                  return `${namespace['cluster-console-url']}project/${
+                    namespace.name
+                  }/browse/pipelines`;
                 }
               }
               return '';
@@ -113,11 +113,11 @@ export class PipelinesService {
 
   private setupBuildConfigLinks(buildConfigs: BuildConfig[], consoleUrl: string): BuildConfig[] {
     if (consoleUrl) {
-      for (let build of buildConfigs) {
+      for (const build of buildConfigs) {
         build.openShiftConsoleUrl = `${consoleUrl}/${build.name}`;
         build.editPipelineUrl = build.openShiftConsoleUrl.replace('browse', 'edit');
         if (build.interestingBuilds) {
-          for (let b of build.interestingBuilds) {
+          for (const b of build.interestingBuilds) {
             b.openShiftConsoleUrl = `${build.openShiftConsoleUrl}/${build.name}-${b.buildNumber}`;
           }
         }

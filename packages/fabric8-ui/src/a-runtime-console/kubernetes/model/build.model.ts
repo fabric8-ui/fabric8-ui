@@ -7,9 +7,11 @@ import { pathJoin } from './utils';
 const serviceEnvironmentsAnnotationPrefix = 'environment.services.fabric8.io/';
 
 export function sortedKeys(map: Map<String, any>): string[] {
-  let answer = [];
-  for (let key in map) {
-    answer.push(key);
+  const answer = [];
+  for (const key in map) {
+    if (key) {
+      answer.push(key);
+    }
   }
   answer.sort();
   return answer;
@@ -17,19 +19,27 @@ export function sortedKeys(map: Map<String, any>): string[] {
 
 export class Build extends KubernetesSpecResource {
   statusPhase: string;
+
   duration: number;
+
   iconStyle: string;
+
   buildNumber: string;
+
   buildNumberInt: number = 0;
+
   buildConfigName: string;
 
   jenkinsBuildURL: string;
+
   logURL: string;
 
   repositoryInformation: any;
 
   private _pipelineStages: Array<PipelineStage>;
-  private _serviceUrls: Array<ServiceUrl> = new Array<ServiceUrl>();
+
+  private _serviceUrls: Array<ServiceUrl> = [];
+
   private _serviceEnvironmentsMap: Map<string, ServiceEnvironments> = new Map<
     string,
     ServiceEnvironments
@@ -37,22 +47,22 @@ export class Build extends KubernetesSpecResource {
 
   get serviceUrls(): Array<ServiceUrl> {
     // lets force the lazy creation
-    let foo = this.serviceEnvironmentMap;
+    const foo = this.serviceEnvironmentMap;
     return this._serviceUrls;
   }
 
   get serviceEnvironmentMap(): Map<string, ServiceEnvironments> {
-    let annotations = this.annotations;
+    const annotations = this.annotations;
     if (annotations) {
-      for (let key in annotations) {
+      for (const key in annotations) {
         if (key && key.indexOf(serviceEnvironmentsAnnotationPrefix) === 0) {
-          let yamlText = annotations[key];
-          let envKey = key.substring(serviceEnvironmentsAnnotationPrefix.length);
+          const yamlText = annotations[key];
+          const envKey = key.substring(serviceEnvironmentsAnnotationPrefix.length);
           if (envKey) {
             try {
-              let config = jsyaml.safeLoad(yamlText);
+              const config = jsyaml.safeLoad(yamlText);
               if (config) {
-                let se = new ServiceEnvironments(
+                const se = new ServiceEnvironments(
                   config.environmentName as string,
                   config.serviceUrls as Map<string, string>,
                   config.deploymentVersions as Map<string, string>,
@@ -60,31 +70,31 @@ export class Build extends KubernetesSpecResource {
                 this._serviceEnvironmentsMap[envKey] = se;
               }
             } catch (e) {
-              console.log('annotation on build ' + this.name + ' could not parse YAML: ' + e);
+              console.log(`annotation on build ${this.name} could not parse YAML: ${e}`);
             }
           } else {
-            console.log('annotation on build ' + this.name + ' has no envKey for ' + key);
+            console.log(`annotation on build ${this.name} has no envKey for ${key}`);
           }
         }
       }
       // now lets build the service URls
-      let serviceUrls = this._serviceUrls;
+      const serviceUrls = this._serviceUrls;
       serviceUrls.splice(0, serviceUrls.length);
-      let seMap = this._serviceEnvironmentsMap;
-      let keys = sortedKeys(seMap);
-      for (let key of keys) {
-        let se = seMap[key];
+      const seMap = this._serviceEnvironmentsMap;
+      const keys = sortedKeys(seMap);
+      for (const key of keys) {
+        const se = seMap[key];
         if (se) {
-          let envName = se.environmentName;
-          let serviceUrlMap = se.serviceUrls;
+          const envName = se.environmentName;
+          const serviceUrlMap = se.serviceUrls;
           if (envName) {
-            let serviceKeys = sortedKeys(serviceUrlMap);
-            for (let serviceKey of serviceKeys) {
-              let url = serviceUrlMap[serviceKey];
+            const serviceKeys = sortedKeys(serviceUrlMap);
+            for (const serviceKey of serviceKeys) {
+              const url = serviceUrlMap[serviceKey];
               if (url) {
                 serviceUrls.push(new ServiceUrl(envName, serviceKey, url));
               } else {
-                console.log('build ' + this.name + ' does not have a URL for ' + serviceKey);
+                console.log(`build ${this.name} does not have a URL for ${serviceKey}`);
               }
             }
           }
@@ -98,8 +108,8 @@ export class Build extends KubernetesSpecResource {
    * Returns the latest pipeline stage that is associated with a running service URL
    */
   get lastPipelineStageWithService(): PipelineStage {
-    var answer: PipelineStage = null;
-    for (let stage of this.pipelineStages) {
+    let answer: PipelineStage = null;
+    for (const stage of this.pipelineStages) {
       if (stage.serviceUrl) {
         answer = stage;
       }
@@ -109,17 +119,17 @@ export class Build extends KubernetesSpecResource {
 
   get pipelineStages(): Array<PipelineStage> {
     if (!this._pipelineStages) {
-      this._pipelineStages = new Array<PipelineStage>();
+      this._pipelineStages = [];
       // lets parse the annotation from Jenkins sync plugin
-      var json = this.annotations['openshift.io/jenkins-status-json'];
+      const json = this.annotations['openshift.io/jenkins-status-json'];
       if (json) {
         try {
-          var obj = JSON.parse(json);
+          const obj = JSON.parse(json);
           if (obj != undefined) {
-            var stages = obj.stages;
+            const stages = obj.stages;
             if (stages && stages.length) {
               stages.forEach((stage) => {
-                var pipelineStage = new PipelineStage(stage, this);
+                const pipelineStage = new PipelineStage(stage, this);
                 if (pipelineStage.name) {
                   this._pipelineStages.push(pipelineStage);
                 }
@@ -135,16 +145,16 @@ export class Build extends KubernetesSpecResource {
   }
 
   get firstPendingInputAction(): PendingInputAction {
-    let array = this.pendingInputActions;
+    const array = this.pendingInputActions;
     return array && array.length ? array[0] : null;
   }
 
   get pendingInputActions(): PendingInputAction[] {
-    let answer: PendingInputAction[] = [];
-    var json = this.annotations['openshift.io/jenkins-pending-input-actions-json'];
+    const answer: PendingInputAction[] = [];
+    const json = this.annotations['openshift.io/jenkins-pending-input-actions-json'];
     if (json) {
       try {
-        var obj = JSON.parse(json);
+        const obj = JSON.parse(json);
         if (obj != undefined) {
           if (obj && obj.length) {
             obj.forEach((input) => {
@@ -177,14 +187,14 @@ export class Build extends KubernetesSpecResource {
   updateValuesFromResource() {
     this._pipelineStages = null;
     super.updateValuesFromResource();
-    let status = this.status || {};
-    let spec = this.spec || {};
+    const status = this.status || {};
+    const spec = this.spec || {};
     this.statusPhase = status.phase || '';
     this.duration = status.duration || 0;
     if (this.duration) {
       this.duration = this.duration / 1000000000;
     }
-    let statusConfig = status.config || {};
+    const statusConfig = status.config || {};
     this.buildConfigName = statusConfig.name || '';
     this.buildNumber = this.annotations['openshift.io/build.number'] || '';
     this.buildNumberInt = 0;
@@ -237,7 +247,7 @@ export class ServiceUrl {
   label: string;
 
   constructor(public environmentName: string, public name: string, public url: string) {
-    this.label = environmentName ? environmentName + ': ' + name : name;
+    this.label = environmentName ? `${environmentName}: ${name}` : name;
   }
 }
 
@@ -249,9 +259,9 @@ export class ServiceEnvironments {
   ) {}
 
   toAppInfo(name: string): AppInfo {
-    let deployUrl = this.serviceUrls[name] || '';
-    let version = this.deploymentVersions[name] || '';
-    let environmentName = this.environmentName;
+    const deployUrl = this.serviceUrls[name] || '';
+    const version = this.deploymentVersions[name] || '';
+    const environmentName = this.environmentName;
     return new AppInfo(name, deployUrl, version, environmentName);
   }
 }
@@ -269,12 +279,17 @@ export class Builds extends Array<Build> {}
 
 export class PendingInputAction {
   id: string;
+
   proceedText: string;
+
   message: string;
+
   inputs: any[];
 
   proceedUrl: string;
+
   abortUrl: string;
+
   redirectApprovalUrl: string;
 }
 

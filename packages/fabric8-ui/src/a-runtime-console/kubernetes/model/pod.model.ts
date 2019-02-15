@@ -2,34 +2,35 @@ import { KubernetesSpecResource } from './kuberentesspecresource.model';
 
 export class Pod extends KubernetesSpecResource {
   public images: Array<string>;
+
   public phase: string;
 
   public setResource(resource) {
-    var answer = super.setResource(resource);
-    this.images = new Array<string>();
-    let spec = this.spec;
+    const answer = super.setResource(resource);
+    this.images = [];
+    const spec = this.spec;
     if (spec) {
-      let containers = spec.containers;
+      const containers = spec.containers;
       if (containers) {
         containers.forEach((c) => {
-          let image = c.image;
+          const image = c.image;
           if (image) {
             this.images.push(image);
           }
         });
       }
     }
-    let metadata = resource.metadata || {};
+    const metadata = resource.metadata || {};
     if (metadata.deletionTimestamp) {
       this.phase = 'Terminating';
     } else {
-      let status = this.status;
+      const status = this.status;
       if (status) {
         this.phase = status.phase;
-        let containerStatuses = status.containerStatuses;
+        const containerStatuses = status.containerStatuses;
         if (containerStatuses && containerStatuses.length) {
           let ready = true;
-          for (let cs of containerStatuses) {
+          for (const cs of containerStatuses) {
             if (!cs.ready) {
               ready = false;
               break;

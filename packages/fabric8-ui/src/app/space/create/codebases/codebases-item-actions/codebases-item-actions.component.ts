@@ -18,12 +18,17 @@ import { WorkspacesService } from '../services/workspaces.service';
 })
 export class CodebasesItemActionsComponent implements OnDestroy, OnInit {
   @Input() cheRunning: boolean;
+
   @Input() codebase: Codebase;
+
   @Input() index: number = -1;
+
   @ViewChild(ModalDirective) modal: ModalDirective;
 
   subscriptions: Subscription[] = [];
+
   workspaceBusy: boolean = false;
+
   dialog: Dialog;
 
   constructor(
@@ -62,7 +67,7 @@ export class CodebasesItemActionsComponent implements OnDestroy, OnInit {
                 map((workspaceLinks) => {
                   this.workspaceBusy = false;
                   if (workspaceLinks != undefined) {
-                    let name = this.getWorkspaceName(workspaceLinks.links.open);
+                    const name = this.getWorkspaceName(workspaceLinks.links.open);
                     this.notifications.message({
                       message: `Workspace created!`,
                       type: NotificationType.SUCCESS,
@@ -81,15 +86,14 @@ export class CodebasesItemActionsComponent implements OnDestroy, OnInit {
                   }
                 }),
               );
-            } else {
-              // display error message
-              this.workspaceBusy = false;
-              this.notifications.message({
-                message: `OpenShift Online cluster is currently out of capacity, workspace cannot be started.`,
-                type: NotificationType.DANGER,
-              } as Notification);
-              return EMPTY;
             }
+            // display error message
+            this.workspaceBusy = false;
+            this.notifications.message({
+              message: `OpenShift Online cluster is currently out of capacity, workspace cannot be started.`,
+              type: NotificationType.DANGER,
+            } as Notification);
+            return EMPTY;
           }),
         )
         .subscribe(
@@ -129,13 +133,13 @@ export class CodebasesItemActionsComponent implements OnDestroy, OnInit {
         (codebase: Codebase) => {
           this.modal.hide();
           this.broadcaster.broadcast('codebaseDeleted', {
-            codebase: codebase,
+            codebase,
           });
         },
         (error: any) => {
           this.modal.hide();
           this.handleError(
-            'Failed to deleteCodebase codebase ' + this.codebase.name,
+            `Failed to deleteCodebase codebase ${this.codebase.name}`,
             NotificationType.DANGER,
           );
         },
@@ -154,14 +158,14 @@ export class CodebasesItemActionsComponent implements OnDestroy, OnInit {
    * @returns {string} The workspace name (e.g., quydcbib)
    */
   private getWorkspaceName(url: string): string {
-    let index = url.lastIndexOf('/') + 1;
+    const index = url.lastIndexOf('/') + 1;
     return url.substring(index, url.length);
   }
 
   private handleError(error: string, type: NotificationType) {
     this.notifications.message({
       message: error,
-      type: type,
+      type,
     } as Notification);
   }
 }

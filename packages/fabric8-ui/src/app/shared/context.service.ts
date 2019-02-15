@@ -45,10 +45,15 @@ interface RawContext {
 @Injectable()
 export class ContextService extends RecentUtils<Context> implements Contexts {
   readonly RESERVED_WORDS: string[] = [];
+
   private _current: Subject<Context> = new ReplaySubject<Context>(1);
+
   private _default: ConnectableObservable<Context>;
+
   private _currentUser: string;
+
   private _currentContextUser: string;
+
   private subscriptions: Subscription[] = [];
 
   constructor(
@@ -83,16 +88,16 @@ export class ContextService extends RecentUtils<Context> implements Contexts {
           if (!(val && val.id)) {
             // this is a logout event
             return null;
-          } else if (val.attributes.username) {
+          }
+          if (val.attributes.username) {
             this._currentUser = val.attributes.username;
             return val.attributes.username;
-          } else {
-            this.notifications.message({
-              message: 'Something went badly wrong. Please try again later or ask for help.',
-              type: NotificationType.DANGER,
-            } as Notification);
-            throw 'Unknown user';
           }
+          this.notifications.message({
+            message: 'Something went badly wrong. Please try again later or ask for help.',
+            type: NotificationType.DANGER,
+          } as Notification);
+          throw 'Unknown user';
         },
       ),
       filter((val: string): boolean => val !== null),
@@ -107,11 +112,10 @@ export class ContextService extends RecentUtils<Context> implements Contexts {
               space: null,
               type: ContextTypes.BUILTIN.get('user'),
               name: val.attributes.username,
-              path: '/' + val.attributes.username,
+              path: `/${val.attributes.username}`,
             } as Context;
-          } else {
-            return {} as Context;
           }
+          return {} as Context;
         },
       ),
       multicast(() => new ReplaySubject(1)),
@@ -168,9 +172,8 @@ export class ContextService extends RecentUtils<Context> implements Contexts {
   compareContextToSpace(c: Context, s: Space): boolean {
     if (c.space) {
       return c.space.id === s.id;
-    } else {
-      return false;
     }
+    return false;
   }
 
   get current(): Observable<Context> {
@@ -186,7 +189,7 @@ export class ContextService extends RecentUtils<Context> implements Contexts {
   }
 
   changeContext(navigation: Observable<Navigation>): Observable<Context> {
-    let res = navigation.pipe(
+    const res = navigation.pipe(
       // Fetch the objects from the REST API
       switchMap(
         (val: Navigation): Observable<RawContext | Context> => {
@@ -194,9 +197,8 @@ export class ContextService extends RecentUtils<Context> implements Contexts {
             // If it's a space that's been requested then load the space creator as the owner
             return this.loadSpace(val.user, val.space).pipe(
               map(
-                (space: Space): RawContext => {
-                  return { user: space.relationalData.creator, space: space } as RawContext;
-                },
+                (space: Space): RawContext =>
+                  ({ user: space.relationalData.creator, space } as RawContext),
               ),
               catchError(
                 (err: string): Observable<RawContext> => {
@@ -207,45 +209,35 @@ export class ContextService extends RecentUtils<Context> implements Contexts {
                 },
               ),
             );
-          } else {
-            // Otherwise, load the user and use that as the owner
-            return this.loadUser(val.user).pipe(
-              map(
-                (user: User): RawContext => {
-                  return { user: user, space: null } as RawContext;
-                },
-              ),
-              catchError(
-                (err: string): Observable<RawContext> => {
-                  console.log(
-                    `Owner ${val.user} from path ${val.url} was not found because of ${err}`,
-                  );
-                  return observableThrowError(
-                    `Owner ${val.user} from path ${val.url} was not found because of ${err}`,
-                  );
-                },
-              ),
-            );
           }
+          // Otherwise, load the user and use that as the owner
+          return this.loadUser(val.user).pipe(
+            map((user: User): RawContext => ({ user, space: null } as RawContext)),
+            catchError(
+              (err: string): Observable<RawContext> => {
+                console.log(
+                  `Owner ${val.user} from path ${val.url} was not found because of ${err}`,
+                );
+                return observableThrowError(
+                  `Owner ${val.user} from path ${val.url} was not found because of ${err}`,
+                );
+              },
+            ),
+          );
         },
       ),
       // Get the list of features enabled for this given user to know whether we should display feature menu.
       switchMap(
-        (val: RawContext): Observable<RawContext> => {
-          return this.toggleService.getAllFeaturesEnabledByLevel().pipe(
+        (val: RawContext): Observable<RawContext> =>
+          this.toggleService.getAllFeaturesEnabledByLevel().pipe(
             map(
               (features: Feature[]): RawContext => {
                 val.user.features = features;
                 return val;
               },
             ),
-            catchError(
-              (): Observable<RawContext> => {
-                return of(val);
-              },
-            ),
-          );
-        },
+            catchError((): Observable<RawContext> => of(val)),
+          ),
       ),
       // Use a map to convert from a navigation url to a context
       map((val: RawContext) => this.buildContext(val)),
@@ -301,7 +293,7 @@ export class ContextService extends RecentUtils<Context> implements Contexts {
         path: null,
       } as Context;
       c.type = ContextTypes.BUILTIN.get('space');
-      c.path = '/' + c.user.attributes.username + '/' + c.space.attributes.name;
+      c.path = `/${c.user.attributes.username}/${c.space.attributes.name}`;
       c.name = c.space.attributes.name;
     } else if (val.user) {
       c = {
@@ -313,7 +305,7 @@ export class ContextService extends RecentUtils<Context> implements Contexts {
       } as Context;
       c.type = ContextTypes.BUILTIN.get('user');
       // TODO replace path with username once parameterized routes are working
-      c.path = '/' + c.user.attributes.username;
+      c.path = `/${c.user.attributes.username}`;
       c.name = c.user.attributes.username;
     } // TODO add type detection for organization and team
     if (c.type != undefined) {
@@ -334,9 +326,8 @@ export class ContextService extends RecentUtils<Context> implements Contexts {
         (val: User): User => {
           if (val && val.id) {
             return val;
-          } else {
-            throw new Error(`No user found for ${userName}`);
           }
+          throw new Error(`No user found for ${userName}`);
         },
       ),
     );
@@ -348,7 +339,8 @@ export class ContextService extends RecentUtils<Context> implements Contexts {
         new Error(`User name ${userName} contains reserved characters.`),
         asapScheduler,
       );
-    } else if (this.checkForReservedWords(spaceName)) {
+    }
+    if (this.checkForReservedWords(spaceName)) {
       return observableThrowError(
         new Error(`Space name ${spaceName} contains reserved characters.`),
         asapScheduler,
@@ -357,9 +349,8 @@ export class ContextService extends RecentUtils<Context> implements Contexts {
 
     if (userName && spaceName) {
       return this.spaceService.getSpaceByName(userName, spaceName);
-    } else {
-      return of({} as Space);
     }
+    return of({} as Space);
   }
 
   private checkForReservedWords(arg: string): boolean {
@@ -368,7 +359,7 @@ export class ContextService extends RecentUtils<Context> implements Contexts {
       if (arg.startsWith('_')) {
         return true;
       }
-      for (let r of this.RESERVED_WORDS) {
+      for (const r of this.RESERVED_WORDS) {
         if (arg === r) {
           return true;
         }
@@ -398,34 +389,30 @@ export class ContextService extends RecentUtils<Context> implements Contexts {
                         },
                       ),
                     );
-                  } else {
-                    return this.userService.getUserByUserId(raw.user).pipe(
-                      catchError(
-                        (err: string): Observable<Context> => {
-                          console.log('Unable to restore recent context', err);
-                          return EMPTY;
-                        },
-                      ),
-                      map(
-                        (val: Context | User): Context => {
-                          return this.buildContext({ user: val } as RawContext);
-                        },
-                      ),
-                    );
                   }
+                  return this.userService.getUserByUserId(raw.user).pipe(
+                    catchError(
+                      (err: string): Observable<Context> => {
+                        console.log('Unable to restore recent context', err);
+                        return EMPTY;
+                      },
+                    ),
+                    map(
+                      (val: Context | User): Context =>
+                        this.buildContext({ user: val } as RawContext),
+                    ),
+                  );
                 },
               ),
             ).pipe(
               map(
-                (contexts: Context[]): Context[] => {
+                (contexts: Context[]): Context[] =>
                   // remove null context values resulting from getSpaceById throwing an error
-                  return contexts.filter((context: Context): boolean => context !== null);
-                },
+                  contexts.filter((context: Context): boolean => context !== null),
               ),
             );
-          } else {
-            return of([]);
           }
+          return of([]);
         },
       ),
     );
@@ -433,7 +420,7 @@ export class ContextService extends RecentUtils<Context> implements Contexts {
 
   private saveRecentContexts(recent: Context[]): void {
     this._recent.next(recent);
-    let patch = {
+    const patch = {
       store: {
         recentContexts: recent.map(
           (ctx) =>

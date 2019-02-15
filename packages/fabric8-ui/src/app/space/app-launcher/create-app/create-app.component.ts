@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Broadcaster } from 'ngx-base';
-import { Notifications, NotificationType } from 'ngx-base';
+import { Broadcaster, Notifications, NotificationType } from 'ngx-base';
 import { DependencyCheck, Projectile } from 'ngx-launcher';
 import { Subscription } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
@@ -18,6 +17,7 @@ type QueryJson = {
 })
 export class CreateAppComponent implements OnDestroy, OnInit {
   subscriptions: Subscription[] = [];
+
   projectName: string;
 
   constructor(
@@ -62,7 +62,7 @@ export class CreateAppComponent implements OnDestroy, OnInit {
 
   addQuery(): QueryJson {
     this.projectName = this.projectile.sharedState.state.projectName;
-    const query = '{"application":["' + this.projectName + '"]}';
+    const query = `{"application":["${this.projectName}"]}`;
     return {
       q: query,
     };
@@ -84,12 +84,11 @@ export class CreateAppComponent implements OnDestroy, OnInit {
                   window.open(workSpaceLinks.links.open, '_blank');
                 }),
               );
-            } else {
-              this.notifications.message({
-                message: `Che cluster is full`,
-                type: NotificationType.WARNING,
-              });
             }
+            this.notifications.message({
+              message: `Che cluster is full`,
+              type: NotificationType.WARNING,
+            });
           }),
         )
         .subscribe(),

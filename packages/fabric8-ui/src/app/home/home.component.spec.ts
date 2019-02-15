@@ -4,12 +4,12 @@ import { Broadcaster } from 'ngx-base';
 import { UserService, AuthenticationService, User } from 'ngx-login-client';
 import { createMock } from 'testing/mock';
 import { initContext, TestContext } from 'testing/test-context';
+import { ActivatedRoute, Router } from '@angular/router';
+import { of, ConnectableObservable } from 'rxjs';
 import { LoginService } from '../shared/login.service';
 import { HomeComponent } from './home.component';
-import { ActivatedRoute, Router } from '@angular/router';
 import { ProviderService } from '../shared/account/provider.service';
-import { ExtProfile } from './../getting-started/services/getting-started.service';
-import { of, ConnectableObservable } from 'rxjs';
+import { ExtProfile } from '../getting-started/services/getting-started.service';
 
 @Component({
   template: '<alm-home></alm-home>',
@@ -79,7 +79,7 @@ describe('LandingPageComponent', () => {
         {
           provide: AuthenticationService,
           useFactory: () => {
-            let mockAuthenticationService = createMock(AuthenticationService);
+            const mockAuthenticationService = createMock(AuthenticationService);
             mockAuthenticationService.isLoggedIn.and.returnValue(true);
             mockAuthenticationService.isOpenShiftConnected.and.returnValue(of(true));
 
@@ -91,16 +91,16 @@ describe('LandingPageComponent', () => {
     },
   );
 
-  it('should create home component', function() {
+  it('should create home component', () => {
     expect(testHomeContext).toBeDefined();
   });
 
-  it('should have a defined user after login', function() {
+  it('should have a defined user after login', () => {
     const homeComponent: HomeComponent = testHomeContext.testedDirective;
     expect(homeComponent.loggedInUser).toBeDefined();
   });
 
-  it('should stop loading after resolving', function() {
+  it('should stop loading after resolving', () => {
     const homeComponent: HomeComponent = testHomeContext.testedDirective;
     expect(homeComponent.loading).toBeFalsy();
   });

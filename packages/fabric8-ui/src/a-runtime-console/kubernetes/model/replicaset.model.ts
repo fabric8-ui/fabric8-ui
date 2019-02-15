@@ -16,16 +16,18 @@ export function combineReplicaSets(
   replicasets: ReplicaSets,
   replicationControllers: ReplicationControllers,
 ): ReplicaSets {
-  let map = {};
+  const map = {};
   if (replicationControllers) {
     replicationControllers.forEach((s) => (map[s.name] = s));
   }
   if (replicasets) {
     replicasets.forEach((s) => (map[s.name] = s));
   }
-  let answer = new ReplicaSets();
-  for (var key in map) {
-    answer.push(map[key]);
+  const answer = new ReplicaSets();
+  for (const key in map) {
+    if (key && map[key]) {
+      answer.push(map[key]);
+    }
   }
 
   answer.sort((a: ReplicaSet, b: ReplicaSet) => {
@@ -52,7 +54,6 @@ export function combineReplicaSet(
     return replicationController && replicationController.resource
       ? replicationController
       : replicaset;
-  } else {
-    return replicationController;
   }
+  return replicationController;
 }

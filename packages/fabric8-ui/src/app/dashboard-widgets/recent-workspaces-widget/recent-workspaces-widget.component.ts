@@ -1,7 +1,14 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { Notification, Notifications, NotificationType } from 'ngx-base';
-import { Space, Spaces, Team } from 'ngx-fabric8-wit';
-import { RelationalData, SpaceAttributes, SpaceLink, SpaceRelationships } from 'ngx-fabric8-wit';
+import {
+  Space,
+  Spaces,
+  SpaceAttributes,
+  SpaceLink,
+  SpaceRelationships,
+  RelationalData,
+  Team,
+} from 'ngx-fabric8-wit';
 import { forkJoin as observableForkJoin, Observable, of as observableOf, Subscription } from 'rxjs';
 import { catchError, map, mergeMap, switchMap, tap } from 'rxjs/operators';
 import { ContextService } from '../../shared/context.service';
@@ -19,16 +26,27 @@ export class ExtCodebase extends Codebase {
 // Adds an extra codebases property
 export class ExtSpace implements Space {
   codebases: ExtCodebase[];
+
   name: string;
+
   path: String;
+
   privateSpace?: boolean;
+
   teams: Team[];
+
   defaultTeam: Team;
+
   id: string;
+
   attributes: SpaceAttributes;
+
   type: string;
+
   links: SpaceLink;
+
   relationships: SpaceRelationships;
+
   relationalData?: RelationalData;
 }
 
@@ -40,11 +58,18 @@ export class ExtSpace implements Space {
 })
 export class RecentWorkspacesWidgetComponent implements OnDestroy, OnInit {
   codebases: Codebase[] = [];
+
   contextPath: Observable<string>;
-  limit: number = 5; // the number of workspaces to display
+
+  limit: number = 5;
+
+  // the number of workspaces to display
   loading: boolean = false;
+
   recent: ExtSpace[];
+
   subscriptions: Subscription[] = [];
+
   _workspaces: Workspace[] = [];
 
   constructor(
@@ -87,7 +112,7 @@ export class RecentWorkspacesWidgetComponent implements OnDestroy, OnInit {
    * Open given workspace in Che editor
    */
   openWorkspace(workspace: Workspace): void {
-    let workspaceWindow = this.windowService.open('about:blank', '_blank');
+    const workspaceWindow = this.windowService.open('about:blank', '_blank');
     this.subscriptions.push(
       this.workspacesService.openWorkspace(workspace.links.open).subscribe(
         (workspaceLinks) => {
@@ -116,17 +141,15 @@ export class RecentWorkspacesWidgetComponent implements OnDestroy, OnInit {
           return observableOf([]);
         }
         return observableForkJoin(
-          codebases.map((codebase: ExtCodebase) => {
-            return this.workspacesService.getWorkspaces(codebase.id).pipe(
+          codebases.map((codebase: ExtCodebase) =>
+            this.workspacesService.getWorkspaces(codebase.id).pipe(
               map((workspaces) => {
                 codebase.workspaces = workspaces;
                 return codebase;
               }),
-              catchError((error) => {
-                return observableOf([]);
-              }),
-            );
-          }),
+              catchError((error) => observableOf([])),
+            ),
+          ),
         );
       }),
     );
@@ -139,7 +162,7 @@ export class RecentWorkspacesWidgetComponent implements OnDestroy, OnInit {
     if (this.spaces.recent === undefined) {
       return observableOf([]);
     }
-    let recentSpaces = this.spaces.recent.pipe(
+    const recentSpaces = this.spaces.recent.pipe(
       switchMap((val) => {
         if (val.length === 0) {
           return observableOf([]);
@@ -152,9 +175,7 @@ export class RecentWorkspacesWidgetComponent implements OnDestroy, OnInit {
                 space.codebases = codebases;
                 return space;
               }),
-              catchError((error) => {
-                return observableOf([]);
-              }),
+              catchError((error) => observableOf([])),
               tap(() => {
                 this.loading = false;
               }),
@@ -175,7 +196,7 @@ export class RecentWorkspacesWidgetComponent implements OnDestroy, OnInit {
   private handleError(error: string, type: NotificationType): void {
     this.notifications.message({
       message: error,
-      type: type,
+      type,
     } as Notification);
   }
 
@@ -185,25 +206,22 @@ export class RecentWorkspacesWidgetComponent implements OnDestroy, OnInit {
   private initWorkspaces(): void {
     this._workspaces = [];
     for (let c = 0; c < this.recent.length; c++) {
-      let space = this.recent[c];
-      if (space.codebases === undefined) {
-        continue;
-      }
-      for (let i = 0; i < space.codebases.length; i++) {
-        let codebase = space.codebases[i];
-        if (!codebase.workspaces) {
-          // This could be null
-          continue;
-        }
-        for (
-          let k = 0;
-          k < codebase.workspaces.length && this._workspaces.length < this.limit;
-          k++
-        ) {
-          this._workspaces.push(codebase.workspaces[k]);
-        }
-        if (this._workspaces.length === 5) {
-          break;
+      const space = this.recent[c];
+      if (space.codebases !== undefined) {
+        for (let i = 0; i < space.codebases.length; i++) {
+          const codebase = space.codebases[i];
+          if (codebase.workspaces) {
+            for (
+              let k = 0;
+              k < codebase.workspaces.length && this._workspaces.length < this.limit;
+              k++
+            ) {
+              this._workspaces.push(codebase.workspaces[k]);
+            }
+            if (this._workspaces.length === 5) {
+              break;
+            }
+          }
         }
       }
     }

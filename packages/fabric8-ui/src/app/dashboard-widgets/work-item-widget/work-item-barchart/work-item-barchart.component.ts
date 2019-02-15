@@ -12,10 +12,13 @@ import { WorkItemBarchartData } from './work-item-barchart-data';
 })
 export class WorkItemBarchartComponent extends ChartBase implements DoCheck, OnInit {
   @Input() chartData: WorkItemBarchartData;
+
   @Input() config: WorkItemBarchartConfig;
 
   private defaultConfig: WorkItemBarchartConfig;
+
   private prevChartData: WorkItemBarchartData;
+
   private prevConfig: WorkItemBarchartConfig;
 
   constructor() {
@@ -70,7 +73,7 @@ export class WorkItemBarchartComponent extends ChartBase implements DoCheck, OnI
     this.defaultConfig.legend = { show: false };
     this.defaultConfig.data = {
       type: 'bar',
-      order: function(data1, data2) {
+      order(data1, data2) {
         return 1;
       },
     };
@@ -79,7 +82,7 @@ export class WorkItemBarchartComponent extends ChartBase implements DoCheck, OnI
   }
 
   protected getChartData(): any {
-    let data: any = {};
+    const data: any = {};
 
     if (this.chartData && this.chartData.dataAvailable !== false && this.chartData.yData) {
       data.colors = this.chartData.colors;

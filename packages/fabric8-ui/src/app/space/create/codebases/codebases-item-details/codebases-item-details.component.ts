@@ -13,10 +13,15 @@ export class CodebasesItemDetailsComponent implements OnDestroy, OnInit {
   @Input() codebase: Codebase;
 
   context: Context;
+
   filesChanged: number;
+
   gitUrl: string;
+
   lastCommit: string;
+
   license: string;
+
   subscriptions: Subscription[] = [];
 
   constructor(private contexts: Contexts, private gitHubService: GitHubService) {
@@ -101,8 +106,7 @@ export class CodebasesItemDetailsComponent implements OnDestroy, OnInit {
   private isHtmlUrlInvalid(): boolean {
     if (this.codebase.attributes.type === 'git') {
       return this.isGitHubHtmlUrlInvalid();
-    } else {
-      false;
     }
+    false;
   }
 }

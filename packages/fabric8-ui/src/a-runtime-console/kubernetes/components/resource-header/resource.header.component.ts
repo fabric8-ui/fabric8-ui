@@ -40,15 +40,16 @@ export const resourceMenus = [
 })
 export class ResourceHeaderComponent implements OnInit {
   menus: MenuItem[];
+
   current: MenuItem;
 
   constructor(public router: Router, parentLinkFactory: ParentLinkFactory) {
     this.menus = resourceMenus;
 
-    var urlPrefix = parentLinkFactory.parentLink;
+    const urlPrefix = parentLinkFactory.parentLink;
     this.menus.forEach((menu) => {
       if (!menu.fullPath) {
-        var path = menu.path;
+        const path = menu.path;
         menu.fullPath = urlPrefix + path;
       }
     });
@@ -70,12 +71,12 @@ export class ResourceHeaderComponent implements OnInit {
   }
 
   onNavigate(event: NavigationEnd): void {
-    var url = event.url;
-    var menus = this.menus;
+    const url = event.url;
+    const menus = this.menus;
     if (url && menus) {
-      var paths = url.split('/');
+      const paths = url.split('/');
       if (paths && paths.length) {
-        var path = paths[paths.length - 1];
+        const path = paths[paths.length - 1];
         this.current = null;
         menus.forEach((menu) => {
           if (path === menu.path) {
@@ -83,7 +84,7 @@ export class ResourceHeaderComponent implements OnInit {
           }
         });
         if (!this.current) {
-          console.log('Could not find menu for resource kind: ' + path);
+          console.log(`Could not find menu for resource kind: ${path}`);
         }
       }
     }

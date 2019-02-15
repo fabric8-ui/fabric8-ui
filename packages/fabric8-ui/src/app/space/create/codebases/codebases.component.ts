@@ -35,19 +35,33 @@ import { GitHubService } from './services/github.service';
 })
 export class CodebasesComponent implements OnDestroy, OnInit {
   allCodebases: Codebase[];
+
   appliedFilters: Filter[];
+
   chePollSubscription: Subscription;
+
   chePollTimer: Observable<any>;
+
   cheState: Che;
+
   codebases: Codebase[] = [];
+
   context: Context;
+
   currentSortField: SortField;
+
   emptyStateConfig: EmptyStateConfig;
+
   isAscendingSort: boolean = true;
+
   listConfig: ListConfig;
+
   resultsCount: number = 0;
+
   subscriptions: Subscription[] = [];
+
   gitHubConnected: boolean;
+
   disconnectedStateConfig: EmptyStateConfig;
 
   constructor(
@@ -125,7 +139,7 @@ export class CodebasesComponent implements OnDestroy, OnInit {
         headingRow: true,
         multiSelect: false,
         selectItems: false,
-        //selectionMatchProp: 'name',
+        // selectionMatchProp: 'name',
         showCheckbox: false,
         useExpandItems: true,
         useHeading: true,
@@ -208,7 +222,7 @@ export class CodebasesComponent implements OnDestroy, OnInit {
   // Sort
 
   compare(codebase1: Codebase, codebase2: Codebase): number {
-    var compValue = 0;
+    let compValue = 0;
 
     // this is necessary because the first item in the codebases array
     // is an empty object that is needed to create the headers of the table
@@ -219,16 +233,16 @@ export class CodebasesComponent implements OnDestroy, OnInit {
     if (this.currentSortField.id === 'name') {
       compValue = codebase1.name.localeCompare(codebase2.name);
     } else if (this.currentSortField.id === 'createdAt') {
-      let date1 = new Date(codebase1.gitHubRepo.createdAt); // 2011-04-07T10:12:58Z
-      let date2 = new Date(codebase2.gitHubRepo.createdAt);
+      const date1 = new Date(codebase1.gitHubRepo.createdAt); // 2011-04-07T10:12:58Z
+      const date2 = new Date(codebase2.gitHubRepo.createdAt);
       compValue = date1 > date2 ? 1 : -1;
     } else if (this.currentSortField.id === 'pushedAt') {
-      let date1 = new Date(codebase1.gitHubRepo.pushedAt);
-      let date2 = new Date(codebase2.gitHubRepo.pushedAt);
+      const date1 = new Date(codebase1.gitHubRepo.pushedAt);
+      const date2 = new Date(codebase2.gitHubRepo.pushedAt);
       compValue = date1 > date2 ? 1 : -1;
     }
     if (!this.isAscendingSort && compValue) {
-      compValue = compValue * -1;
+      compValue *= -1;
     }
     return compValue;
   }
@@ -362,15 +376,14 @@ export class CodebasesComponent implements OnDestroy, OnInit {
                   codebase.gitHubRepo.pushedAt = gitHubRepoDetails.pushed_at;
                   return codebase;
                 }),
-                catchError((err) => {
+                catchError((err) =>
                   // this.handleError(err, NotificationType.WARNING);
-                  return observableOf(codebase);
-                }),
+                  observableOf(codebase),
+                ),
                 first(),
               );
-            } else {
-              this.handleError(`Invalid URL: ${codebase.attributes.url}`, NotificationType.WARNING);
             }
+            this.handleError(`Invalid URL: ${codebase.attributes.url}`, NotificationType.WARNING);
           }),
         );
       }),
@@ -395,7 +408,7 @@ export class CodebasesComponent implements OnDestroy, OnInit {
   private handleError(error: string, type: NotificationType) {
     this.notifications.message({
       message: error,
-      type: type,
+      type,
     } as Notification);
   }
 }

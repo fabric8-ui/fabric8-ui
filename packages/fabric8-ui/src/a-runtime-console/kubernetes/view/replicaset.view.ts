@@ -3,17 +3,29 @@ import { Service, Services } from '../model/service.model';
 
 export class ReplicaSetView {
   public readonly replicaset: ReplicaSet;
+
   public readonly service: Service;
+
   public readonly id: string;
+
   public readonly name: string;
+
   public readonly icon: string;
+
   public readonly description: string;
+
   public readonly exposeUrl: string;
+
   public readonly replicas: number;
+
   public readonly availableReplicas: number;
+
   public readonly labels: Map<string, string>;
+
   public readonly images: Array<String>;
+
   public readonly annotations: Map<string, string>;
+
   public readonly creationTimestamp: any;
 
   constructor(replicaset: ReplicaSet, service: Service) {
@@ -29,17 +41,17 @@ export class ReplicaSetView {
     if (service) {
       this.exposeUrl = service.exposeUrl;
     }
-    this.images = new Array<String>();
-    let spec = replicaset.spec;
+    this.images = [];
+    const spec = replicaset.spec;
     if (spec) {
-      let template = spec.template;
+      const template = spec.template;
       if (template) {
-        let podSpec = template.spec;
+        const podSpec = template.spec;
         if (podSpec) {
-          let containers = podSpec.containers;
+          const containers = podSpec.containers;
           if (containers) {
             containers.forEach((c) => {
-              let image = c.image;
+              const image = c.image;
               if (image) {
                 this.images.push(image);
               }
@@ -50,7 +62,7 @@ export class ReplicaSetView {
     }
     this.replicas = 0;
     this.availableReplicas = 0;
-    let status = replicaset.status;
+    const status = replicaset.status;
     if (status) {
       this.replicas = status.replicas || 0;
       this.availableReplicas = status.availableReplicas || 0;
@@ -64,7 +76,7 @@ export function createReplicaSetViews(
   replicasets: ReplicaSets,
   services: Services,
 ): ReplicaSetViews {
-  let map = {};
+  const map = {};
   services.forEach((s) => (map[s.name] = s));
   return replicasets.map((d) => new ReplicaSetView(d, map[d.name]));
 }

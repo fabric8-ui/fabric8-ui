@@ -31,7 +31,7 @@ describe('ApplicationsListItemComponent', () => {
 
   let contexts: Contexts;
 
-  let buildConfig = {
+  const buildConfig = {
     id: 'app1',
     name: 'app1',
     gitUrl: 'https://example.com/app1.git',
@@ -86,14 +86,16 @@ describe('ApplicationsListItemComponent', () => {
     ],
   };
 
-  let mockRouterEvent: any = {
+  const mockRouterEvent: any = {
     id: 1,
     url: 'mock-url',
   };
 
-  let mockActivatedRoute: any = jasmine.createSpy('ActivatedRoute');
-  let mockLocationStrategy: any = jasmine.createSpyObj('LocationStrategy', ['prepareExternalUrl']);
-  let mockRouter = jasmine.createSpyObj('Router', ['createUrlTree', 'navigate', 'serializeUrl']);
+  const mockActivatedRoute: any = jasmine.createSpy('ActivatedRoute');
+  const mockLocationStrategy: any = jasmine.createSpyObj('LocationStrategy', [
+    'prepareExternalUrl',
+  ]);
+  const mockRouter = jasmine.createSpyObj('Router', ['createUrlTree', 'navigate', 'serializeUrl']);
 
   beforeEach(() => {
     contexts = {
@@ -131,34 +133,34 @@ describe('ApplicationsListItemComponent', () => {
   );
 
   describe('Applications list item with build config', () => {
-    it('Build config should be set', function() {
+    it('Build config should be set', () => {
       expect(testContext.testedDirective.buildConfig as any).toEqual(buildConfig);
     });
 
-    it('Expand toggle should be called', function() {
+    it('Expand toggle should be called', () => {
       expect(testContext.testedDirective.expanded).toBeFalsy();
       testContext.testedDirective.toggleExpanded();
       expect(testContext.testedDirective.expanded).toBeTruthy();
     });
 
-    it('Should set service URL', function() {
+    it('Should set service URL', () => {
       expect(testContext.testedDirective.applicationUrl).toEqual('https://example.com/app1.git');
     });
 
-    it('Pipeline should be available', function() {
+    it('Pipeline should be available', () => {
       expect(testContext.testedDirective.pipelineAvailable).toBeTruthy();
     });
 
-    it('Should set build number', function() {
+    it('Should set build number', () => {
       expect(testContext.testedDirective.promoteBuildInput.build.buildNumber).toEqual('1');
     });
 
-    it('Should set stage name', function() {
+    it('Should set stage name', () => {
       expect(testContext.testedDirective.promoteBuildInput.stage.name).toEqual('Rollout to Run');
     });
 
-    it('Should call proceed', function() {
-      let mockInputActionDialog: any = jasmine.createSpyObj('InputActionDialog', ['proceed']);
+    it('Should call proceed', () => {
+      const mockInputActionDialog: any = jasmine.createSpyObj('InputActionDialog', ['proceed']);
 
       testContext.testedDirective.inputActionDialog = mockInputActionDialog;
       testContext.testedDirective.promoteBuild();

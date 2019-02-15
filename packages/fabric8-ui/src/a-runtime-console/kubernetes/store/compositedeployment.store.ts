@@ -13,7 +13,9 @@ import { DeploymentConfigStore } from './deploymentconfig.store';
 @Injectable()
 export class CompositeDeploymentStore {
   public list: Observable<Deployments>;
+
   public resource: Observable<Deployment>;
+
   public loading: Observable<boolean>;
 
   constructor(
@@ -38,7 +40,7 @@ export class CompositeDeploymentStore {
     // lets wait until we've loaded the APIS before trying to load the DeploymentConfigs
     this.apiStore.loading.pipe(distinctUntilChanged()).subscribe((flag) => {
       if (!flag) {
-        var openshift = this.apiStore.isOpenShift();
+        const openshift = this.apiStore.isOpenShift();
         if (openshift) {
           this.deploymentConfigsStore.loadAll();
         }
@@ -53,7 +55,7 @@ export class CompositeDeploymentStore {
     // lets wait until we've loaded the APIS before trying to load the DeploymentConfigs
     this.apiStore.loading.pipe(distinctUntilChanged()).subscribe((flag) => {
       if (!flag) {
-        var openshift = this.apiStore.isOpenShift();
+        const openshift = this.apiStore.isOpenShift();
         if (openshift) {
           this.deploymentConfigsStore.load(id);
         }

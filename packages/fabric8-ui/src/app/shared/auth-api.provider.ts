@@ -1,21 +1,17 @@
 import { AUTH_API_URL, WIT_API_PROXY } from 'ngx-login-client';
 import { ApiLocatorService } from './api-locator.service';
 
-let authApiUrlFactory = (api: ApiLocatorService) => {
-  return api.authApiUrl;
-};
+const authApiUrlFactory = (api: ApiLocatorService) => api.authApiUrl;
 
-export let authApiUrlProvider = {
+export const authApiUrlProvider = {
   provide: AUTH_API_URL,
   useFactory: authApiUrlFactory,
   deps: [ApiLocatorService],
 };
 
-let witApiProxyFactory = (api: ApiLocatorService) => {
-  return api.witApiUrl;
-};
+const witApiProxyFactory = (api: ApiLocatorService) => api.witApiUrl;
 
-export let witApiProxyProvider = {
+export const witApiProxyProvider = {
   provide: WIT_API_PROXY,
   useFactory: witApiProxyFactory,
   deps: [ApiLocatorService],

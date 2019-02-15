@@ -14,6 +14,7 @@ interface WorkspacesResponse {
 @Injectable()
 export class WorkspacesService {
   private readonly headers: HttpHeaders;
+
   private readonly workspacesUrl: string;
 
   constructor(
@@ -24,10 +25,10 @@ export class WorkspacesService {
   ) {
     let headers: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
     if (this.auth.getToken() != undefined) {
-      headers = headers.set('Authorization', 'Bearer ' + this.auth.getToken());
+      headers = headers.set('Authorization', `Bearer ${this.auth.getToken()}`);
     }
     this.headers = headers;
-    this.workspacesUrl = apiUrl + 'codebases';
+    this.workspacesUrl = `${apiUrl}codebases`;
   }
 
   /**
@@ -69,9 +70,8 @@ export class WorkspacesService {
                 (error: HttpErrorResponse): Observable<Workspace[]> => this.handleError(error),
               ),
             );
-          } else {
-            return this.handleError(error);
           }
+          return this.handleError(error);
         },
       ),
     );

@@ -32,9 +32,13 @@ import { NotificationsService } from './shared/notifications.service';
 })
 export class AppComponent {
   public featureConfig: FeatureFlagConfig;
+
   public disconnectedStateConfig: EmptyStateConfig;
+
   private lastPageToTryGitHub: string;
+
   private show: boolean;
+
   protected subscriptions: Subscription[] = [];
 
   @ViewChild('connectToGithubModal') connectToGithubModal: TemplateRef<any>;
@@ -66,7 +70,7 @@ export class AppComponent {
       'This is',
       this.about.buildVersion,
       '(Build',
-      '#' + this.about.buildNumber,
+      `#${this.about.buildNumber}`,
       'and was built on',
       this.about.buildTimestamp,
       ')',
@@ -113,12 +117,13 @@ export class AppComponent {
           filter((event) => event instanceof NavigationEnd),
           map(() => this.activatedRoute),
           map((route) => {
+            let r = route;
             // reset all experimental feature flag properties
             this.featureConfig = null;
-            while (route.firstChild) {
-              route = route.firstChild;
+            while (r.firstChild) {
+              r = r.firstChild;
             }
-            return route;
+            return r;
           }),
           filter((route) => route.outlet === 'primary'),
           mergeMap((route) => route.data),
@@ -135,11 +140,11 @@ export class AppComponent {
           }
 
           if (event['featureFlagConfig'] || featureFlagsInTree) {
-            let featureFlagConfig =
+            const featureFlagConfig =
               (event['featureFlagConfig'] as FeatureFlagConfig) || featureFlagsInTree;
             this.featureConfig = featureFlagConfig;
           }
-          let title = event['title']
+          const title = event['title']
             ? `${event['title']} - ${this.brandingService.name}`
             : this.brandingService.name;
           this.titleService.setTitle(title);

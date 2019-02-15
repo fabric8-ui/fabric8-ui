@@ -37,34 +37,54 @@ export class UpdateComponent implements OnInit, OnDestroy {
 
   @ViewChild('profileForm')
   profileForm: NgForm;
+
   @ViewChild('advancedForm')
   advancedForm: NgForm;
 
   authGitHub: boolean = false;
+
   authOpenShift: boolean = false;
+
   bio: string;
+
   company: string;
+
   companyInvalid: boolean = false;
+
   context: Context;
+
   email: string;
+
   emailPrivate: boolean = true;
+
   emailVerified: boolean;
+
   emailInvalid: boolean = false;
+
   imageUrl: string;
+
   imageUrlInvalid: boolean = false;
 
   fullName: string;
+
   fullNameInvalid: boolean = false;
 
   subscriptions: Subscription[] = [];
+
   token: string;
+
   tokenPanelOpen: boolean = false;
+
   updateTenantStatus: TenantUpdateStatus = TenantUpdateStatus.NoAction;
+
   username: string;
 
   url: string;
+
   urlInvalid: boolean = false;
+
   selectedTab: number = 1;
+
   bioInvalid: boolean = false;
 
   constructor(
@@ -106,7 +126,7 @@ export class UpdateComponent implements OnInit, OnDestroy {
   }
 
   copyTokenToClipboard(): void {
-    let result = this.copyService.copy(this.token);
+    const result = this.copyService.copy(this.token);
     if (result) {
       this.notifications.message({
         message: `Token copied!`,
@@ -158,7 +178,7 @@ export class UpdateComponent implements OnInit, OnDestroy {
   }
 
   updateProfile(): void {
-    let profile = this.getTransientProfile();
+    const profile = this.getTransientProfile();
     if (!profile.contextInformation) {
       profile.contextInformation = {};
     }
@@ -248,11 +268,11 @@ export class UpdateComponent implements OnInit, OnDestroy {
   }
 
   validateBio(charsRemaining: number) {
-    this.bioInvalid = charsRemaining < 0 ? true : false;
+    this.bioInvalid = charsRemaining < 0;
   }
 
   private getTransientProfile(): ExtProfile {
-    let profile = this.gettingStartedService.createTransientProfile();
+    const profile = this.gettingStartedService.createTransientProfile();
     // Delete extra information that make the update fails if present
     delete profile.username;
     if (profile) {
@@ -292,9 +312,8 @@ export class UpdateComponent implements OnInit, OnDestroy {
     const urlRegex: RegExp = /^(https?:\/\/)?((([a-z\d]([a-z\d-]*[a-z\d])*)\.)+[a-z]{2,}|((\d{1,3}\.){3}\d{1,3}))(\:\d+)?(\/[-a-z\d%_.~+]*)*(\?[;&a-z\d%_.~+=-]*)?(\#[-a-z\d_]*)?$/;
     if (this.url !== undefined && this.url.trim().length > 0) {
       return urlRegex.test(this.url.trim());
-    } else {
-      return true;
     }
+    return true;
   }
 
   private setUserProperties(user: User): void {
@@ -324,7 +343,7 @@ export class UpdateComponent implements OnInit, OnDestroy {
   private handleError(error: string, type: NotificationType) {
     this.notifications.message({
       message: error,
-      type: type,
+      type,
     } as Notification);
   }
 }

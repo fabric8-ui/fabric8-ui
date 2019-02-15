@@ -46,14 +46,14 @@ export abstract class AbstractStore<
   loadAll(): Observable<L> {
     this._loadId = null;
     this._loading.next(true);
-    let listObserver = this.service.list(this.listQueryParams());
+    const listObserver = this.service.list(this.listQueryParams());
     listObserver.subscribe(
       (list) => {
         this._list.next(list);
         this._loading.next(false);
       },
       (error) => {
-        console.log('Error retrieving ' + plural(this.kind) + ': ' + error);
+        console.log(`Error retrieving ${plural(this.kind)}: ${error}`);
         this._loading.next(false);
       },
     );
@@ -69,14 +69,14 @@ export abstract class AbstractStore<
         this._loading.next(false);
       },
       (error) => {
-        console.log('Error retrieving ' + this.kind + ': ' + error);
+        console.log(`Error retrieving ${this.kind}: ${error}`);
         this._loading.next(false);
       },
     );
   }
 
   reload() {
-    let id = this._loadId;
+    const id = this._loadId;
     if (id) {
       this.load(id);
     } else {

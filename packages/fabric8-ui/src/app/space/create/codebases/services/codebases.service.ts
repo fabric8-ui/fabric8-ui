@@ -9,6 +9,7 @@ import { Codebase } from './codebase';
 
 class Payload<T> {
   data: T;
+
   links: any;
 
   constructor(t: T) {
@@ -19,8 +20,11 @@ class Payload<T> {
 @Injectable()
 export class CodebasesService {
   private readonly headers: HttpHeaders;
+
   private readonly codebasesUrl: string;
+
   private readonly spacesUrl: string;
+
   private nextLink: string = null;
 
   constructor(
@@ -31,11 +35,11 @@ export class CodebasesService {
   ) {
     let headers: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
     if (this.auth.getToken() != undefined) {
-      headers = headers.set('Authorization', 'Bearer ' + this.auth.getToken());
+      headers = headers.set('Authorization', `Bearer ${this.auth.getToken()}`);
     }
     this.headers = headers;
-    this.spacesUrl = apiUrl + 'spaces';
-    this.codebasesUrl = apiUrl + 'codebases';
+    this.spacesUrl = `${apiUrl}spaces`;
+    this.codebasesUrl = `${apiUrl}codebases`;
   }
 
   /**
@@ -97,9 +101,8 @@ export class CodebasesService {
   getMoreCodebases(): Observable<Codebase[]> {
     if (this.nextLink) {
       return this.getCodebasesDelegate(this.nextLink);
-    } else {
-      return observableThrowError('No more codebases found');
     }
+    return observableThrowError('No more codebases found');
   }
 
   /**
@@ -186,9 +189,8 @@ export class CodebasesService {
   private getName(codebase: Codebase): string {
     if (codebase.attributes.type === 'git') {
       return codebase.attributes.url.replace('.git', '').replace('git@github.com:', '');
-    } else {
-      return codebase.attributes.url;
     }
+    return codebase.attributes.url;
   }
 
   private getUrl(codebase: Codebase): string {
@@ -197,8 +199,7 @@ export class CodebasesService {
         .replace('.git', '')
         .replace(':', '/')
         .replace('git@', 'https://');
-    } else {
-      return codebase.attributes.url;
     }
+    return codebase.attributes.url;
   }
 }

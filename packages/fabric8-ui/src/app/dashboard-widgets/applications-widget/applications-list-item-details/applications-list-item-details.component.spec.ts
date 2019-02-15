@@ -12,6 +12,7 @@ import { ApplicationsListItemDetailsComponent } from './applications-list-item-d
 })
 class FakeApplicationsPipelineComponent {
   @Input() stage: PipelineStage;
+
   @Input() showLine: boolean;
 }
 
@@ -25,7 +26,7 @@ describe('ApplicationsListItemDetailsComponent', () => {
 
   let contexts: Contexts;
 
-  let build = {
+  const build = {
     buildNumber: '1',
     firstPendingInputAction: {
       proceedUrl: 'https://example.com/app1.git',
@@ -58,7 +59,7 @@ describe('ApplicationsListItemDetailsComponent', () => {
     statusPhase: 'Complete',
   };
 
-  let mockRouterEvent: any = {
+  const mockRouterEvent: any = {
     id: 1,
     url: 'mock-url',
   };
@@ -93,23 +94,23 @@ describe('ApplicationsListItemDetailsComponent', () => {
   );
 
   describe('Applications list item details with build', () => {
-    it('Build should be set', function() {
+    it('Build should be set', () => {
       expect(testContext.testedDirective.build as any).toEqual(build);
     });
 
-    it('Pipeline stages should be trimmed', function() {
-      let stages = testContext.testedDirective.pipelineStages as any[];
+    it('Pipeline stages should be trimmed', () => {
+      const stages = testContext.testedDirective.pipelineStages as any[];
       expect(stages.length).toBe(2);
     });
 
-    it('Pipeline stages should be set', function() {
-      let stages = testContext.testedDirective.pipelineStages as any[];
+    it('Pipeline stages should be set', () => {
+      const stages = testContext.testedDirective.pipelineStages as any[];
       expect(stages[0].name).toEqual('Approve');
       expect(stages[1].name).toEqual('Rollout to Run');
     });
 
-    it('Current stage should be set', function() {
-      let stages = testContext.testedDirective.pipelineStages as any[];
+    it('Current stage should be set', () => {
+      const stages = testContext.testedDirective.pipelineStages as any[];
       expect(stages[1].currentStage).toBeTruthy();
     });
   });

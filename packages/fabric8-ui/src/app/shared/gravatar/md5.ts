@@ -2,28 +2,26 @@
 // MD5 (Message-Digest Algorithm) by WebToolkit
 
 export function md5(s) {
+  let s0 = s;
   function L(k, d) {
     return (k << d) | (k >>> (32 - d));
   }
   function K(G, k) {
-    var I, d, F, H, x;
-    F = G & 2147483648;
-    H = k & 2147483648;
-    I = G & 1073741824;
-    d = k & 1073741824;
-    x = (G & 1073741823) + (k & 1073741823);
+    const F = G & 2147483648;
+    const H = k & 2147483648;
+    const I = G & 1073741824;
+    const d = k & 1073741824;
+    const x = (G & 1073741823) + (k & 1073741823);
     if (I & d) {
       return x ^ 2147483648 ^ F ^ H;
     }
     if (I | d) {
       if (x & 1073741824) {
         return x ^ 3221225472 ^ F ^ H;
-      } else {
-        return x ^ 1073741824 ^ F ^ H;
       }
-    } else {
-      return x ^ F ^ H;
+      return x ^ 1073741824 ^ F ^ H;
     }
+    return x ^ F ^ H;
   }
   function r(d, F, k) {
     return (d & F) | (~d & k);
@@ -38,94 +36,120 @@ export function md5(s) {
     return F ^ (d | ~k);
   }
   function u(G, F, aa, Z, k, H, I) {
-    G = K(G, K(K(r(F, aa, Z), k), I));
-    return K(L(G, H), F);
+    let g = G;
+    g = K(g, K(K(r(F, aa, Z), k), I));
+    return K(L(g, H), F);
   }
   function f(G, F, aa, Z, k, H, I) {
-    G = K(G, K(K(q(F, aa, Z), k), I));
-    return K(L(G, H), F);
+    let g = G;
+    g = K(g, K(K(q(F, aa, Z), k), I));
+    return K(L(g, H), F);
   }
   function D(G, F, aa, Z, k, H, I) {
-    G = K(G, K(K(p(F, aa, Z), k), I));
-    return K(L(G, H), F);
+    let g = G;
+    g = K(g, K(K(p(F, aa, Z), k), I));
+    return K(L(g, H), F);
   }
   function t(G, F, aa, Z, k, H, I) {
-    G = K(G, K(K(n(F, aa, Z), k), I));
-    return K(L(G, H), F);
+    let g = G;
+    g = K(g, K(K(n(F, aa, Z), k), I));
+    return K(L(g, H), F);
   }
   function e(G) {
-    var Z;
-    var F = G.length;
-    var x = F + 8;
-    var k = (x - (x % 64)) / 64;
-    var I = (k + 1) * 16;
-    var aa = Array(I - 1);
-    var d = 0;
-    var H = 0;
+    let Z;
+    const F = G.length;
+    const x = F + 8;
+    const k = (x - (x % 64)) / 64;
+    const I = (k + 1) * 16;
+    const aa = Array(I - 1);
+    let d = 0;
+    let H = 0;
     while (H < F) {
       Z = (H - (H % 4)) / 4;
       d = (H % 4) * 8;
-      aa[Z] = aa[Z] | (G.charCodeAt(H) << d);
+      aa[Z] |= G.charCodeAt(H) << d;
       H++;
     }
     Z = (H - (H % 4)) / 4;
     d = (H % 4) * 8;
-    aa[Z] = aa[Z] | (128 << d);
+    aa[Z] |= 128 << d;
     aa[I - 2] = F << 3;
     aa[I - 1] = F >>> 29;
     return aa;
   }
   function B(x) {
-    var k = '',
-      F = '',
-      G,
-      d;
+    let k = '';
+
+    let F = '';
+
+    let G;
+
+    let d;
     for (d = 0; d <= 3; d++) {
       G = (x >>> (d * 8)) & 255;
-      F = '0' + G.toString(16);
-      k = k + F.substr(F.length - 2, 2);
+      F = `0${G.toString(16)}`;
+      k += F.substr(F.length - 2, 2);
     }
     return k;
   }
   function J(k) {
-    k = k.replace(/rn/g, 'n');
-    var d = '';
-    for (var F = 0; F < k.length; F++) {
-      var x = k.charCodeAt(F);
+    let K = k;
+    K = K.replace(/rn/g, 'n');
+    let d = '';
+    for (let F = 0; F < k.length; F++) {
+      const x = K.charCodeAt(F);
       if (x < 128) {
         d += String.fromCharCode(x);
+      } else if (x > 127 && x < 2048) {
+        d += String.fromCharCode((x >> 6) | 192);
+        d += String.fromCharCode((x & 63) | 128);
       } else {
-        if (x > 127 && x < 2048) {
-          d += String.fromCharCode((x >> 6) | 192);
-          d += String.fromCharCode((x & 63) | 128);
-        } else {
-          d += String.fromCharCode((x >> 12) | 224);
-          d += String.fromCharCode(((x >> 6) & 63) | 128);
-          d += String.fromCharCode((x & 63) | 128);
-        }
+        d += String.fromCharCode((x >> 12) | 224);
+        d += String.fromCharCode(((x >> 6) & 63) | 128);
+        d += String.fromCharCode((x & 63) | 128);
       }
     }
     return d;
   }
-  var C = Array();
-  var P, h, E, v, g, Y, X, W, V;
-  var S = 7,
-    Q = 12,
-    N = 17,
-    M = 22;
-  var A = 5,
-    z = 9,
-    y = 14,
-    w = 20;
-  var o = 4,
-    m = 11,
-    l = 16,
-    j = 23;
-  var U = 6,
-    T = 10,
-    R = 15,
-    O = 21;
-  s = J(s);
+  let C = [];
+  let P;
+  let h;
+  let E;
+  let v;
+  let g;
+  let Y;
+  let X;
+  let W;
+  let V;
+  const S = 7;
+
+  const Q = 12;
+
+  const N = 17;
+
+  const M = 22;
+  const A = 5;
+
+  const z = 9;
+
+  const y = 14;
+
+  const w = 20;
+  const o = 4;
+
+  const m = 11;
+
+  const l = 16;
+
+  const j = 23;
+  const U = 6;
+
+  const T = 10;
+
+  const R = 15;
+
+  const O = 21;
+  s0 = J(s);
   C = e(s);
   Y = 1732584193;
   X = 4023233417;
@@ -205,6 +229,6 @@ export function md5(s) {
     W = K(W, v);
     V = K(V, g);
   }
-  var i = B(Y) + B(X) + B(W) + B(V);
+  const i = B(Y) + B(X) + B(W) + B(V);
   return i.toLowerCase();
 }

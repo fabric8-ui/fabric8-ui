@@ -17,7 +17,9 @@ import { CodebasesToolbarComponent } from './codebases-toolbar.component';
 })
 class HostComponent {
   public resultsCount = 0;
+
   public filterChange($event: FilterEvent) {}
+
   public sortChange($event: SortEvent) {}
 }
 
@@ -27,8 +29,11 @@ class HostComponent {
 })
 class FakePfngToolbarComponent {
   @Input() config: any;
+
   @Input() viewTemplate: any;
+
   @Output() onFilterChange = new EventEmitter<FilterEvent>();
+
   @Output() onSortChange = new EventEmitter<SortEvent>();
 }
 
@@ -38,24 +43,24 @@ describe('CodebasesToolbarComponent', () => {
     imports: [RouterTestingModule],
   });
 
-  it('should update filterConfig resultsCount', function() {
-    let initialCount = 0;
+  it('should update filterConfig resultsCount', () => {
+    const initialCount = 0;
     expect(testContext.testedDirective.filterConfig.resultsCount).toBe(initialCount);
 
-    let nextCount = 5;
+    const nextCount = 5;
     testContext.hostComponent.resultsCount = nextCount;
     testContext.detectChanges();
 
     expect(testContext.testedDirective.filterConfig.resultsCount).toBe(nextCount);
   });
 
-  it('should emit filterChange event', function() {
+  it('should emit filterChange event', () => {
     spyOn(testContext.hostComponent, 'filterChange');
     testContext.testedDirective.filterChange({});
     expect(testContext.hostComponent.filterChange).toHaveBeenCalledWith({});
   });
 
-  it('should emit sortChange event', function() {
+  it('should emit sortChange event', () => {
     spyOn(testContext.hostComponent, 'sortChange');
     testContext.testedDirective.sortChange({
       field: {

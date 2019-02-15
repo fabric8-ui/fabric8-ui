@@ -8,11 +8,17 @@ import { PollerFactory } from './poller-factory.service';
 
 export class Watcher<L> {
   protected ws: $WebSocket;
+
   protected serviceUrl: String;
+
   protected _dataStream: BehaviorSubject<any> = new BehaviorSubject(null);
+
   protected subscription: Subscription;
+
   protected retries = 0;
+
   protected connectTime = new Date().getTime();
+
   protected poller: Poller<L>;
 
   constructor(
@@ -41,7 +47,7 @@ export class Watcher<L> {
       this.poller.recreate();
       return;
     }
-    let serviceUrl = this.pathFn();
+    const serviceUrl = this.pathFn();
     if (serviceUrl !== this.serviceUrl) {
       this.recreate();
     }
@@ -60,12 +66,12 @@ export class Watcher<L> {
   }
 
   get info(): string {
-    return 'watch for ' + this.pathFn() + (this.queryParams ? ' query:  ' + this.queryParams : '');
+    return `watch for ${this.pathFn()}${this.queryParams ? ` query:  ${this.queryParams}` : ''}`;
   }
 
   close() {
     if (this.poller) {
-      let poller = this.poller;
+      const poller = this.poller;
       this.poller = null;
       poller.close();
     }
@@ -76,7 +82,7 @@ export class Watcher<L> {
   }
 
   protected closeWebSocket() {
-    let ws = this.ws;
+    const ws = this.ws;
     if (ws) {
       this.ws = null;
       ws.close();
@@ -87,22 +93,26 @@ export class Watcher<L> {
    * Returns the query string appended to the websocket URL
    */
   protected get query(): String {
-    let queryParams = this.queryParams;
-    let params = {};
+    const queryParams = this.queryParams;
+    const params = {};
     if (queryParams) {
-      for (let k in queryParams) {
-        params[k] = queryParams[k];
+      for (const k in queryParams) {
+        if (k && queryParams[k]) {
+          params[k] = queryParams[k];
+        }
       }
     }
     params['watch'] = true;
     params['access_token'] = this.onLogin.token;
 
     let query = '';
-    for (let k in params) {
-      let sep = query ? '&' : '';
-      query += sep + k + '=' + encodeURIComponent(params[k]);
+    for (const k in params) {
+      if (k && params[k]) {
+        const sep = query ? '&' : '';
+        query += `${sep + k}=${encodeURIComponent(params[k])}`;
+      }
     }
-    return query ? '?' + query : '';
+    return query ? `?${query}` : '';
   }
 
   protected lazyCreateWebSocket() {
@@ -111,9 +121,9 @@ export class Watcher<L> {
     }
     if (!this.ws) {
       const authConfig = currentOAuthConfig();
-      let wsApiServer = authConfig.wsApiServer;
+      const wsApiServer = authConfig.wsApiServer;
       let baseUrl = '';
-      var webSocketProtocol = authConfig.wsApiServerProtocol;
+      let webSocketProtocol = authConfig.wsApiServerProtocol;
       if (!webSocketProtocol) {
         if (authConfig.apiServerProtocol === 'http') {
           webSocketProtocol = 'ws';
@@ -123,33 +133,33 @@ export class Watcher<L> {
         webSocketProtocol = 'wss';
       }
       if (webSocketProtocol.indexOf(":'") < 0) {
-        webSocketProtocol = webSocketProtocol + '://';
+        webSocketProtocol += '://';
       }
       if (wsApiServer) {
         baseUrl = webSocketProtocol + wsApiServer;
       } else {
-        let location = window.location;
+        const location = window.location;
         if (location) {
-          let hostname = location.hostname;
-          let port = location.port;
+          const hostname = location.hostname;
+          const port = location.port;
           if (hostname) {
             baseUrl = webSocketProtocol + hostname;
             if (port) {
-              baseUrl += ':' + port;
+              baseUrl += `:${port}`;
             }
           }
         }
       }
-      let wsApiServerBasePath = authConfig.wsApiServerBasePath;
+      const wsApiServerBasePath = authConfig.wsApiServerBasePath;
       if (wsApiServerBasePath && baseUrl) {
         baseUrl = pathJoin(baseUrl, wsApiServerBasePath);
       }
       if (baseUrl) {
-        let serviceUrl = this.pathFn();
+        const serviceUrl = this.pathFn();
         this.serviceUrl = serviceUrl;
         if (serviceUrl) {
-          let url = baseUrl + serviceUrl + this.query;
-          //console.log('Websocket using URL: ' + url);
+          const url = baseUrl + serviceUrl + this.query;
+          // console.log('Websocket using URL: ' + url);
           this.ws = new $WebSocket(url);
           this.connectTime = new Date().getTime();
 
@@ -162,9 +172,9 @@ export class Watcher<L> {
               this._dataStream.next(msg);
             },
             (err) => {
-              console.log('WebSocket error on ' + serviceUrl, err);
+              console.log(`WebSocket error on ${serviceUrl}`, err);
               // lets not send the websocket error as we will downgrade to polling
-              //this._dataStream.error(err);
+              // this._dataStream.error(err);
               this.onWebSocketError();
             },
             () => {
@@ -181,17 +191,13 @@ export class Watcher<L> {
   }
 
   protected onWebSocketError() {
-    //if (this.retries < 3 && this.connectTime && (new Date().getTime() - this.connectTime) > 5000) {
+    // if (this.retries < 3 && this.connectTime && (new Date().getTime() - this.connectTime) > 5000) {
     if (this.retries < 3) {
       this.retries = this.retries + 1;
       this.recreate();
     } else {
       console.log(
-        'WebSocket for ' +
-          this.pathFn() +
-          ' error, retry #' +
-          this.retries +
-          ' so switching to polling mode',
+        `WebSocket for ${this.pathFn()} error, retry #${this.retries} so switching to polling mode`,
       );
       this.closeWebSocket();
       this.lazyCreatePoller();
@@ -212,7 +218,7 @@ export class Watcher<L> {
 
 function validMessage(msg): boolean {
   if (msg != undefined) {
-    for (let key of msg) {
+    for (const key of msg) {
       return true;
     }
   }

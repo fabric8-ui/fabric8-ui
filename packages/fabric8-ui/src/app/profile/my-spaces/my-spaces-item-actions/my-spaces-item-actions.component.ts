@@ -21,10 +21,13 @@ export class MySpacesItemActionsComponent implements OnDestroy, OnInit {
   @Input() space: Space;
 
   @Output('onDeleteSpace') onDeleteSpace = new EventEmitter();
+
   @Output('onPinChange') onPinChange = new EventEmitter();
 
   actionConfig: ActionConfig;
+
   context: Context;
+
   private subscriptions: Subscription[] = [];
 
   constructor(private contexts: Contexts) {
@@ -38,7 +41,7 @@ export class MySpacesItemActionsComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit(): void {
-    let showPin: boolean = has(this.space, 'showPin') ? (this.space as any).showPin : false;
+    const showPin: boolean = has(this.space, 'showPin') ? (this.space as any).showPin : false;
 
     this.actionConfig = {
       moreActions: [

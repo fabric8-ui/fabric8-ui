@@ -8,8 +8,8 @@ import { messageEventToResourceOperation, Operation } from '../service/resource-
 import { Watcher } from '../service/watcher';
 
 function nameOfResource(resource: any): string {
-  let obj = resource || {};
-  let metadata = obj.metadata || {};
+  const obj = resource || {};
+  const metadata = obj.metadata || {};
   return metadata.name || '';
 }
 
@@ -24,7 +24,7 @@ export abstract class KubernetesResourceStore<
     service: R,
     private initialList: L,
     initialCurrent: T,
-    protected type: { new (): T },
+    protected Type: { new (): T },
   ) {
     super(service, initialList, initialCurrent);
   }
@@ -34,13 +34,12 @@ export abstract class KubernetesResourceStore<
    */
   instantiate(resource: any): T {
     if (resource) {
-      let item = new this.type();
+      const item = new this.Type();
       item.setResource(resource);
       // lets add the Restangular crack
       return this.service.restangularize(item);
-    } else {
-      return null;
     }
+    return null;
   }
 
   update(obj: T): Observable<T> {
@@ -63,19 +62,19 @@ export abstract class KubernetesResourceStore<
   protected doLoadAll() {
     this._loadId = null;
     this._loading.next(true);
-    let listObserver = this.service.list(this.listQueryParams());
+    const listObserver = this.service.list(this.listQueryParams());
     if (this.watcher) {
       // TODO should we recreate as the URL can have changed?
       this.watcher.recreateIfChanged();
     } else {
       this.watcher = this.service.watch();
     }
-    let dataStream = this.watcher.dataStream;
+    const dataStream = this.watcher.dataStream;
 
-    var latestList = this.initialList;
-    var latestMsg = null;
+    let latestList = this.initialList;
+    let latestMsg = null;
 
-    var subject = new BehaviorSubject(latestList);
+    const subject = new BehaviorSubject(latestList);
 
     // lets not use Observable.combineLatest() so that we have more control over error handling
     // as we wanna just ignore websocket errors really
@@ -88,7 +87,7 @@ export abstract class KubernetesResourceStore<
         }
       },
       (error) => {
-        console.log('Error retrieving list ' + plural(this.kind) + ': ' + error);
+        console.log(`Error retrieving list ${plural(this.kind)}: ${error}`);
         this._loading.next(false);
       },
     );
@@ -103,7 +102,7 @@ export abstract class KubernetesResourceStore<
         this._loading.next(false);
       },
       (error) => {
-        console.log('Error watching websockets on ' + plural(this.kind) + ': ' + error);
+        console.log(`Error watching websockets on ${plural(this.kind)}: ${error}`);
       },
     );
 
@@ -113,7 +112,7 @@ export abstract class KubernetesResourceStore<
         this._loading.next(false);
       },
       (error) => {
-        console.log('Error on joined stream ' + plural(this.kind) + ': ' + error);
+        console.log(`Error on joined stream ${plural(this.kind)}: ${error}`);
       },
     );
   }
@@ -130,11 +129,11 @@ export abstract class KubernetesResourceStore<
    * Lets combine the web socket events with the latest list
    */
   protected combineListAndWatchEvent(array: L, msg: any): L {
-    let resourceOperation = messageEventToResourceOperation(msg);
+    const resourceOperation = messageEventToResourceOperation(msg);
     if (resourceOperation) {
       // lets process the added /updated / removed
-      let operation = resourceOperation.operation;
-      let resource = resourceOperation.resource;
+      const operation = resourceOperation.operation;
+      const resource = resourceOperation.resource;
       switch (operation) {
         case Operation.ADDED:
           return this.upsertItem(array, resource);
@@ -144,12 +143,7 @@ export abstract class KubernetesResourceStore<
           return this.deleteItemFromArray(array, resource);
         default:
           console.log(
-            'Unknown resource option ' +
-              operation +
-              ' for ' +
-              resource +
-              ' on ' +
-              this.service.serviceUrl,
+            `Unknown resource option ${operation} for ${resource} on ${this.service.serviceUrl}`,
           );
       }
     }
@@ -183,37 +177,37 @@ export abstract class KubernetesResourceStore<
   }
 
   protected upsertItem(array: L, resource: any): L {
-    let n = nameOfResource(resource);
+    const n = nameOfResource(resource);
     if (array && n) {
-      for (let item of array) {
-        var name = item.name;
+      for (const item of array) {
+        const name = item.name;
         if (name && name === n) {
           if (isNewerResource(resource, item.resource)) {
             item.setResource(resource);
           }
-          //console.log("Updated item " + n);
+          // console.log("Updated item " + n);
           return array;
         }
       }
 
       // now lets add the new item!
-      let item = new this.type();
+      let item = new this.Type();
       item.setResource(resource);
       // lets add the Restangular crack
       item = this.service.restangularize(item);
       array.push(item);
-      //console.log("Added new item " + n);
+      // console.log("Added new item " + n);
       return array;
     }
     return null;
   }
 
   protected deleteItemFromArray(array: L, resource: any): L {
-    let n = nameOfResource(resource);
+    const n = nameOfResource(resource);
     if (array && n) {
-      for (var i = 0; i < array.length; i++) {
-        let item = array[i];
-        var name = item.name;
+      for (let i = 0; i < array.length; i++) {
+        const item = array[i];
+        const name = item.name;
         if (name && name === n) {
           array.splice(i, 1);
           return array;

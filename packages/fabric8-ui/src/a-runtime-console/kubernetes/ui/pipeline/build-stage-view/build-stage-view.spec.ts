@@ -22,7 +22,7 @@ describe('BuildStageViewComponent', () => {
   let fixture: ComponentFixture<BuildStageViewComponent>;
   let fakeAuthService: any;
   let element: HTMLElement;
-  let buildData: any = {
+  const buildData: any = {
     statusPhase: 'Complete',
     logURL:
       'https://jenkins.openshift.io/job/invinciblejai/job/app-test-apr-18-10-43/job/master/1/console',
@@ -70,7 +70,7 @@ describe('BuildStageViewComponent', () => {
     ],
   };
 
-  let buildDataStage: any = {
+  const buildDataStage: any = {
     statusPhase: 'Complete',
     logURL:
       'https://jenkins.openshift.io/job/invinciblejai/job/app-test-apr-18-10-43/job/master/1/console',
@@ -97,7 +97,7 @@ describe('BuildStageViewComponent', () => {
     ],
   };
 
-  let buildDataTrigger: any = {
+  const buildDataTrigger: any = {
     statusPhase: 'Running',
     name: 'app-test-apr-18-10-43-1',
     namespace: 'jakumar',
@@ -110,7 +110,7 @@ describe('BuildStageViewComponent', () => {
     pipelineStages: [],
   };
 
-  let buildDataRun: any = {
+  const buildDataRun: any = {
     statusPhase: 'Running',
     name: 'app-test-apr-18-10-43-1',
     namespace: 'jakumar',
@@ -125,9 +125,9 @@ describe('BuildStageViewComponent', () => {
     pipelineStages: [],
   };
 
-  let mockJenkinsService = {
+  const mockJenkinsService = {
     getJenkinsStatus(): Observable<any> {
-      let jenkinsStatus = observableOf([
+      const jenkinsStatus = observableOf([
         {
           data: { state: 'idled' },
         } as any,
@@ -138,10 +138,10 @@ describe('BuildStageViewComponent', () => {
 
   beforeEach(async(() => {
     fakeAuthService = {
-      getToken: function() {
+      getToken() {
         return 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiY2xpZW50X3Nlc3Npb24iOiJURVNUU0VTU0lPTiIsInNlc3Npb25fc3RhdGUiOiJURVNUU0VTU0lPTlNUQVRFIiwiYWRtaW4iOnRydWUsImp0aSI6ImY5NWQyNmZlLWFkYzgtNDc0YS05MTk0LWRjM2E0YWFiYzUwMiIsImlhdCI6MTUxMDU3MTMxOSwiZXhwIjoxNTEwNTgwODI3fQ.l0m6EFvk5jbND3VOXL3gTkzTz0lYQtPtXS_6C24kPQk';
       },
-      isLoggedIn: function() {
+      isLoggedIn() {
         return true;
       },
     };
@@ -202,7 +202,7 @@ describe('BuildStageViewComponent', () => {
     component.build = buildDataTrigger;
     fixture.detectChanges();
     element = fixture.nativeElement;
-    let buildStatusMessageNoLog = element.querySelector('#pipeine-stage-name-no-log');
+    const buildStatusMessageNoLog = element.querySelector('#pipeine-stage-name-no-log');
     expect(buildStatusMessageNoLog.innerHTML).toContain('Setting up your build server.');
   });
 
@@ -210,7 +210,7 @@ describe('BuildStageViewComponent', () => {
     component.build = buildDataRun;
     fixture.detectChanges();
     element = fixture.nativeElement;
-    let buildStatusMessageNoLog = element.querySelector('#pipeine-stage-name-no-log');
+    const buildStatusMessageNoLog = element.querySelector('#pipeine-stage-name-no-log');
     expect(buildStatusMessageNoLog).toBeNull();
   });
 
@@ -218,7 +218,7 @@ describe('BuildStageViewComponent', () => {
     component.build = buildDataRun;
     fixture.detectChanges();
     element = fixture.nativeElement;
-    let buildStatusMessageNoStage = element.querySelector('#pipeine-stage-name-no-stages');
+    const buildStatusMessageNoStage = element.querySelector('#pipeine-stage-name-no-stages');
     expect(buildStatusMessageNoStage.innerHTML).toContain('Build has started.');
   });
 
@@ -226,7 +226,7 @@ describe('BuildStageViewComponent', () => {
     component.build = buildData;
     fixture.detectChanges();
     element = fixture.nativeElement;
-    let buildStatusMessageNoStage = element.querySelector('#pipeine-stage-name-no-stages');
+    const buildStatusMessageNoStage = element.querySelector('#pipeine-stage-name-no-stages');
     expect(buildStatusMessageNoStage).toBeNull();
   });
 
@@ -234,7 +234,7 @@ describe('BuildStageViewComponent', () => {
     component.build = buildData;
     fixture.detectChanges();
     element = fixture.nativeElement;
-    let buildStackReportShow = element.querySelector('#stack-report-btn-cntr');
+    const buildStackReportShow = element.querySelector('#stack-report-btn-cntr');
     expect(buildStackReportShow).toBeDefined();
   });
 
@@ -242,7 +242,7 @@ describe('BuildStageViewComponent', () => {
     component.build = buildDataStage;
     fixture.detectChanges();
     element = fixture.nativeElement;
-    let buildStackReportShow = element.querySelector('#stack-report-btn-cntr');
+    const buildStackReportShow = element.querySelector('#stack-report-btn-cntr');
     expect(buildStackReportShow).toBeNull();
   });
 
@@ -250,7 +250,7 @@ describe('BuildStageViewComponent', () => {
     component.build = buildDataTrigger;
     fixture.detectChanges();
     element = fixture.nativeElement;
-    let buildStackReportShow = element.querySelector('#stack-report-btn-cntr');
+    const buildStackReportShow = element.querySelector('#stack-report-btn-cntr');
     expect(buildStackReportShow).toBeNull();
   });
 });

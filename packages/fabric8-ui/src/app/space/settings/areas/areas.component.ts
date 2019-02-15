@@ -33,23 +33,39 @@ export interface Node {
 })
 export class AreasComponent implements OnInit, OnDestroy {
   @ViewChild(CreateAreaDialogComponent) createAreaDialog: CreateAreaDialogComponent;
+
   @ViewChild(ModalDirective) modal: ModalDirective;
 
-  allAreas: ExtArea[]; // flat array obtained directly from API
-  filteredAreas: ExtArea[]; // flat array filtered and sorted
+  allAreas: ExtArea[];
+
+  // flat array obtained directly from API
+  filteredAreas: ExtArea[];
+
+  // flat array filtered and sorted
   treeAreas: ExtArea[]; // transformed flat array into tree list
 
   actionConfig: ActionConfig;
+
   appliedFilters: Filter[];
+
   context: Context;
+
   currentSortField: SortField;
+
   defaultArea: string;
+
   emptyStateConfig: EmptyStateConfig;
+
   isAscendingSort: boolean = true;
+
   selectedAreaId: string;
+
   subscriptions: Subscription = new Subscription();
+
   resultsCount: number = 0;
+
   treeListConfig: TreeListConfig;
+
   userOwnsSpace: boolean;
 
   constructor(
@@ -190,12 +206,12 @@ export class AreasComponent implements OnInit, OnDestroy {
   // Sort
 
   compare(area1: Area, area2: Area): number {
-    var compValue = 0;
+    let compValue = 0;
     if (this.currentSortField === undefined || this.currentSortField.id === 'area') {
       compValue = area1.attributes.name.localeCompare(area2.attributes.name);
     }
     if (!this.isAscendingSort) {
-      compValue = compValue * -1;
+      compValue *= -1;
     }
     return compValue;
   }
@@ -212,7 +228,7 @@ export class AreasComponent implements OnInit, OnDestroy {
   private buildTree(elements: ExtArea[], tree = []): ExtArea[] {
     elements.forEach((element) => {
       if (element.relationships.parent === undefined) {
-        let children = this.getNestedChildren(elements, element);
+        const children = this.getNestedChildren(elements, element);
         if (children.length > 0) {
           element.children = children;
         }
@@ -223,13 +239,13 @@ export class AreasComponent implements OnInit, OnDestroy {
   }
 
   private getNestedChildren(elements: ExtArea[], parent: Area): ExtArea[] {
-    let areas = [];
+    const areas = [];
     elements.forEach((element) => {
       if (
         element.relationships.parent !== undefined &&
         element.relationships.parent.data.id === parent.id
       ) {
-        let children = this.getNestedChildren(elements, element);
+        const children = this.getNestedChildren(elements, element);
         if (children.length > 0) {
           element.children = children;
         }
@@ -246,7 +262,7 @@ export class AreasComponent implements OnInit, OnDestroy {
     elements.forEach((element) => {
       element.children = undefined;
       if (element.relationships.parent !== undefined) {
-        let area = this.getClosestAncestor(
+        const area = this.getClosestAncestor(
           elements,
           this.getArea(element.relationships.parent.data.id),
         );

@@ -18,10 +18,11 @@ export class NamespaceScope implements INamespaceScope {
       filter((event) => event instanceof NavigationEnd),
       map(() => this.activatedRoute),
       map((route) => {
-        while (route.firstChild) {
-          route = route.firstChild;
+        let r = route;
+        while (r.firstChild) {
+          r = r.firstChild;
         }
-        return route;
+        return r;
       }),
       filter((route) => route.outlet === 'primary'),
       mergeMap((route) => route.params),
@@ -48,9 +49,9 @@ export class NamespaceScope implements INamespaceScope {
   }
 
   protected findParamsFor(route, key): any {
-    let children = route.children;
-    for (let child of children) {
-      let params = child.params;
+    const children = route.children;
+    for (const child of children) {
+      const params = child.params;
       if (params) {
         let answer = params[key];
         if (!answer) {

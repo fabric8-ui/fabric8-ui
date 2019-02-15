@@ -13,8 +13,11 @@ import { CodebasesService } from '../services/codebases.service';
 })
 export class CodebasesItemComponent implements OnDestroy, OnInit {
   @Input() cheState: Che;
+
   @Input() codebase: Codebase;
+
   @Input() index: number = -1;
+
   @Input() cveNotify: boolean;
 
   subscriptions: Subscription[] = [];
@@ -68,7 +71,7 @@ export class CodebasesItemComponent implements OnDestroy, OnInit {
   private ShowSubscriptionStatus(msg: string, type: NotificationType) {
     this.notifications.message({
       message: msg,
-      type: type,
+      type,
     } as Notification);
   }
 }

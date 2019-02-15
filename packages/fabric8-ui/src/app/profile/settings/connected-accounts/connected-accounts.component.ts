@@ -1,7 +1,6 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { Context, Contexts } from 'ngx-fabric8-wit';
-import { AuthenticationService } from 'ngx-login-client';
-import { User, UserService } from 'ngx-login-client';
+import { AuthenticationService, User, UserService } from 'ngx-login-client';
 import { Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ProviderService } from '../../../shared/account/provider.service';
@@ -17,16 +16,25 @@ export class ConnectedAccountsComponent implements OnDestroy, OnInit {
   context: Context;
 
   gitHubLinked: boolean = false;
+
   gitHubUserName: string;
+
   gitHubError: string;
+
   openShiftLinked: boolean = false;
+
   openShiftUserName: string;
+
   openShiftError: string;
 
   userName: string;
+
   contextUserName: string;
+
   cluster: string;
+
   consoleUrl: string;
+
   clusterName: string;
 
   private readonly subscriptions: Subscription[] = [];

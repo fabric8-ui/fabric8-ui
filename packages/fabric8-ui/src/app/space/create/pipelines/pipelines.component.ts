@@ -23,20 +23,29 @@ export type QueryJson = {
 })
 export class PipelinesComponent implements OnInit, OnDestroy, AfterViewInit {
   toolbarConfig: ToolbarConfig;
+
   consoleAvailable: boolean = false;
+
   openshiftConsoleUrl: string;
 
   private _context: Context;
+
   private _filteredPipelines: BuildConfig[] = [];
+
   private _allPipelines: BuildConfig[] = [];
+
   private _appliedFilters: Filter[] = [];
+
   private _ascending: boolean = true;
+
   private _currentSortField: SortField = {
     id: 'application',
     title: 'Application',
     sortType: 'alpha',
   } as SortField;
+
   private space: Space;
+
   private subscriptions: Subscription[] = [];
 
   constructor(
@@ -199,7 +208,7 @@ export class PipelinesComponent implements OnInit, OnDestroy, AfterViewInit {
         }
 
         if (!this._ascending) {
-          res = res * -1;
+          res *= -1;
         }
         return res;
       },
@@ -207,7 +216,7 @@ export class PipelinesComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   addQueryParams() {
-    let urlFilter: object = {};
+    const urlFilter: object = {};
     this._appliedFilters.forEach((f: Filter) => {
       if (f.field.id === 'codebase') {
         if (urlFilter['codebase'] === undefined) {
@@ -235,10 +244,10 @@ export class PipelinesComponent implements OnInit, OnDestroy, AfterViewInit {
     this.subscriptions.push(
       this.route.queryParams.subscribe((query: Params) => {
         if (query.hasOwnProperty('q')) {
-          let queryJson: QueryJson = JSON.parse(query.q);
-          let application: string[] = queryJson.application;
-          let codebase: string[] = queryJson.codebase;
-          let appliedFilter: Filter[] = [];
+          const queryJson: QueryJson = JSON.parse(query.q);
+          const application: string[] = queryJson.application;
+          const codebase: string[] = queryJson.codebase;
+          const appliedFilter: Filter[] = [];
           if (application !== undefined) {
             application.forEach((app: string) => {
               appliedFilter.push({

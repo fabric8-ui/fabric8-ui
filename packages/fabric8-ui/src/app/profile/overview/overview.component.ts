@@ -16,6 +16,7 @@ import { ContextService } from '../../shared/context.service';
 })
 export class OverviewComponent implements OnDestroy, OnInit {
   user: User;
+
   viewingOwnAccount: boolean;
 
   private readonly subscriptions: Subscription[] = [];
@@ -32,7 +33,7 @@ export class OverviewComponent implements OnDestroy, OnInit {
       this.contextService.current.pipe(map((context: Context): User => context.user)).subscribe(
         (user: User): void => {
           this.viewingOwnAccount = this.contextService.viewingOwnContext();
-          if (!!user.attributes) {
+          if (user.attributes) {
             this.user = user;
           }
         },
@@ -75,7 +76,7 @@ export class OverviewComponent implements OnDestroy, OnInit {
   private handleError(error: string, type: NotificationType): void {
     this.notifications.message({
       message: error,
-      type: type,
+      type,
     });
   }
 }

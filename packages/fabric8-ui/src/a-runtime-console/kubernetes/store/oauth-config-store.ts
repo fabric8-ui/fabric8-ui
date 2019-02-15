@@ -8,30 +8,48 @@ import { NotificationsService } from '../../../app/shared/notifications.service'
 
 export class OAuthConfig {
   public authorizeUri: string;
+
   public clientId: string;
+
   public logoutUri: string;
+
   public issuer: string;
+
   public apiServer: string;
+
   public proxyApiServer: string;
+
   public apiServerProtocol: string;
+
   public wsApiServerProtocol: string;
+
   public apiServerBasePath: string;
+
   public wsApiServerBasePath: string;
+
   public wsApiServer: string;
+
   public scope: string;
+
   public loaded: boolean;
+
   public openshiftConsoleUrl: string;
+
   public witApiUrl: string;
+
   public ssoApiUrl: string;
+
   public forgeApiUrl: string;
+
   public recommenderApiUrl: string;
+
   public buildToolDetectorApiUrl: string;
 
   constructor(data: any) {
-    var config = data || {};
-    var oauth = config.oauth || {};
+    const config = data || {};
+    const oauth = config.oauth || {};
 
-    this.loaded = data ? true : false;
+    this.loaded = !!data;
     this.apiServer = config.api_server || '';
     this.proxyApiServer = config.proxy_api_server || '';
     this.apiServerProtocol = config.api_server_protocol;
@@ -44,7 +62,7 @@ export class OAuthConfig {
     this.issuer = oauth.oauth_issuer || '';
     this.scope = oauth.oauth_scope || 'user:full';
     this.logoutUri = oauth.logout_uri || '';
-    //this.openshiftConsoleUrl = config.openshift_console_url || '';
+    // this.openshiftConsoleUrl = config.openshift_console_url || '';
     this.witApiUrl = config.wit_api_url || '';
     this.ssoApiUrl = config.sso_api_url || '';
     this.forgeApiUrl = config.forge_api_url || '';
@@ -53,13 +71,13 @@ export class OAuthConfig {
 
     if (!this.issuer && this.authorizeUri) {
       // lets default the issuer from the authorize Uri
-      var url = this.authorizeUri;
-      var idx = url.indexOf('/', 9);
+      let url = this.authorizeUri;
+      const idx = url.indexOf('/', 9);
       if (idx > 0) {
         url = url.substring(0, idx);
       }
       this.issuer = url;
-      //console.log("Defaulted the issuer URL to: " + this.issuer);
+      // console.log("Defaulted the issuer URL to: " + this.issuer);
     }
   }
 }
@@ -67,10 +85,10 @@ export class OAuthConfig {
 /**
  * Lets keep around the singleton results to avoid doing too many requests for this static data
  */
-var _latestOAuthConfig: OAuthConfig = new OAuthConfig(null);
+let _latestOAuthConfig: OAuthConfig = new OAuthConfig(null);
 
-let _currentOAuthConfig: BehaviorSubject<OAuthConfig> = new BehaviorSubject(_latestOAuthConfig);
-let _loadingOAuthConfig: BehaviorSubject<boolean> = new BehaviorSubject(true);
+const _currentOAuthConfig: BehaviorSubject<OAuthConfig> = new BehaviorSubject(_latestOAuthConfig);
+const _loadingOAuthConfig: BehaviorSubject<boolean> = new BehaviorSubject(true);
 
 export function currentOAuthConfig() {
   return _latestOAuthConfig;
@@ -104,7 +122,7 @@ export class OAuthConfigStore {
    * @return {boolean} true if this cluster is using openshift
    */
   get config(): OAuthConfig {
-    let answer = _latestOAuthConfig;
+    const answer = _latestOAuthConfig;
     if (!answer) {
       console.log(
         'WARNING: invoked the isOpenShift() method before the OAuthConfigStore has loaded!',
@@ -114,7 +132,7 @@ export class OAuthConfigStore {
   }
 
   private load() {
-    let configUri = '/_config/oauth.json';
+    const configUri = '/_config/oauth.json';
     this.http
       .get(configUri)
       .pipe(
@@ -124,7 +142,7 @@ export class OAuthConfigStore {
           this.notifications.message({
             type: NotificationType.DANGER,
             header: 'Error: Configuration setup',
-            message: 'Could not find OAuth configuration at ' + configUri,
+            message: `Could not find OAuth configuration at ${configUri}`,
           } as Notification);
           _currentOAuthConfig.next(_latestOAuthConfig);
           _loadingOAuthConfig.next(false);
@@ -132,11 +150,13 @@ export class OAuthConfigStore {
         }),
       )
       .subscribe((res: HttpResponse<any>) => {
-        let data = res;
-        for (let key in data) {
-          let value = data[key];
-          if (value === 'undefined') {
-            data[key] = '';
+        const data = res;
+        for (const key in data) {
+          if (key && data[key]) {
+            const value = data[key];
+            if (value === 'undefined') {
+              data[key] = '';
+            }
           }
         }
         _latestOAuthConfig = new OAuthConfig(data);
@@ -150,9 +170,11 @@ export class OAuthConfigStore {
           .pipe(first((user: User) => user.attributes != null && user.attributes.cluster != null))
           .subscribe(
             (user: User) => {
-              let cluster = user.attributes.cluster;
-              _latestOAuthConfig.openshiftConsoleUrl =
-                cluster.replace('api', 'console') + 'console';
+              const cluster = user.attributes.cluster;
+              _latestOAuthConfig.openshiftConsoleUrl = `${cluster.replace(
+                'api',
+                'console',
+              )}console`;
               _currentOAuthConfig.next(_latestOAuthConfig);
             },
             (error) => {

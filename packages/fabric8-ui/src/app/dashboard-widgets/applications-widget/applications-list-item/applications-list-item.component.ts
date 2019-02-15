@@ -14,6 +14,7 @@ import { ApplicationsStackReportComponent } from '../applications-stack-report/a
 
 export class BuildInput {
   build: Build;
+
   stage: PipelineStage;
 }
 
@@ -30,10 +31,13 @@ export class ApplicationsListItemComponent implements DoCheck, OnInit {
   @ViewChild(InputActionDialog) inputActionDialog: InputActionDialog;
 
   contextPath: Observable<string>;
+
   expanded: boolean = false;
 
   private _applicationUrl: string;
+
   private _pipelineStages: PipelineStage[];
+
   private _promoteBuildInput: BuildInput;
 
   constructor(private context: Contexts) {
@@ -75,7 +79,7 @@ export class ApplicationsListItemComponent implements DoCheck, OnInit {
     if (input === undefined) {
       return;
     }
-    let inputAction = input.build.firstPendingInputAction;
+    const inputAction = input.build.firstPendingInputAction;
     if (isValidInputAction(inputAction) && input.build.jenkinsNamespace) {
       this.inputActionDialog.build = input.build;
       this.inputActionDialog.inputAction = inputAction;
@@ -109,10 +113,10 @@ export class ApplicationsListItemComponent implements DoCheck, OnInit {
       return;
     }
     for (let i = 0; i < this.buildConfig.interestingBuilds.length; i++) {
-      let build = this.buildConfig.interestingBuilds[i];
+      const build = this.buildConfig.interestingBuilds[i];
       if (build.pipelineStages !== undefined) {
         for (let k = build.pipelineStages.length - 1; k >= 0; k--) {
-          let stage = build.pipelineStages[k];
+          const stage = build.pipelineStages[k];
           if (stage.serviceUrl !== undefined) {
             this._applicationUrl = stage.serviceUrl;
             return;
@@ -129,7 +133,7 @@ export class ApplicationsListItemComponent implements DoCheck, OnInit {
       return;
     }
     for (let i = 0; i < this.buildConfig.interestingBuilds.length; i++) {
-      let build = this.buildConfig.interestingBuilds[i];
+      const build = this.buildConfig.interestingBuilds[i];
       if (build.pipelineStages !== undefined) {
         if (build.pipelineStages.length > 0) {
           this._pipelineStages = build.pipelineStages;
@@ -146,14 +150,14 @@ export class ApplicationsListItemComponent implements DoCheck, OnInit {
       return;
     }
     for (let i = 0; i < this.buildConfig.interestingBuilds.length; i++) {
-      let build = this.buildConfig.interestingBuilds[i];
+      const build = this.buildConfig.interestingBuilds[i];
       if (build.pipelineStages !== undefined) {
         for (let k = build.pipelineStages.length - 1; k >= 0; k--) {
-          let stage = build.pipelineStages[k];
+          const stage = build.pipelineStages[k];
           if (stage.jenkinsInputURL !== undefined) {
             this._promoteBuildInput = {
-              build: build,
-              stage: stage,
+              build,
+              stage,
             };
             return;
           }

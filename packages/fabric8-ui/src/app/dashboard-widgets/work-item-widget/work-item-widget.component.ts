@@ -17,21 +17,33 @@ import { WorkItemBarchartData } from './work-item-barchart/work-item-barchart-da
 })
 export class WorkItemWidgetComponent implements OnInit {
   @Input() userOwnsSpace: boolean;
+
   private _myWorkItems: ConnectableObservable<WorkItem[]>;
+
   private subscriptions: Subscription[] = [];
+
   myWorkItemsCount: number;
+
   myWorkItemsResolved: number = 0;
+
   myWorkItemsInProgress: number = 0;
+
   myWorkItemsOpen: number = 0;
+
   contextPath: string;
+
   loading: boolean;
 
   LABEL_RESOLVED: string = 'Resolved';
+
   LABEL_IN_PROGRESS: string = 'In Progress';
+
   LABEL_OPEN: string = 'Open';
 
   STATE_RESOLVED: string = 'resolved';
+
   STATE_IN_PROGRESS: string = 'in progress';
+
   STATE_OPEN: string = 'open';
 
   chartConfig: WorkItemBarchartConfig = {
@@ -70,15 +82,18 @@ export class WorkItemWidgetComponent implements OnInit {
   }
 
   private resetWorkItemCounts(): void {
-    this.myWorkItemsCount = this.myWorkItemsOpen = this.myWorkItemsInProgress = this.myWorkItemsResolved = 0;
+    this.myWorkItemsCount = 0;
+    this.myWorkItemsOpen = 0;
+    this.myWorkItemsInProgress = 0;
+    this.myWorkItemsResolved = 0;
   }
 
   private updateWorkItems(): void {
     this.loading = true;
     this._myWorkItems = this.spacesService.current.pipe(
-      switchMap((space) => {
-        return this.workItemService.getWorkItems(100000, { expression: { space: `${space.id}` } });
-      }),
+      switchMap((space) =>
+        this.workItemService.getWorkItems(100000, { expression: { space: `${space.id}` } }),
+      ),
       tap(
         (val: WorkItemsData): void => {
           if (val.totalCount) {
@@ -92,7 +107,7 @@ export class WorkItemWidgetComponent implements OnInit {
       tap((workItems) => {
         this.loading = false;
         workItems.forEach((workItem) => {
-          let state = workItem.attributes['system.state'];
+          const state = workItem.attributes['system.state'];
           if (state !== undefined) {
             if (this.isStateEqual(state, this.STATE_OPEN)) {
               this.myWorkItemsOpen++;

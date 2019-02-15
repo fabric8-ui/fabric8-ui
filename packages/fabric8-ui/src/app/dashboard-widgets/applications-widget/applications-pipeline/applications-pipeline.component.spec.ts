@@ -15,7 +15,7 @@ describe('ApplicationsPipelineComponent', () => {
 
   let contexts: Contexts;
 
-  let pipelineStage = {
+  const pipelineStage = {
     jenkinsInputURL: 'https://example.com/app1.git',
     name: 'Build Release',
     status: 'SUCCESS',
@@ -50,11 +50,11 @@ describe('ApplicationsPipelineComponent', () => {
   );
 
   describe('Applications pipeline with stage', () => {
-    it('Pipeline stage should be set', function() {
+    it('Pipeline stage should be set', () => {
       expect(testContext.testedDirective.stage as any).toEqual(pipelineStage);
     });
 
-    it('Show line should be set', function() {
+    it('Show line should be set', () => {
       expect(testContext.testedDirective.showLine).toBeTruthy();
     });
   });

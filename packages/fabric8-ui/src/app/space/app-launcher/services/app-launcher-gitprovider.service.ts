@@ -1,4 +1,3 @@
-import { FABRIC8_BUILD_TOOL_DETECTOR_API_URL } from './../../../shared/runtime-console/fabric8-ui-build-tool-detector-api';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Injectable, Inject } from '@angular/core';
 import { GitHubDetails, GitProviderService, HelperService, BuildTool } from 'ngx-launcher';
@@ -6,14 +5,18 @@ import { AuthenticationService } from 'ngx-login-client';
 import { EMPTY, Observable, of, throwError } from 'rxjs';
 import { catchError, map, mergeMap, tap } from 'rxjs/operators';
 
-import { ProviderService } from '../../../shared/account/provider.service';
 import { cloneDeep } from 'lodash';
+import { ProviderService } from '../../../shared/account/provider.service';
+import { FABRIC8_BUILD_TOOL_DETECTOR_API_URL } from '../../../shared/runtime-console/fabric8-ui-build-tool-detector-api';
 
 @Injectable()
 export class AppLauncherGitproviderService implements GitProviderService {
   private END_POINT: string = '';
+
   private API_BASE: string = 'services/git/';
+
   private PROVIDER: string = 'GitHub';
+
   private headers: HttpHeaders = new HttpHeaders({
     'Content-Type': 'application/json',
     'X-App': 'osio',
@@ -21,6 +24,7 @@ export class AppLauncherGitproviderService implements GitProviderService {
   });
 
   private gitHubUserLogin: string;
+
   private repositories: object = {};
 
   constructor(
@@ -53,12 +57,10 @@ export class AppLauncherGitproviderService implements GitProviderService {
    * @returns {Observable<any>}
    */
   private getGitHubUserData(): Observable<any> {
-    let url = this.END_POINT + this.API_BASE + 'user';
-    return this.http.get(url, { headers: this.headers }).pipe(
-      catchError((error: HttpErrorResponse) => {
-        return throwError(error);
-      }),
-    );
+    const url = `${this.END_POINT + this.API_BASE}user`;
+    return this.http
+      .get(url, { headers: this.headers })
+      .pipe(catchError((error: HttpErrorResponse) => throwError(error)));
   }
 
   /**
@@ -68,12 +70,10 @@ export class AppLauncherGitproviderService implements GitProviderService {
    * @returns {Observable<any>}
    */
   getUserOrgs(userName: string): Observable<any> {
-    let url = this.END_POINT + this.API_BASE + 'organizations';
-    return this.http.get(url, { headers: this.headers }).pipe(
-      catchError((error: HttpErrorResponse) => {
-        return throwError(error);
-      }),
-    );
+    const url = `${this.END_POINT + this.API_BASE}organizations`;
+    return this.http
+      .get(url, { headers: this.headers })
+      .pipe(catchError((error: HttpErrorResponse) => throwError(error)));
   }
 
   /**
@@ -86,7 +86,7 @@ export class AppLauncherGitproviderService implements GitProviderService {
       mergeMap((user) => {
         if (user && user.login) {
           this.gitHubUserLogin = user.login;
-          let orgs: { [name: string]: string } = {};
+          const orgs: { [name: string]: string } = {};
           return this.getUserOrgs(user.login).pipe(
             mergeMap((orgsArr) => {
               if (orgsArr && orgsArr.length >= 0) {
@@ -97,7 +97,7 @@ export class AppLauncherGitproviderService implements GitProviderService {
                   orgs[orgsArr[i]] = orgsArr[i];
                 }
                 orgs[user.login] = undefined;
-                let gitHubDetails = {
+                const gitHubDetails = {
                   authenticated: true,
                   avatar: user.avatarUrl,
                   login: user.login,
@@ -105,14 +105,12 @@ export class AppLauncherGitproviderService implements GitProviderService {
                   repositoryList: this.repositories[''],
                 } as GitHubDetails;
                 return of(gitHubDetails);
-              } else {
-                return EMPTY;
               }
+              return EMPTY;
             }),
           );
-        } else {
-          return EMPTY;
         }
+        return EMPTY;
       }),
     );
   }
@@ -127,9 +125,7 @@ export class AppLauncherGitproviderService implements GitProviderService {
   isGitHubRepo(org: string, repoName: string): Observable<boolean> {
     const fullName = org ? `${org}/${repoName}` : repoName;
     return this.getRepositories(org).pipe(
-      map((repositories) => {
-        return repositories.indexOf(fullName) !== -1;
-      }),
+      map((repositories) => repositories.indexOf(fullName) !== -1),
     );
   }
 
@@ -149,12 +145,10 @@ export class AppLauncherGitproviderService implements GitProviderService {
     let headers = cloneDeep(this.headers);
     headers = headers.delete('X-App');
     headers = headers.delete('x-git-provider');
-    let url = this.constructApiUrl(this.detectorApiUrl, 'api/detect/build/' + repoUrl);
-    return this.http.get<BuildTool>(url, { headers: headers }).pipe(
-      catchError((error: HttpErrorResponse) => {
-        return throwError(error);
-      }),
-    );
+    const url = this.constructApiUrl(this.detectorApiUrl, `api/detect/build/${repoUrl}`);
+    return this.http
+      .get<BuildTool>(url, { headers })
+      .pipe(catchError((error: HttpErrorResponse) => throwError(error)));
   }
 
   /**
@@ -163,7 +157,7 @@ export class AppLauncherGitproviderService implements GitProviderService {
    * @param endPoint: string endpoint of the api Url
    */
   constructApiUrl(apiUrl: string, endPoint: string): string {
-    let url = apiUrl + '/' + endPoint;
+    let url = `${apiUrl}/${endPoint}`;
     if (apiUrl[apiUrl.length - 1] === '/') {
       url = apiUrl + endPoint;
     }
@@ -171,18 +165,17 @@ export class AppLauncherGitproviderService implements GitProviderService {
   }
 
   private getRepositories(org: string = ''): Observable<string[]> {
-    if (org === this.gitHubUserLogin) {
-      org = '';
+    let o = org;
+    if (o === this.gitHubUserLogin) {
+      o = '';
     }
-    if (this.repositories[org]) {
-      return of(this.repositories[org]);
+    if (this.repositories[o]) {
+      return of(this.repositories[o]);
     }
-    return this.http.get<string[]>(this.createUrl(org), { headers: this.headers }).pipe(
+    return this.http.get<string[]>(this.createUrl(o), { headers: this.headers }).pipe(
       map((json) => (json ? (json as string[]) : [])),
-      tap((repositories) => (this.repositories[org] = repositories)),
-      catchError((error: HttpErrorResponse) => {
-        return throwError(error);
-      }),
+      tap((repositories) => (this.repositories[o] = repositories)),
+      catchError((error: HttpErrorResponse) => throwError(error)),
     );
   }
 
@@ -192,7 +185,7 @@ export class AppLauncherGitproviderService implements GitProviderService {
   }
 
   private createUrl(org: string): string {
-    const url = this.END_POINT + this.API_BASE + 'repositories';
+    const url = `${this.END_POINT + this.API_BASE}repositories`;
     return `${url}?organization=${org}`;
   }
 }

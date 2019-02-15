@@ -22,12 +22,13 @@ interface MenuHiddenCallback {
 })
 export class HeaderComponent implements OnInit, OnDestroy {
   imgLoaded: boolean = false;
+
   isIn: boolean = false; // store state
 
   toggleState() {
     // click handler
-    let bool: boolean = this.isIn;
-    this.isIn = bool === false ? true : false;
+    const bool: boolean = this.isIn;
+    this.isIn = bool === false;
   }
 
   menuCallbacks: Map<String, MenuHiddenCallback> = new Map<String, MenuHiddenCallback>([
@@ -61,11 +62,17 @@ export class HeaderComponent implements OnInit, OnDestroy {
   ]);
 
   recent: Context[];
+
   appLauncherEnabled: boolean = false;
+
   loggedInUser: User;
+
   private _context: Context;
+
   private _defaultContext: Context;
+
   private plannerFollowQueryParams: Object = {};
+
   private eventListeners: any[] = [];
 
   constructor(
@@ -162,15 +169,15 @@ export class HeaderComponent implements OnInit, OnDestroy {
   get context(): Context {
     if (this.router.url.startsWith('/_home') || this.router.url.startsWith('/_featureflag')) {
       return this._defaultContext;
-    } else if (this.router.url.startsWith('/_error')) {
-      return null;
-    } else {
-      return this._context;
     }
+    if (this.router.url.startsWith('/_error')) {
+      return null;
+    }
+    return this._context;
   }
 
   get isHomePage(): boolean {
-    let wait = this.route.snapshot.queryParams['wait'];
+    const wait = this.route.snapshot.queryParams['wait'];
     return this.router.url.indexOf('_home') !== -1 && wait;
   }
 
@@ -179,18 +186,19 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   private stripQueryFromUrl(url: string) {
-    if (url.indexOf('?q=') !== -1) {
-      url = url.substring(0, url.indexOf('?q='));
+    let u = url;
+    if (u.indexOf('?q=') !== -1) {
+      u = u.substring(0, u.indexOf('?q='));
     }
-    return url;
+    return u;
   }
 
   private updateMenus(): void {
     if (this.context && this.context.type && this.context.type.hasOwnProperty('menus')) {
       let foundPath: boolean = false;
-      let url: string = this.stripQueryFromUrl(this.router.url);
-      let menus = (this.context.type as MenuedContextType).menus;
-      for (let n of menus) {
+      const url: string = this.stripQueryFromUrl(this.router.url);
+      const menus = (this.context.type as MenuedContextType).menus;
+      for (const n of menus) {
         // Clear the menu's active state
         n.active = false;
         if (this.menuCallbacks.has(n.path)) {
@@ -201,9 +209,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
         // lets go in reverse order to avoid matching
         // /namespace/space/create instead of /namespace/space/create/pipelines
         // as the 'Create' page matches to the 'Codebases' page
-        let subMenus: MenuItem[] = (n.menus || []).slice().reverse();
+        const subMenus: MenuItem[] = (n.menus || []).slice().reverse();
         if (subMenus && subMenus.length > 0) {
-          for (let o of subMenus) {
+          for (const o of subMenus) {
             // Clear the menu's active state
             o.active = false;
             if (!foundPath && o.fullPath === decodeURIComponent(url)) {
@@ -219,8 +227,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
           }
           if (!foundPath) {
             // lets check if the URL matches part of the path
-            for (let o of subMenus) {
-              if (!foundPath && decodeURIComponent(url).startsWith(o.fullPath + '/')) {
+            for (const o of subMenus) {
+              if (!foundPath && decodeURIComponent(url).startsWith(`${o.fullPath}/`)) {
                 foundPath = true;
                 o.active = true;
                 n.active = true;
@@ -234,9 +242,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
           }
           if (!foundPath && this.router.routerState.snapshot.root.firstChild) {
             // routes that can't be correctly matched based on the url should use the parent path
-            for (let o of subMenus) {
-              let parentPath = decodeURIComponent(
-                '/' + this.router.routerState.snapshot.root.firstChild.url.join('/'),
+            for (const o of subMenus) {
+              const parentPath = decodeURIComponent(
+                `/${this.router.routerState.snapshot.root.firstChild.url.join('/')}`,
               );
               if (!foundPath && o.fullPath === parentPath) {
                 foundPath = true;

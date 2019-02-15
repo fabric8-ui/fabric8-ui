@@ -31,19 +31,31 @@ export type appModal = {
 })
 export class AddAppOverlayComponent implements OnInit, OnDestroy {
   @ViewChild('projectNameInput') projectNameInput: ElementRef;
+
   @ViewChild('modalAddAppOverlay') modalAddAppOverlay: ModalDirective;
+
   @ViewChild('appForm') appForm: NgForm;
 
   currentSpace: Space;
+
   isProjectNameValid: boolean = false;
+
   loggedInUser: User;
+
   projectName: string = '';
+
   selectedFlow: string = '';
+
   spaces: Space[] = [];
+
   subscriptions: Subscription[] = [];
+
   applications: string[] = [];
+
   isProjectNameAvailable: boolean = false;
+
   navigationInProgress: boolean = false;
+
   isModalShown: boolean = false;
 
   private pipelinesService: PipelinesService;
@@ -160,8 +172,7 @@ export class AddAppOverlayComponent implements OnInit, OnDestroy {
     if (this.projectName) {
       this.projectName = this.projectName.toLowerCase();
       this.isProjectNameValid = this.isValidProjectName(this.projectName);
-      this.isProjectNameAvailable =
-        this.applications.indexOf(this.projectName) === -1 ? true : false;
+      this.isProjectNameAvailable = this.applications.indexOf(this.projectName) === -1;
     }
   }
 

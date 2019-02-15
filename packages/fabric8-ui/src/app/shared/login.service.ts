@@ -5,18 +5,22 @@ import { Broadcaster, Notification, Notifications, NotificationType } from 'ngx-
 import { AUTH_API_URL, AuthenticationService, UserService } from 'ngx-login-client';
 import { of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { WindowService } from './window.service';
 import { HttpClient } from '@angular/common/http';
+import { WindowService } from './window.service';
 
 @Injectable()
 export class LoginService {
   static readonly REDIRECT_URL_KEY = 'redirectUrl';
+
   static readonly DEFAULT_URL = '/_home';
+
   // URLs that the redirect should ignore
   static readonly BANNED_REDIRECT_URLS = ['/'];
+
   static readonly LOGIN_URL = '/';
 
   private window: Window;
+
   private authUrl: string; // URL to web api
 
   public openShiftToken: string;
@@ -34,7 +38,7 @@ export class LoginService {
   ) {
     this.window = windowService.getNativeWindow();
     // Removed ?link=true in favor of getting started page
-    this.authUrl = apiUrl + 'login';
+    this.authUrl = `${apiUrl}login`;
     this.broadcaster.on('authenticationError').subscribe(() => {
       this.authService.logout();
     });
@@ -51,10 +55,10 @@ export class LoginService {
   }
 
   redirectToAuth() {
-    var authUrl = this.authUrl;
+    let authUrl = this.authUrl;
     if (authUrl.indexOf('?') < 0) {
       // lets ensure there's a redirect parameter to avoid WIT barfing
-      authUrl += '?redirect=' + this.window.location.href;
+      authUrl += `?redirect=${this.window.location.href}`;
     }
     this.window.location.href = authUrl;
   }
@@ -73,8 +77,9 @@ export class LoginService {
   }
 
   public logout() {
-    const logoutUrl =
-      this.apiUrl + 'logout/v2?redirect=' + encodeURIComponent(this.window.location.origin);
+    const logoutUrl = `${this.apiUrl}logout/v2?redirect=${encodeURIComponent(
+      this.window.location.origin,
+    )}`;
 
     this.http.get(logoutUrl).subscribe((res: { redirect_location: string }) => {
       this.authService.logout();
@@ -83,10 +88,10 @@ export class LoginService {
   }
 
   public login() {
-    let query = this.window.location.search.substr(1);
-    let result: any = {};
-    query.split('&').forEach(function(part) {
-      let item: any = part.split('=');
+    const query = this.window.location.search.substr(1);
+    const result: any = {};
+    query.split('&').forEach((part) => {
+      const item: any = part.split('=');
       result[item[0]] = decodeURIComponent(item[1]);
     });
 
@@ -133,7 +138,7 @@ export class LoginService {
   }
 
   private get _redirectUrl(): string {
-    let res = this.localStorage.get<string>(LoginService.REDIRECT_URL_KEY);
+    const res = this.localStorage.get<string>(LoginService.REDIRECT_URL_KEY);
     this.localStorage.remove(LoginService.REDIRECT_URL_KEY);
     return res;
   }

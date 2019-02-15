@@ -10,6 +10,7 @@ import { BuildConfigStore } from '../../../store/buildconfig.store';
 })
 export class BuildConfigDeleteDialog {
   buildconfig: BuildConfig = new BuildConfig();
+
   modal: any;
 
   constructor(
@@ -19,7 +20,7 @@ export class BuildConfigDeleteDialog {
 
   ok() {
     this.modal.close();
-    let stream = this.buildconfigService.delete(this.buildconfig);
+    const stream = this.buildconfigService.delete(this.buildconfig);
     if (stream) {
       stream.subscribe(
         () => {

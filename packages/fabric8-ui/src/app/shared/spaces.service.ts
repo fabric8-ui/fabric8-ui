@@ -1,5 +1,4 @@
-import { ErrorHandler } from '@angular/core';
-import { Injectable } from '@angular/core';
+import { ErrorHandler, Injectable } from '@angular/core';
 import { Broadcaster } from 'ngx-base';
 import { Contexts, Space, Spaces, SpaceService } from 'ngx-fabric8-wit';
 import { forkJoin, merge, Observable, of as observableOf, Subscription } from 'rxjs';
@@ -10,6 +9,7 @@ import { RecentData, RecentUtils } from './recent-utils';
 @Injectable()
 export class SpacesService extends RecentUtils<Space> implements Spaces {
   private _current: Observable<Space>;
+
   private subscriptions: Subscription[] = [];
 
   constructor(
@@ -94,23 +94,20 @@ export class SpacesService extends RecentUtils<Space> implements Spaces {
           if (profile.store.recentSpaces && profile.store.recentSpaces.length > 0) {
             return forkJoin(
               (profile.store.recentSpaces as string[]).map(
-                (id: string): Observable<Space> => {
+                (id: string): Observable<Space> =>
                   // if getSpaceById() throws an error, forkJoin will not complete and loadRecent will not return
-                  return this.spaceService
+                  this.spaceService
                     .getSpaceById(id)
-                    .pipe(catchError((): Observable<Space> => observableOf(null)));
-                },
+                    .pipe(catchError((): Observable<Space> => observableOf(null))),
               ),
             ).pipe(
               map(
-                (spaces: Space[]): Space[] => {
-                  return spaces.filter((space: Space): boolean => space !== null);
-                },
+                (spaces: Space[]): Space[] =>
+                  spaces.filter((space: Space): boolean => space !== null),
               ),
             );
-          } else {
-            return observableOf([]);
           }
+          return observableOf([]);
         },
       ),
     );
@@ -118,7 +115,7 @@ export class SpacesService extends RecentUtils<Space> implements Spaces {
 
   private saveRecentSpaces(recentSpaces: Space[]): void {
     this._recent.next(recentSpaces);
-    let patch: ExtProfile = {
+    const patch: ExtProfile = {
       store: {
         recentSpaces: (recentSpaces as Space[]).map((val: Space): string => val.id),
       },

@@ -10,7 +10,9 @@ import { Link } from './link';
 @Injectable()
 export class ProviderService {
   private loginUrl: string;
+
   private linkUrl: string;
+
   private headers: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
 
   constructor(
@@ -19,8 +21,8 @@ export class ProviderService {
     private logger: Logger,
     @Inject(AUTH_API_URL) private apiUrl: string,
   ) {
-    this.loginUrl = apiUrl + 'link';
-    this.linkUrl = apiUrl + 'token/link';
+    this.loginUrl = `${apiUrl}link`;
+    this.linkUrl = `${apiUrl}token/link`;
     if (this.auth.getToken() != null) {
       this.headers = this.headers.set('Authorization', `Bearer ${this.auth.getToken()}`);
     }
@@ -33,10 +35,9 @@ export class ProviderService {
    * @param redirect URL to be redirected to after successful account linking
    */
   linkAll(cluster: string, redirect: string): void {
-    let redirectToGithubLinkURL =
-      window.location.origin +
-      '/_gettingstarted?wait=true&link=' +
-      encodeURIComponent('https://github.com');
+    const redirectToGithubLinkURL = `${
+      window.location.origin
+    }/_gettingstarted?wait=true&link=${encodeURIComponent('https://github.com')}`;
     // after linking github, proceed with linking openshift-v3,
     // hence passing openshift linking url as a redirect.
     this.linkOpenShift(cluster, redirectToGithubLinkURL);
@@ -52,7 +53,7 @@ export class ProviderService {
   }
 
   disconnectGitHub(): Observable<any> {
-    let tokenUrl = this.apiUrl + 'token?for=https://github.com';
+    const tokenUrl = `${this.apiUrl}token?for=https://github.com`;
     return this.http.delete(tokenUrl, { headers: this.headers }).pipe(
       map(() => {
         this.auth.clearGitHubToken();
@@ -61,39 +62,35 @@ export class ProviderService {
   }
 
   getGitHubStatus(): Observable<any> {
-    let tokenUrl = this.apiUrl + 'token?force_pull=true&for=https://github.com';
+    const tokenUrl = `${this.apiUrl}token?force_pull=true&for=https://github.com`;
     return this.http.get(tokenUrl, { headers: this.headers });
   }
 
   getOpenShiftStatus(cluster: string): Observable<any> {
-    let tokenUrl = this.apiUrl + 'token?force_pull=true&for=' + cluster;
+    const tokenUrl = `${this.apiUrl}token?force_pull=true&for=${cluster}`;
     return this.http.get(tokenUrl, { headers: this.headers });
   }
 
   disconnectOpenShift(cluster: string): Observable<any> {
-    let tokenUrl = this.apiUrl + 'token?for=' + cluster;
+    const tokenUrl = `${this.apiUrl}token?for=${cluster}`;
     return this.http.delete(tokenUrl, { headers: this.headers });
   }
 
   getLegacyLinkingUrl(provider: string, redirect: string): string {
-    let parsedToken = jwt_decode(this.auth.getToken());
+    const parsedToken = jwt_decode(this.auth.getToken());
     let url =
-      this.loginUrl +
-      '/session?' +
-      'clientSession=' +
-      parsedToken.client_session +
-      '&sessionState=' +
-      parsedToken.session_state +
-      '&redirect=' +
-      redirect; // brings us back to Getting Started.
+      `${this.loginUrl}/session?` +
+      `clientSession=${parsedToken.client_session}&sessionState=${
+        parsedToken.session_state
+      }&redirect=${redirect}`; // brings us back to Getting Started.
     if (provider != undefined) {
-      url += '&provider=' + provider;
+      url += `&provider=${provider}`;
     }
     return url;
   }
 
   getLinkingURL(provider: string, redirect: string): string {
-    let linkURL = this.linkUrl + '?for=' + provider + '&redirect=' + encodeURIComponent(redirect);
+    const linkURL = `${this.linkUrl}?for=${provider}&redirect=${encodeURIComponent(redirect)}`;
     return linkURL;
   }
 
@@ -114,16 +111,14 @@ export class ProviderService {
    * @param redirect URL to be redirected to after successful account linking
    */
   link(provider: string, redirect: string): void {
-    let linkURL = this.linkUrl + '?for=' + provider + '&redirect=' + encodeURIComponent(redirect);
+    const linkURL = `${this.linkUrl}?for=${provider}&redirect=${encodeURIComponent(redirect)}`;
     this.http
       .get(linkURL, { headers: this.headers })
       .pipe(
         map((resp: Link) => {
           this.redirectToAuth(resp.redirect_location);
         }),
-        catchError((err: HttpErrorResponse) => {
-          return this.handleError(err);
-        }),
+        catchError((err: HttpErrorResponse) => this.handleError(err)),
       )
       .subscribe();
   }

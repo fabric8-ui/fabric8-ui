@@ -3,8 +3,7 @@ import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Broadcaster, Notification, Notifications, NotificationType } from 'ngx-base';
 import { ModalDirective } from 'ngx-bootstrap/modal';
-import { SpaceService } from 'ngx-fabric8-wit';
-import { Space, SpaceAttributes } from 'ngx-fabric8-wit';
+import { Space, SpaceAttributes, SpaceService } from 'ngx-fabric8-wit';
 import { UserService } from 'ngx-login-client';
 import { of as observableOf, Subscription } from 'rxjs';
 import { catchError, map, switchMap } from 'rxjs/operators';
@@ -22,14 +21,21 @@ export type spaceModal = {
 })
 export class AddSpaceOverlayComponent implements OnInit {
   @ViewChild('addSpaceOverlayNameInput') spaceNameInput: ElementRef;
+
   @ViewChild('modalAddSpaceOverlay') modalAddSpaceOverlay: ModalDirective;
+
   @ViewChild('spaceForm') spaceForm: NgForm;
 
   spaceName: string;
+
   spaceDescription: string;
+
   subscriptions: Subscription[] = [];
+
   canSubmit: Boolean = true;
+
   private addAppFlow: string;
+
   isModalShown: boolean = false;
 
   constructor(
@@ -85,7 +91,7 @@ export class AddSpaceOverlayComponent implements OnInit {
     }
 
     this.canSubmit = false;
-    let space = this.createTransientSpace();
+    const space = this.createTransientSpace();
     space.attributes.name = this.spaceName;
     space.attributes.description = this.spaceDescription;
     space.relationships['owned-by'].data.id = this.userService.currentLoggedInUser.id;
@@ -94,13 +100,13 @@ export class AddSpaceOverlayComponent implements OnInit {
       this.spaceService
         .create(space)
         .pipe(
-          switchMap((createdSpace) => {
-            return this.spaceNamespaceService.updateConfigMap(observableOf(createdSpace)).pipe(
+          switchMap((createdSpace) =>
+            this.spaceNamespaceService.updateConfigMap(observableOf(createdSpace)).pipe(
               map(() => createdSpace),
               // Ignore any errors coming out here, we've logged and notified them earlier
               catchError((err) => observableOf(createdSpace)),
-            );
-          }),
+            ),
+          ),
         )
         .subscribe(
           (createdSpace) => {
@@ -152,7 +158,7 @@ export class AddSpaceOverlayComponent implements OnInit {
   }
 
   private createTransientSpace(): Space {
-    let space = {} as Space;
+    const space = {} as Space;
     space.name = '';
     space.path = '';
     space.attributes = new SpaceAttributes();

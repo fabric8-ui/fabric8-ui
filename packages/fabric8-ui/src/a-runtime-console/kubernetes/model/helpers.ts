@@ -3,7 +3,7 @@ import { OAuthConfig } from '../store/oauth-config-store';
 import { KubernetesResource } from './kubernetesresource.model';
 import { pathJoin } from './utils';
 
-export var resourceKindToCollectionName = {
+export const resourceKindToCollectionName = {
   Deployment: 'deployments',
   DeploymentConfig: 'deploymentconfigs',
   Build: 'builds',
@@ -19,7 +19,7 @@ export var resourceKindToCollectionName = {
   Service: 'services',
 };
 
-export var resourceKindToOpenShiftConsoleCollectionName = {
+export const resourceKindToOpenShiftConsoleCollectionName = {
   BuildConfig: 'pipelines',
   DeploymentConfig: 'dc',
   ReplicationController: 'rc',
@@ -45,49 +45,43 @@ export function openShiftBrowseResourceUrl(
   kinds: string = null,
 ): string {
   if (resource) {
+    let oscUrl: string = openShiftConsoleUrl;
+    let k: string = kinds;
     if (!openShiftConsoleUrl) {
-      openShiftConsoleUrl = oauthConfig.openshiftConsoleUrl;
+      oscUrl = oauthConfig.openshiftConsoleUrl;
     }
     if (!kinds) {
       let kind = resource.defaultKind();
       if (!kind || kind === 'Unknown') {
-        let k8sResource = resource.resource;
+        const k8sResource = resource.resource;
         if (k8sResource) {
           kind = k8sResource.kind;
         }
       }
       if (kind) {
-        kinds =
+        k =
           resourceKindToOpenShiftConsoleCollectionName[kind] || resourceKindToCollectionName[kind];
-        if (!kinds) {
-          console.log('Could not find collection name for kind: ' + kind);
-          kinds = kind.toLowerCase();
-          if (!kinds.endsWith('s')) {
-            kinds += 's';
+        if (!k) {
+          console.log(`Could not find collection name for kind: ${kind}`);
+          k = kind.toLowerCase();
+          if (!k.endsWith('s')) {
+            k += 's';
           }
         }
       }
     }
     const name = resource.name;
     const namespace = resource.namespace;
-    if (kinds === 'builds' && name && namespace) {
+    if (k === 'builds' && name && namespace) {
       const pipelineName = resource['buildConfigName'] || name;
-      return pathJoin(
-        openShiftConsoleUrl,
-        '/project/',
-        namespace,
-        '/browse/pipelines',
-        pipelineName,
-        name,
-      );
-    } else if (kinds === 'spaces' || kinds === 'projects') {
+      return pathJoin(oscUrl, '/project/', namespace, '/browse/pipelines', pipelineName, name);
+    }
+    if (k === 'spaces' || k === 'projects') {
       if (name) {
-        return pathJoin(openShiftConsoleUrl, '/project/', name, '/overview');
+        return pathJoin(oscUrl, '/project/', name, '/overview');
       }
-    } else {
-      if (resource && openShiftConsoleUrl && namespace && name) {
-        return pathJoin(openShiftConsoleUrl, '/project/', namespace, '/browse', kinds, name);
-      }
+    } else if (resource && oscUrl && namespace && name) {
+      return pathJoin(oscUrl, '/project/', namespace, '/browse', k, name);
     }
   }
   return '';
@@ -98,9 +92,9 @@ export function openShiftBrowseResourceUrl(
  */
 export function activedRouteDataEntry(route: ActivatedRoute, key: string) {
   if (route) {
-    let data = route.snapshot.data;
+    const data = route.snapshot.data;
     if (data) {
-      let answer = data[key];
+      const answer = data[key];
       if (answer != undefined) {
         return answer;
       }
@@ -115,9 +109,9 @@ export function activedRouteDataEntry(route: ActivatedRoute, key: string) {
 
 export function findParameter(route: ActivatedRoute, name: string): string {
   if (route) {
-    var snapshot = route.snapshot;
+    let snapshot = route.snapshot;
     while (snapshot) {
-      let answer = snapshot.params[name];
+      const answer = snapshot.params[name];
       if (answer) {
         return answer;
       }

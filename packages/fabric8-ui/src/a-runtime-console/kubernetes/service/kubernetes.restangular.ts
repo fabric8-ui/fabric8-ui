@@ -22,7 +22,7 @@ export const KUBERNETES_RESTANGULAR = new InjectionToken<string>('KubernetesRest
 
 function convertToKubernetesResource(resource) {
   // TODO would be nice to make this bit more modular so we could register other kinds of resource more easily
-  let kind = resource.kind;
+  const kind = resource.kind;
   if (!kind) {
     return resource;
   }
@@ -68,7 +68,7 @@ function convertToKubernetesResource(resource) {
     case 'Service':
       return new Service().setResource(resource);
     default:
-      console.log('Unknown resource kind ' + kind);
+      console.log(`Unknown resource kind ${kind}`);
       return new KubernetesResource().setResource(resource);
   }
 }
@@ -82,22 +82,22 @@ export function KubernetesRestangularFactory(
   const config = restangular.withConfig((RestangularConfigurer) => {
     // TODO setting the baseUrl to empty string doesn't seem to work so lets use the absolute URL of the app
     let baseUrl = '';
-    let location = window.location;
+    const location = window.location;
     if (location) {
-      let hostname = location.hostname;
-      let port = location.port;
+      const hostname = location.hostname;
+      const port = location.port;
       if (hostname) {
-        baseUrl = 'http://' + hostname;
+        baseUrl = `http://${hostname}`;
         if (port) {
-          baseUrl += ':' + port;
+          baseUrl += `:${port}`;
         }
       }
     }
-    //console.log("using Restangular base URL " + baseUrl);
+    // console.log("using Restangular base URL " + baseUrl);
     RestangularConfigurer.setBaseUrl(baseUrl);
 
-    //RestangularConfigurer.addResponseInterceptor(function (data, operation, what, url, response, deferred) {
-    RestangularConfigurer.addResponseInterceptor(function(data, operation) {
+    // RestangularConfigurer.addResponseInterceptor(function (data, operation, what, url, response, deferred) {
+    RestangularConfigurer.addResponseInterceptor((data, operation) => {
       let kind = data ? data.kind : null;
       if (operation === 'getList') {
         if (data && data.constructor !== Array) {
@@ -108,7 +108,7 @@ export function KubernetesRestangularFactory(
             // TODO lets assume for now its a 'BuildConfig' from jenkinsshift
             kind = 'BuildConfig';
           }
-          let resourceApiVersion = (data.metadata || {}).apiVersion;
+          const resourceApiVersion = (data.metadata || {}).apiVersion;
           return (data.items || []).map((object) => {
             // ensure each item has a kind and api version
             if (!object.apiVersion) {
@@ -129,27 +129,27 @@ export function KubernetesRestangularFactory(
     RestangularConfigurer.addFullRequestInterceptor(
       (element, operation, path, url, headers, params) => {
         let baseUrl = '';
-        let oauthConfig = currentOAuthConfig();
+        const oauthConfig = currentOAuthConfig();
         if (oauthConfig) {
           baseUrl = oauthConfig.proxyApiServer || oauthConfig.apiServer || '';
           if (baseUrl) {
-            let protocol = oauthConfig.apiServerProtocol || 'https';
-            baseUrl = protocol + '://' + baseUrl;
+            const protocol = oauthConfig.apiServerProtocol || 'https';
+            baseUrl = `${protocol}://${baseUrl}`;
           }
         } else {
           console.log('No oauth config!');
         }
         // TODO setting the baseUrl to empty string doesn't seem to work so lets use the absolute URL of the app
         if (!baseUrl) {
-          let location = window.location;
+          const location = window.location;
           if (location) {
-            let hostname = location.hostname;
-            let port = location.port;
+            const hostname = location.hostname;
+            const port = location.port;
             if (hostname) {
-              let protocol = oauthConfig.apiServerProtocol || 'https';
-              baseUrl = protocol + '://' + hostname;
+              const protocol = oauthConfig.apiServerProtocol || 'https';
+              baseUrl = `${protocol}://${hostname}`;
               if (port) {
-                baseUrl += ':' + port;
+                baseUrl += `:${port}`;
               }
             }
           }
@@ -157,15 +157,15 @@ export function KubernetesRestangularFactory(
         if (oauthConfig.apiServerBasePath) {
           baseUrl += oauthConfig.apiServerBasePath;
         }
-        //console.log("==========  using Restangular base URL " + baseUrl);
+        // console.log("==========  using Restangular base URL " + baseUrl);
         RestangularConfigurer.setBaseUrl(baseUrl);
 
-        //console.log("===== setting kubernetes token: " + (token ? "token" : "no token") + " for " + url);
-        headers['Authorization'] = 'Bearer ' + onLogin.token;
+        // console.log("===== setting kubernetes token: " + (token ? "token" : "no token") + " for " + url);
+        headers['Authorization'] = `Bearer ${onLogin.token}`;
         return {
-          params: params,
-          headers: headers,
-          element: element,
+          params,
+          headers,
+          element,
         };
       },
     );

@@ -22,14 +22,18 @@ export class ExtUser extends User {
 
 export class ExtProfile extends Profile {
   contextInformation: any;
+
   registrationCompleted: boolean;
+
   featureLevel: string;
 }
 
 @Injectable()
 export class GettingStartedService implements OnDestroy {
   private headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+
   protected subscriptions: Subscription[] = [];
+
   private usersUrl: string;
 
   constructor(
@@ -40,9 +44,9 @@ export class GettingStartedService implements OnDestroy {
     @Inject(WIT_API_URL) apiUrl: string,
   ) {
     if (this.auth.getToken() != undefined) {
-      this.headers = this.headers.set('Authorization', 'Bearer ' + this.auth.getToken());
+      this.headers = this.headers.set('Authorization', `Bearer ${this.auth.getToken()}`);
     }
-    this.usersUrl = apiUrl + 'users';
+    this.usersUrl = `${apiUrl}users`;
   }
 
   ngOnDestroy(): void {
@@ -79,7 +83,7 @@ export class GettingStartedService implements OnDestroy {
    * @returns {Observable<ExtUser>}
    */
   getExtProfile(id: string): Observable<ExtUser> {
-    let url = `${this.usersUrl}/${id}`;
+    const url = `${this.usersUrl}/${id}`;
     return this.http.get<ExtUserResponse>(url, { headers: this.headers }).pipe(
       map((response: ExtUserResponse): ExtUser => response.data),
       catchError((error: HttpErrorResponse): Observable<ExtUser> => this.handleError(error)),

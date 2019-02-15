@@ -15,13 +15,17 @@ import { pathJoin } from '../../../model/utils';
 })
 export class InputActionDialog implements OnDestroy {
   build: Build = new Build();
+
   stage: PipelineStage = null;
+
   inputAction: PendingInputAction = new PendingInputAction();
 
   @ViewChild('inputModal') modal: any;
 
   private _jenkinsSubscription: Subscription;
+
   private _jenkinsTimerSubscription: Subscription;
+
   private jenkinsStatus: any;
 
   constructor(
@@ -36,7 +40,7 @@ export class InputActionDialog implements OnDestroy {
   }
 
   get messageLines(): string[] {
-    let msg = this.inputAction.message || '';
+    const msg = this.inputAction.message || '';
     return msg.split('\n');
   }
 
@@ -54,30 +58,31 @@ export class InputActionDialog implements OnDestroy {
   }
 
   invokeUrl(url: string) {
-    if (url) {
-      if (url.startsWith('//')) {
-        url = url.substring(1);
+    let u = url;
+    if (u) {
+      if (u.startsWith('//')) {
+        u = u.substring(1);
       }
       // lets replace URL which doesn't seem to work right ;)
       const postfix = '/wfapi/inputSubmit?inputId=Proceed';
-      if (url.endsWith(postfix)) {
-        url = url.substring(0, url.length - postfix.length) + '/input/Proceed/proceedEmpty';
+      if (u.endsWith(postfix)) {
+        u = `${u.substring(0, u.length - postfix.length)}/input/Proceed/proceedEmpty`;
       }
 
-      let jenkinsNamespace = this.build.jenkinsNamespace;
-      let forgeUrl = this.forgeApiUrl;
+      const jenkinsNamespace = this.build.jenkinsNamespace;
+      const forgeUrl = this.forgeApiUrl;
       if (!forgeUrl) {
         console.log('Warning no $FABRIC8_FORGE_API_URL environment variable!');
       } else if (!jenkinsNamespace) {
         console.log('Warning no jenkinsNamespace on the Build!');
       } else {
-        url = pathJoin(forgeUrl, '/api/openshift/services/jenkins/', jenkinsNamespace, url);
+        u = pathJoin(forgeUrl, '/api/openshift/services/jenkins/', jenkinsNamespace, u);
         const headers = new HttpHeaders({
-          Authorization: 'Bearer ' + this.authService.getToken(),
+          Authorization: `Bearer ${this.authService.getToken()}`,
           'X-App': 'OSIO',
         });
-        let body = null;
-        this.http.post(url, body, { headers }).subscribe(() => {});
+        const body = null;
+        this.http.post(u, body, { headers }).subscribe(() => {});
       }
     }
     this.close();

@@ -9,8 +9,11 @@ import { FeatureTogglesService } from 'ngx-feature-flag';
 @Injectable()
 export class AppLauncherMissionRuntimeService extends MissionRuntimeService {
   private headers: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
+
   private END_POINT: string = '';
+
   private API_BASE: string = 'booster-catalog/';
+
   private ORIGIN: string = '';
 
   constructor(
@@ -35,24 +38,22 @@ export class AppLauncherMissionRuntimeService extends MissionRuntimeService {
       this.featureToggleService.isFeatureUserEnabled('AppLauncher.NodeBooster'),
       this.featureToggleService.isFeatureUserEnabled('AppLauncher.GoLangBooster'),
     ).pipe(
-      switchMap(([nodeFlag, goLangFlag]) => {
-        return this.http
-          .get<Catalog>(this.END_POINT + this.API_BASE, { headers: this.headers })
-          .pipe(
-            map((catalog: Catalog) => {
-              if (!nodeFlag) {
-                catalog.boosters = catalog.boosters.filter((b) => b.runtime !== 'nodejs');
-                catalog.runtimes = catalog.runtimes.filter((r) => r.id !== 'nodejs');
-              }
-              if (!goLangFlag) {
-                catalog.boosters = catalog.boosters.filter((b) => b.runtime !== 'golang');
-                catalog.runtimes = catalog.runtimes.filter((r) => r.id !== 'golang');
-              }
-              return catalog;
-            }),
-            catchError(this.handleError),
-          );
-      }),
+      switchMap(([nodeFlag, goLangFlag]) =>
+        this.http.get<Catalog>(this.END_POINT + this.API_BASE, { headers: this.headers }).pipe(
+          map((catalog: Catalog) => {
+            if (!nodeFlag) {
+              catalog.boosters = catalog.boosters.filter((b) => b.runtime !== 'nodejs');
+              catalog.runtimes = catalog.runtimes.filter((r) => r.id !== 'nodejs');
+            }
+            if (!goLangFlag) {
+              catalog.boosters = catalog.boosters.filter((b) => b.runtime !== 'golang');
+              catalog.runtimes = catalog.runtimes.filter((r) => r.id !== 'golang');
+            }
+            return catalog;
+          }),
+          catchError(this.handleError),
+        ),
+      ),
     );
   }
 

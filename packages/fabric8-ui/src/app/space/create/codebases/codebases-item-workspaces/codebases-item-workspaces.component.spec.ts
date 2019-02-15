@@ -14,8 +14,10 @@ describe('Codebases Item Details Component', () => {
   let cheServiceMock: any;
   let workspacesServiceMock: any;
   let notificationMock: any;
-  let fixture, comp;
-  let expectedWorkspace, expectedWorkspaces;
+  let fixture;
+  let comp;
+  let expectedWorkspace;
+  let expectedWorkspaces;
 
   beforeEach(() => {
     broadcasterMock = jasmine.createSpyObj('Broadcaster', ['on']);
@@ -116,7 +118,7 @@ describe('Codebases Item Details Component', () => {
 
   it('Create Workspace with capacity full', () => {
     // given
-    let comp = fixture.componentInstance;
+    const comp = fixture.componentInstance;
     cheServiceMock.getState.and.returnValue(
       observableOf({ clusterFull: true, multiTenant: true, running: true }),
     );

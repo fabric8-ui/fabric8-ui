@@ -13,9 +13,13 @@ import { ProviderService } from '../shared/account/provider.service';
 })
 export class GettingStartedComponent implements OnDestroy, OnInit {
   loggedInUser: User;
+
   openShiftLinked: boolean = false;
+
   subscriptions: Subscription[] = [];
+
   username: string;
+
   errorConnecting: boolean = false;
 
   constructor(
@@ -33,14 +37,14 @@ export class GettingStartedComponent implements OnDestroy, OnInit {
   }
 
   ngOnInit(): void {
-    let userSub = this.userService.loggedInUser.subscribe((user) => {
+    const userSub = this.userService.loggedInUser.subscribe((user) => {
       this.loggedInUser = user;
       if (this.loggedInUser && this.loggedInUser.attributes) {
-        let connectionSub = this.auth
+        const connectionSub = this.auth
           .isOpenShiftConnected(this.loggedInUser.attributes.cluster)
           .subscribe((isConnected) => {
             this.openShiftLinked = isConnected;
-            let wait = this.route.snapshot.queryParams['wait'];
+            const wait = this.route.snapshot.queryParams['wait'];
             if (!isConnected && !wait) {
               // first time through and user isn't connected - automatically connect accounts
               this.connectAccounts();
@@ -66,7 +70,7 @@ export class GettingStartedComponent implements OnDestroy, OnInit {
   connectAccounts(): void {
     this.providerService.linkOpenShift(
       this.loggedInUser.attributes.cluster,
-      window.location.origin + '/_gettingstarted?wait=true',
+      `${window.location.origin}/_gettingstarted?wait=true`,
     );
   }
 

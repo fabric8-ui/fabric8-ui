@@ -4,18 +4,31 @@ import { Service, Services } from '../model/service.model';
 
 export class DeploymentView {
   public readonly deployment: Deployment;
+
   public readonly service: Service;
+
   public readonly id: string;
+
   public readonly name: string;
+
   public readonly namespace: string;
+
   public readonly version: string;
+
   public readonly icon: string;
+
   public readonly description: string;
+
   public readonly exposeUrl: string;
+
   public readonly replicas: number;
+
   public readonly statusReplicas: number;
+
   public readonly availableReplicas: number;
+
   public readonly unavailableReplicas: number;
+
   public readonly updatedReplicas: number;
 
   /**
@@ -32,9 +45,13 @@ export class DeploymentView {
    * If there are no running, starting or terminating pods
    */
   public readonly emptyReplicas: boolean;
+
   public readonly labels: Map<string, string>;
+
   public readonly images: Array<String>;
+
   public readonly annotations: Map<string, string>;
+
   public readonly creationTimestamp: any;
 
   constructor(deployment: Deployment, service: Service) {
@@ -51,17 +68,17 @@ export class DeploymentView {
     if (service) {
       this.exposeUrl = service.exposeUrl;
     }
-    this.images = new Array<String>();
-    let spec = deployment.spec;
+    this.images = [];
+    const spec = deployment.spec;
     if (spec) {
-      let template = spec.template;
+      const template = spec.template;
       if (template) {
-        let podSpec = template.spec;
+        const podSpec = template.spec;
         if (podSpec) {
-          let containers = podSpec.containers;
+          const containers = podSpec.containers;
           if (containers) {
             containers.forEach((c) => {
-              let image = c.image;
+              const image = c.image;
               if (image) {
                 this.images.push(image);
               }
@@ -96,16 +113,16 @@ export function combineDeployments(
   deployments: Deployments,
   deploymentConfigs: DeploymentConfigs,
 ): Deployments {
-  let map = {};
+  const map = {};
   if (deployments) {
     deployments.forEach((s) => (map[s.name] = s));
   }
 
-  var answer = new Deployments();
+  const answer = new Deployments();
   deployments.forEach((d) => answer.push(d));
   if (deploymentConfigs) {
     deploymentConfigs.forEach((dc) => {
-      var name = dc.name;
+      const name = dc.name;
       if (name && !map[name]) {
         answer.push(dc);
       }
@@ -123,16 +140,15 @@ export function combineDeployment(
 ): Deployment {
   if (deployment && deployment.resource) {
     return deploymentConfig && deploymentConfig.resource ? deploymentConfig : deployment;
-  } else {
-    return deploymentConfig;
   }
+  return deploymentConfig;
 }
 
 export function createDeploymentViews(
   deployments: Deployments,
   services: Services,
 ): DeploymentViews {
-  let map = {};
+  const map = {};
   services.forEach((s) => (map[s.name] = s));
   return deployments.map((d) => new DeploymentView(d, map[d.name]));
 }

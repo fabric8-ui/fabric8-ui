@@ -28,7 +28,7 @@ describe('OauthConfigStore', () => {
   let mockErrorHandler: jasmine.SpyObj<ErrorHandler>;
   let mockNotificationsService: jasmine.SpyObj<NotificationsService>;
 
-  let user: User = {
+  const user: User = {
     attributes: {
       fullName: 'mock',
       imageURL: 'mock',
@@ -39,9 +39,9 @@ describe('OauthConfigStore', () => {
     type: 'mock',
   };
 
-  let data = {};
+  const data = {};
 
-  let subscriptions: Subscription[] = [];
+  const subscriptions: Subscription[] = [];
 
   beforeEach(() => {
     mockLogger = jasmine.createSpyObj<Logger>('Logger', ['error']);
@@ -92,15 +92,7 @@ describe('OauthConfigStore', () => {
               logger: Logger,
               errorHandler: ErrorHandler,
               notifications: NotificationsService,
-            ) => {
-              return new OAuthConfigStore(
-                http,
-                mockUserService,
-                logger,
-                errorHandler,
-                notifications,
-              );
-            },
+            ) => new OAuthConfigStore(http, mockUserService, logger, errorHandler, notifications),
             deps: [HttpClient, HttpTestingController, Logger, ErrorHandler, NotificationsService],
           },
         ],
@@ -173,15 +165,7 @@ describe('OauthConfigStore', () => {
               logger: Logger,
               errorHandler: ErrorHandler,
               notifications: NotificationsService,
-            ) => {
-              return new OAuthConfigStore(
-                http,
-                mockUserService,
-                logger,
-                errorHandler,
-                notifications,
-              );
-            },
+            ) => new OAuthConfigStore(http, mockUserService, logger, errorHandler, notifications),
             deps: [HttpClient, HttpTestingController, Logger, ErrorHandler, NotificationsService],
           },
         ],
@@ -251,15 +235,14 @@ describe('OauthConfigStore', () => {
             // provide OAuthConfigStore with a factory inside the fakeAsync zone
             // so the mockBackend can catch http requests made inside the constructor
             provide: OAuthConfigStore,
-            useFactory: (http: HttpClient) => {
-              return new OAuthConfigStore(
+            useFactory: (http: HttpClient) =>
+              new OAuthConfigStore(
                 http,
                 mockUserService,
                 mockLogger,
                 mockErrorHandler,
                 mockNotificationsService,
-              );
-            },
+              ),
             deps: [HttpClient],
           },
         ],
@@ -320,15 +303,14 @@ describe('OauthConfigStore', () => {
             // provide OAuthConfigStore with a factory inside the fakeAsync zone
             // so the mockBackend can catch http requests made inside the constructor
             provide: OAuthConfigStore,
-            useFactory: (http: HttpClient) => {
-              return new OAuthConfigStore(
+            useFactory: (http: HttpClient) =>
+              new OAuthConfigStore(
                 http,
                 mockUserService,
                 mockLogger,
                 mockErrorHandler,
                 mockNotificationsService,
-              );
-            },
+              ),
             deps: [HttpClient],
           },
         ],

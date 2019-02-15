@@ -17,7 +17,9 @@ export class DevNamespaceScope implements INamespaceScope {
   public namespace: Observable<string>;
 
   private headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+
   protected userServicesUrl: string;
+
   private currentNamespaceValue: string;
 
   constructor(
@@ -27,7 +29,7 @@ export class DevNamespaceScope implements INamespaceScope {
     @Inject(WIT_API_URL) apiUrl: string,
   ) {
     if (this.auth.getToken() != null) {
-      this.headers = this.headers.set('Authorization', 'Bearer ' + this.auth.getToken());
+      this.headers = this.headers.set('Authorization', `Bearer ${this.auth.getToken()}`);
     }
     this.userServicesUrl = pathJoin(apiUrl, '/user/services');
 
@@ -35,15 +37,13 @@ export class DevNamespaceScope implements INamespaceScope {
     this.namespace = this.http.get(this.userServicesUrl, { headers: this.headers }).pipe(
       shareReplay(),
       map((resp: HttpResponse<any>) => {
-        let namespace = this.extractUserNamespace(resp);
+        const namespace = this.extractUserNamespace(resp);
         if (namespace) {
           this.currentNamespaceValue = namespace;
         }
         return namespace;
       }),
-      catchError((error: HttpErrorResponse) => {
-        return this.handleError(error);
-      }),
+      catchError((error: HttpErrorResponse) => this.handleError(error)),
     );
   }
 
@@ -58,15 +58,15 @@ export class DevNamespaceScope implements INamespaceScope {
 
   private extractUserNamespace(json: any): string {
     if (json) {
-      let data = json['data'];
+      const data = json['data'];
       if (data) {
-        let attributes = data['attributes'];
+        const attributes = data['attributes'];
         if (attributes) {
-          let namespaces = attributes['namespaces'];
+          const namespaces = attributes['namespaces'];
           if (namespaces) {
-            for (let namespace of namespaces) {
-              let name = namespace['name'];
-              let type = namespace['type'];
+            for (const namespace of namespaces) {
+              const name = namespace['name'];
+              const type = namespace['type'];
               if (name && type && type === 'user') {
                 return name;
               }

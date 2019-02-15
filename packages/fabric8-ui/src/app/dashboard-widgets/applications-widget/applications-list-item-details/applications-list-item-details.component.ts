@@ -17,6 +17,7 @@ export class ApplicationsListItemDetailsComponent implements DoCheck, OnInit {
   @Input() build: Build;
 
   private _pipelineStages: ExtPipelineStage[];
+
   private prevStatusPhase: string;
 
   constructor() {}
@@ -45,13 +46,13 @@ export class ApplicationsListItemDetailsComponent implements DoCheck, OnInit {
       return;
     }
     if (this.build.pipelineStages.length - 2 > 0) {
-      let prevStage = this.build.pipelineStages[
+      const prevStage = this.build.pipelineStages[
         this.build.pipelineStages.length - 2
       ] as ExtPipelineStage;
       this._pipelineStages.push(prevStage);
     }
     if (this.build.pipelineStages.length - 1 >= 0) {
-      let curStage = this.build.pipelineStages[
+      const curStage = this.build.pipelineStages[
         this.build.pipelineStages.length - 1
       ] as ExtPipelineStage;
       curStage.currentStage = true;

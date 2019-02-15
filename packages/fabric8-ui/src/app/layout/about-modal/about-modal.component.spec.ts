@@ -6,7 +6,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { AboutService } from '../../shared/about.service';
 import { AboutModalComponent } from './about-modal.component';
 
-class aboutServiceMock {
+class AboutServiceMock {
   get buildNumber(): string {
     return '111.000.222';
   }
@@ -26,10 +26,10 @@ describe('AboutModalComponent', () => {
   let el: HTMLElement;
   let des: DebugElement[];
   let component: DebugNode['componentInstance'];
-  let mockRenderer: any = jasmine.createSpy('Renderer2');
+  const mockRenderer: any = jasmine.createSpy('Renderer2');
 
   beforeEach(() => {
-    let aboutServiceStub = new aboutServiceMock();
+    const aboutServiceStub = new AboutServiceMock();
     TestBed.configureTestingModule({
       imports: [FormsModule, ModalModule.forRoot()],
       declarations: [AboutModalComponent],
