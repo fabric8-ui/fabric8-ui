@@ -3,7 +3,7 @@ import { Injectable, Inject } from '@angular/core';
 import { GitHubDetails, GitProviderService, HelperService, BuildTool } from 'ngx-launcher';
 import { AuthenticationService } from 'ngx-login-client';
 import { EMPTY, Observable, of, throwError } from 'rxjs';
-import { catchError, map, mergeMap, tap } from 'rxjs/operators';
+import { catchError, map, mergeMap, tap, retry } from 'rxjs/operators';
 
 import { cloneDeep } from 'lodash';
 import { ProviderService } from '../../../shared/account/provider.service';
@@ -58,9 +58,10 @@ export class AppLauncherGitproviderService implements GitProviderService {
    */
   private getGitHubUserData(): Observable<any> {
     const url = `${this.END_POINT + this.API_BASE}user`;
-    return this.http
-      .get(url, { headers: this.headers })
-      .pipe(catchError((error: HttpErrorResponse) => throwError(error)));
+    return this.http.get(url, { headers: this.headers }).pipe(
+      retry(3),
+      catchError((error: HttpErrorResponse) => throwError(error)),
+    );
   }
 
   /**
@@ -87,28 +88,23 @@ export class AppLauncherGitproviderService implements GitProviderService {
         if (user && user.login) {
           this.gitHubUserLogin = user.login;
           const orgs: { [name: string]: string } = {};
-          return this.getUserOrgs(user.login).pipe(
-            mergeMap((orgsArr) => {
-              if (orgsArr && orgsArr.length >= 0) {
-                this.repositories[''] = AppLauncherGitproviderService.removeOrganizationPrefix(
-                  user.repositories,
-                );
-                for (let i = 0; i < orgsArr.length; i++) {
-                  orgs[orgsArr[i]] = orgsArr[i];
-                }
-                orgs[user.login] = undefined;
-                const gitHubDetails = {
-                  authenticated: true,
-                  avatar: user.avatarUrl,
-                  login: user.login,
-                  organizations: orgs,
-                  repositoryList: this.repositories[''],
-                } as GitHubDetails;
-                return of(gitHubDetails);
-              }
-              return EMPTY;
-            }),
-          );
+          if (user.organizations && user.organizations.length >= 0) {
+            this.repositories[''] = AppLauncherGitproviderService.removeOrganizationPrefix(
+              user.repositories,
+            );
+            for (let i = 0; i < user.organizations.length; i++) {
+              orgs[user.organizations[i]] = user.organizations[i];
+            }
+            orgs[user.login] = undefined;
+            const gitHubDetails = {
+              authenticated: true,
+              avatar: user.avatarUrl,
+              login: user.login,
+              organizations: orgs,
+              repositoryList: this.repositories[''],
+            } as GitHubDetails;
+            return of(gitHubDetails);
+          }
         }
         return EMPTY;
       }),
